@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs'; 
 import { catchError, retry, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -12,16 +12,20 @@ export class ConnectionService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  mainUrl: string = 'https://repo.foodini.net.pl/bifrost';
+  mainUrl: string = 'https://repo.foodini.net.pl/bifrost/';
 
   httpOptions = {};
+  authOptions = { headers: new HttpHeaders({
+                  'Authorization': 'Basic YXV0aHNlcnZlcjpEamlKOTltR0NkeDVsa1VEM0I=',
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                })};
 
   setToken(token: string){
     localStorage.setItem('token', token);
 
     this.httpOptions = {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + this.getToken(),
+        'Authorization': 'Basic ' + this.getToken(),
         'Content-Type': 'application/json;charset=utf-8'
       })
     }
@@ -31,43 +35,24 @@ export class ConnectionService {
     return localStorage.getItem('token');
   }
 
-  login(login: string, password: string){
-    
-    var post_data = {
-        username: login,
-        password: password,
-        client_id: 2,
-        client_secret: 'LWFdjnXvILc1tXPiaxnrP8mrldIomjAFYB4yuT2u',
-        grant_type: 'password',
-        scope: 'iBASA'
-    }
-    
-    return this.http.post(this.mainUrl + 'oauth/token', post_data)
-    .pipe(/*(data => {
-        if(data && data['access_token']){
-          this.setToken(data['access_token']);
-        }
-        console.log(data.subscribe);
-        return data;
-    }),*/
-    map(data =>{
+  login(username: string, password: string){
+    var post_data = new HttpParams()
+    .set('username', username)
+    .set('password', password)
+    .set('grant_type', 'password');
 
-      //console.log(data['access_token']);
-      if(data && data['access_token']){
-        this.setToken(data['access_token']);
-      }
+    return this.http.post(this.mainUrl + 'oauth/token', post_data, this.authOptions).subscribe(
+      (data) => {
+        if(data && data['access_token']){
+              console.log(data['access_token']);
+              this.setToken(data['access_token']);
       
-      return data;
-    }),
-    catchError(error => {
-      
-      if(error.status == 404){
-        this.showError(error.statusText);
-      }else if(error.staatus == 500){
-        this.showError(error.statusText);
-      }
-      return throwError(error);
-    }));
+            }
+            return this.router.navigateByUrl('add-offer');
+      },
+      response => {
+          console.log(response);
+      });
   }
 
   getDataByPost(url: String, post_data: any){

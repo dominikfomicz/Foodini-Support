@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AddOfferComponent } from './pages/add-offer/add-offer.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ConnectionService } from './core/services/connection.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
 	declarations: [
@@ -19,9 +21,10 @@ import { AppRoutingModule } from './app-routing.module';
 		BrowserModule,
 		MDBBootstrapModule.forRoot(),
 		AppRoutingModule,
-		FormsModule
+		FormsModule,
+		HttpClientModule 
 	],
-	providers: [],
+	providers: [ConnectionService],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
