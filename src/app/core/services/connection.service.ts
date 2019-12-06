@@ -47,11 +47,11 @@ export class ConnectionService {
 				if (data && data['access_token']) {
 					console.log(data['access_token']);
 					this.setToken(data['access_token']);
-        }
+		}
 				return this.router.navigateByUrl('add-restaurant');
 			},
 			response => {
-        this.alert.alertError(response.message);
+		this.alert.alertError(response.message);
 				console.log(response);
 			});
 	}

@@ -18,6 +18,7 @@ import { AuthGuard } from './core/services/auth.guard';
 import { AddCouponComponent } from './pages/add-coupon/add-coupon.component';
 import { ListRestaurantsComponent } from './pages/list-restaurants/list-restaurants.component';
 import { AlertService } from './core/services/alert.service';
+import { ListCouponsComponent } from './pages/list-coupons/list-coupons.component';
 
 @NgModule({
 	declarations: [
@@ -26,6 +27,7 @@ import { AlertService } from './core/services/alert.service';
 		AddOfferComponent,
 		AddCouponComponent,
 		ListRestaurantsComponent,
+		ListCouponsComponent,
 	],
 	imports: [
 		TagInputModule,
