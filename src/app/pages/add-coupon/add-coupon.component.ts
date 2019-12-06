@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router, ActivatedRoute  } from '@angular/router';
+export interface Coupon {
+	couponTitle: string;
+	couponText: string;
+	mainTags: string;
+	secondaryTags: string;
+	count: number;
+}
 @Component({
 	selector: 'app-add-coupon',
 	templateUrl: './add-coupon.component.html',
@@ -24,7 +31,22 @@ export class AddCouponComponent implements OnInit {
 	}, {
 		value: 2, name: 'Wigilie'
 	}];
-	constructor() { }
+
+
+
+	staticEditCoupon: Coupon;
+
+	constructor(private route: ActivatedRoute) {
+		this.route.params
+		.subscribe(
+			(params) => {
+				// console.log(params);
+				if (params.id) {
+
+				}
+			}
+		);
+	}
 
 	ngOnInit() {
 	}

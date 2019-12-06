@@ -8,9 +8,11 @@ import { ListRestaurantsComponent } from './pages/list-restaurants/list-restaura
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
+  { path: 'list-restaurants', component: ListRestaurantsComponent, canActivate: [AuthGuard]},
   { path: 'add-restaurant', component: AddOfferComponent, canActivate: [AuthGuard]},
   { path: 'add-coupon', component: AddCouponComponent, canActivate: [AuthGuard]},
-  { path: 'list-restaurants', component: ListRestaurantsComponent, canActivate: [AuthGuard]}
+  { path: 'edit-restaurant/:id', component: AddOfferComponent, canActivate: [AuthGuard]},
+  { path: 'edit-coupon/:id', component: AddCouponComponent, canActivate: [AuthGuard]},
 
 ];
 
