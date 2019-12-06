@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
-import { Observable } from 'rxjs/internal/Observable';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class AlertService {
-	private deleteRestaurant = new BehaviorSubject(false);
-	currentDeleteRestaurant = this.deleteRestaurant.asObservable();
 
 	constructor() { }
 
@@ -33,8 +29,6 @@ export class AlertService {
 				cancelButtonText: 'Anuluj',
 				confirmButtonText: 'Tak'
 			}).then((result) => {
-				// return result.value;
-				// this.deleteRestaurant.next(result.value);
 				console.log(result);
 				if (result.value) {
 					res(result.value);
