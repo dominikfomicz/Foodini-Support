@@ -4,6 +4,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { TagInputModule } from 'ngx-chips';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
+import { AgGridModule } from 'ag-grid-angular';
 
 
 import { AppComponent } from './app.component';
@@ -16,6 +17,8 @@ import { AuthService } from './core/services/auth.service';
 import { AuthGuard } from './core/services/auth.guard';
 import { AddCouponComponent } from './pages/add-coupon/add-coupon.component';
 import { ListRestaurantsComponent } from './pages/list-restaurants/list-restaurants.component';
+import { AlertService } from './core/services/alert.service';
+
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -32,9 +35,11 @@ import { ListRestaurantsComponent } from './pages/list-restaurants/list-restaura
 		AppRoutingModule,
 		HttpClientModule,
 		BrowserAnimationsModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		AgGridModule.withComponents([
+		])
 	],
-	providers: [ConnectionService, AuthService, AuthGuard],
+	providers: [ConnectionService, AuthService, AuthGuard, AlertService],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,13 +4,14 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AlertService } from './alert.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class ConnectionService {
 
-	constructor(private http: HttpClient, private router: Router) { }
+	constructor(private http: HttpClient, private router: Router, private alert: AlertService) { }
 
 	mainUrl = 'https://repo.foodini.net.pl/bifrost/';
 
@@ -50,12 +51,8 @@ export class ConnectionService {
 				return this.router.navigateByUrl('add-restaurant');
 			},
 			response => {
-        Swal.fire(
-          '',
-          response.message,
-          'error'
-        );
-					console.log(response);
+        this.alert.alertError(response.message);
+				console.log(response);
 			});
 	}
 
