@@ -13,7 +13,24 @@ export class AddOfferComponent implements OnInit {
 	type: string;
 	openHour: number;
 	closeHour: number;
-
+	coupon = [];
+	couponTitle: string;
+	couponText: string;
+	count: number;
+	mainTags = [{
+		value: 0, name: 'Pizza'
+	}, {
+		value: 1, name: 'Pasta'
+	}, {
+		value: 2, name: 'Parmesan'
+	}];
+	secondaryTags =  [{
+		value: 0, name: 'Napoje'
+	}, {
+		value: 1, name: 'Soki'
+	}, {
+		value: 2, name: 'Wigilie'
+	}];
 
 	constructor() { }
 

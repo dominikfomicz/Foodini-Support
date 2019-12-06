@@ -57,6 +57,8 @@ export class AddCouponComponent implements OnInit {
 			tags_primary : this.mainTags,
 			tags_secondary: this.secondaryTags,
 			count: this.count,
+			mainTags: this.mainTags,
+			secondaryTags: this.secondaryTags
 		};
 		console.log(this.secondaryTags);
 	}
