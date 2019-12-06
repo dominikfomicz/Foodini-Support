@@ -9,9 +9,21 @@ export class AddCouponComponent implements OnInit {
 	coupon = [];
 	couponTitle: string;
 	couponText: string;
-	mainTags: string;
-	secondaryTags: string;
 	count: number;
+	mainTags = [{
+		value: 0, name: 'Pizza'
+	}, {
+		value: 1, name: 'Pasta'
+	}, {
+		value: 2, name: 'Parmesan'
+	}];
+	secondaryTags =  [{
+		value: 0, name: 'Napoje'
+	}, {
+		value: 1, name: 'Soki'
+	}, {
+		value: 2, name: 'Wigilie'
+	}];
 	constructor() { }
 
 	ngOnInit() {
@@ -24,6 +36,16 @@ export class AddCouponComponent implements OnInit {
 			tags_secondary: this.secondaryTags,
 			count: this.count,
 		};
-		console.log(coupon);
+		console.log(this.secondaryTags);
+	}
+	onAdd(e) {
+		e.map( o => {
+			console.log(o);
+		});
 	}
 }
+
+interface AutoCompleteModel {
+	value: number;
+	display: string;
+ }

@@ -1,7 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { FormsModule } from '@angular/forms';
+import { TagInputModule } from 'ngx-chips';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
+
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -17,14 +20,17 @@ import { AddCouponComponent } from './pages/add-coupon/add-coupon.component';
 		AppComponent,
 		LoginComponent,
 		AddOfferComponent,
-		AddCouponComponent
+		AddCouponComponent,
 	],
 	imports: [
+		TagInputModule,
 		BrowserModule,
 		FormsModule,
 		MDBBootstrapModule.forRoot(),
 		AppRoutingModule,
-		HttpClientModule
+		HttpClientModule,
+		BrowserAnimationsModule,
+		ReactiveFormsModule
 	],
 	providers: [ConnectionService, AuthService, AuthGuard],
 	bootstrap: [AppComponent]

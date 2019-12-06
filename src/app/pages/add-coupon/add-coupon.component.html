@@ -17,13 +17,11 @@
                         </div>
 
                         <div class="md-form mt-3">
-                            <input type="text" id="mainTags" class="form-control" name="mainTags"  [(ngModel)]="mainTags" mdbInput>
-                            <label for="mainTags">Tagi główne</label>
+                            <tag-input id="mainTags" name="mainTags" [(ngModel)]='mainTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'" [separatorKeyCodes]="[32]"></tag-input>
                         </div>
 
                         <div class="md-form mt-3">
-                            <input type="text" id="secondaryTags" class="form-control" name="secondaryTags"  [(ngModel)]="secondaryTags" mdbInput>
-                            <label for="secondaryTags">Tagi pomocnicze</label>
+                            <tag-input id="secondaryTags" name="secondaryTags" [(ngModel)]='secondaryTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'"></tag-input>
                         </div>
                         <div class="md-form mt-3">
                             <input type="text" id="count" class="form-control" name="count"  [(ngModel)]="count" mdbInput>
@@ -39,4 +37,3 @@
         </div>
     </div>
 </div>
-
