@@ -24,7 +24,7 @@ export class ListRestaurantsComponent implements OnInit {
 
   onDeleteClick(id){
     this.alert.alertQuestion('Czy napewno chcesz usunąć lokal?');
-     
+    console.log(id); 
   }
   ngOnInit() {
   }
