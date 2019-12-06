@@ -4,11 +4,13 @@ import { LoginComponent } from './pages/login/login.component';
 import { AddOfferComponent } from './pages/add-offer/add-offer.component';
 import { AuthGuard } from './core/services/auth.guard';
 import { AddCouponComponent } from './pages/add-coupon/add-coupon.component';
+import { ListRestaurantsComponent } from './pages/list-restaurants/list-restaurants.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'add-restaurant', component: AddOfferComponent, canActivate: [AuthGuard]},
-  { path: 'add-coupon', component: AddCouponComponent, canActivate: [AuthGuard]}
+  { path: 'add-coupon', component: AddCouponComponent, canActivate: [AuthGuard]},
+  { path: 'list-restaurants', component: ListRestaurantsComponent, canActivate: [AuthGuard]}
 
 ];
 

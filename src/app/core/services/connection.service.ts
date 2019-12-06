@@ -46,10 +46,15 @@ export class ConnectionService {
 				if (data && data['access_token']) {
 					console.log(data['access_token']);
 					this.setToken(data['access_token']);
-				}
-				return this.router.navigateByUrl('add-offer');
+        }
+				return this.router.navigateByUrl('add-restaurant');
 			},
 			response => {
+        Swal.fire(
+          '',
+          response.message,
+          'error'
+        );
 					console.log(response);
 			});
 	}

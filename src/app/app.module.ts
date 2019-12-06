@@ -15,12 +15,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './core/services/auth.service';
 import { AuthGuard } from './core/services/auth.guard';
 import { AddCouponComponent } from './pages/add-coupon/add-coupon.component';
+import { ListRestaurantsComponent } from './pages/list-restaurants/list-restaurants.component';
 @NgModule({
 	declarations: [
 		AppComponent,
 		LoginComponent,
 		AddOfferComponent,
 		AddCouponComponent,
+		ListRestaurantsComponent,
 	],
 	imports: [
 		TagInputModule,
