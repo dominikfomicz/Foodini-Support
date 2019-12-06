@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertService } from 'src/app/core/services/alert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-coupons',
@@ -19,8 +21,22 @@ export class ListCouponsComponent implements OnInit {
 		{id: 10, local_name: 'FRYTKARNIA', title: 'Kupon na kurczaka' },
 		{id: 11, local_name: 'FABUŁA', title: 'Kupon na kurczaka' }
   ];
-  
-  constructor() { }
+
+  constructor(public alert: AlertService, public router: Router) { }
+
+  	onDeleteClick(id) {
+		this.alert.alertQuestion('Czy napewno chcesz usunąć kupon?').then(
+			callback => {
+				if (callback === true) {
+					console.log('post delete');
+				}
+			}
+		);
+	}
+
+	onEditClick(id) {
+		this.router.navigateByUrl('edit-coupon/' + id);
+	}
 
   ngOnInit() {
   }
