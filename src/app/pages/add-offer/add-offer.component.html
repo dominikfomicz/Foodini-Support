@@ -1,90 +1,80 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <!-- Material form subscription -->
-            <mdb-card>
-                <mdb-card-header class="info-color white-text text-center py-4">
-                    <h5>
-                        <strong>Support</strong>
-                    </h5>
-                </mdb-card-header>
-                <mdb-card-body class="px-lg-5">
-                    <form class="text-center" style="color: #757575;" (submit)="sendData()">
-                        <!-- Name -->
-                        <div class="md-form mt-3">
-                            <input type="text" id="materialSubscriptionFormPasswords" class="form-control" name="city" [(ngModel)]="city" mdbInput>
-                            <label for="materialSubscriptionFormPasswords">Miasto</label>
-                        </div>
-
-                        <!-- E-mai -->
-                        <div class="md-form">
-                            <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
-                            <label for="materialSubscriptionFormEmail" #place>Nazwa lokalu</label>
-                        </div>
-
-                        <div class="md-form">
-                            <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
-                            <label for="materialSubscriptionFormEmail" #address>Adres</label>
-                        </div>
-
-                        <div class="md-form">
-                            <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
-                            <label for="materialSubscriptionFormEmail" #contact>Kontakt</label>
-                        </div>
-
-                        <div class="md-form">
-                            <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
-                            <label for="materialSubscriptionFormEmail" #kitchenGenre>Rodzaj kuchni</label>
-                        </div>
-
-                        <div class="md-form">
-                            <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
-                            <label for="materialSubscriptionFormEmail" #kitchen>Dania w kuchni</label>
-                        </div>
-
-                        <div class="md-form">
-                            <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
-                            <label for="materialSubscriptionFormEmail" #beverages>Napoje</label>
-                        </div>
-
-                        <div class="md-form">
-                            <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
-                            <label for="materialSubscriptionFormEmail" #drinks>Alkohol</label>
-                        </div>
-
-                        <div class="md-form">
-                            <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
-                            <label for="materialSubscriptionFormEmail" #additional>Informacje dodatkowe</label>
-                        </div>
-
-                        <div class="md-form">
-                            <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
-                            <label for="materialSubscriptionFormEmail" #additionalAttraction>Dodatkowe atrakcje</label>
-                        </div>
-
-                        <div class="md-form">
-                            <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
-                            <label for="materialSubscriptionFormEmail" #startHour>Godziny otwarcia od:</label>
-                        </div>
-
-                        <div class="md-form">
-                            <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
-                            <label for="materialSubscriptionFormEmail" #endHour>Godziny otwarcia od:</label>
-                        </div>
-
-                        <div class="d-flex justify-content-around">
-                            <div>
-                                <mdb-checkbox>Akceptacja marketingowa</mdb-checkbox>
+                <mdb-card>
+                    <mdb-card-body>
+                        <form class="text-center" style="color: #757575;" (submit)="sendData()">
+                            <!-- Name -->
+                            <div class="md-form mt-3">
+                                <input type="text" id="city" class="form-control" name="city" [(ngModel)]="city" mdbInput>
+                                <label for="city">Miasto</label>
                             </div>
-                        </div>
 
-                        <!-- Sign in button -->
-                        <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect
-                        type="submit" (click)="sendData()">Wyślij do weryfikacji</button>
+                            <!-- E-mai -->
+                            <div class="md-form">
+                                <input type="email" id="restaurantName" class="form-control" name="restaurantName" [(ngModel)]="restaurantName"  mdbInput>
+                                <label for="restaurantName">Nazwa lokalu</label>
+                            </div>
 
-                    </form>
-                </mdb-card-body>
-            </mdb-card>
+                            <div class="md-form">
+                                <input type="email" id="restaurantAddress" class="form-control" name="restaurantAddress" [(ngModel)]="restaurantAddress" mdbInput>
+                                <label for="restaurantAddress">Adres</label>
+                            </div>
+
+                            <div class="md-form">
+                                <input type="email" id="contact" class="form-control" name="contact" [(ngModel)]="contact" mdbInput>
+                                <label for="contact">Kontakt</label>
+                            </div>
+
+                            <div class="md-form">
+                                <input type="email" id="type" class="form-control" name="type" [(ngModel)]="type" mdbInput>
+                                <label for="type">Rodzaj kuchni</label>
+                            </div>
+
+                            <!-- <div class="md-form">
+                                <input type="email" id="materialSubscriptionFormEmail" class="form-control" name="dishes" [(ngModel)]="dishes" mdbInput>
+                                <label for="materialSubscriptionFormEmail" #kitchen>Dania w kuchni</label>
+                            </div> -->
+
+                            <!-- <div class="md-form">
+                                <input type="email" id="materialSubscriptionFormEmail" class="form-control" name="dishes" [(ngModel)]="beverages" mdbInput>
+                                <label for="materialSubscriptionFormEmail" #beverages>Napoje</label>
+                            </div>
+
+                            <div class="md-form">
+                                <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
+                                <label for="materialSubscriptionFormEmail" #drinks>Alkohol</label>
+                            </div> -->
+
+                            <!-- <div class="md-form">
+                                <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
+                                <label for="materialSubscriptionFormEmail" #additional>Informacje dodatkowe</label>
+                            </div>
+
+                            <div class="md-form">
+                                <input type="email" id="materialSubscriptionFormEmail" class="form-control" mdbInput>
+                                <label for="materialSubscriptionFormEmail" #additionalAttraction>Dodatkowe atrakcje</label>
+                            </div> -->
+
+                            <div class="md-form">
+                                <input type="email" id="openHour" class="form-control" name="openHour" [(ngModel)]="openHour"  mdbInput>
+                                <label for="openHour">Godziny otwarcia od:</label>
+                            </div>
+
+                            <div class="md-form">
+                                <input type="email" id="closeHour" class="form-control" name="closeHour" [(ngModel)]="closeHour"  mdbInput>
+                                <label for="closeHour">Godziny otwarcia do:</label>
+                            </div>
+
+
+                            <!-- Sign in button -->
+                            <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect
+                            type="submit">Wyślij</button>
+
+                        </form>
+                    </mdb-card-body>
+                </mdb-card>
+
         </div>
     </div>
 </div>

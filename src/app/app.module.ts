@@ -11,20 +11,22 @@ import { ConnectionService } from './core/services/connection.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './core/services/auth.service';
 import { AuthGuard } from './core/services/auth.guard';
+import { AddCouponComponent } from './pages/add-coupon/add-coupon.component';
 @NgModule({
 	declarations: [
 		AppComponent,
 		LoginComponent,
-		AddOfferComponent
+		AddOfferComponent,
+		AddCouponComponent
 	],
 	imports: [
 		BrowserModule,
+		FormsModule,
 		MDBBootstrapModule.forRoot(),
 		AppRoutingModule,
-		FormsModule,
-		HttpClientModule 
+		HttpClientModule
 	],
-	providers: [ConnectionService,AuthService,AuthGuard],
+	providers: [ConnectionService, AuthService, AuthGuard],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }

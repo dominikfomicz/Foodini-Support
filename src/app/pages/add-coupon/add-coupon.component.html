@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <mdb-card>
+                <mdb-card-body>
+                    <form class="text-center" style="color: #757575;" (submit)="sendData()">
+                        <!-- Name -->
+                        <div class="md-form mt-3">
+                            <input type="text" id="couponTitle" class="form-control" name="couponTitle" [(ngModel)]="couponTitle" mdbInput>
+                            <label for="couponTitle">Tytul kuponu</label>
+                        </div>
+
+                        <div class="md-form mt-3">
+                            <!-- <input type="text" id="materialSubscriptionFormPasswords" class="form-control"  mdbInput> -->
+                            <textarea id="couponText" class="md-textarea form-control" name="couponText"  [(ngModel)]="couponText" rows="4"></textarea>
+                            <label for="couponText">Tresc kuponu</label>
+                        </div>
+
+                        <div class="md-form mt-3">
+                            <input type="text" id="mainTags" class="form-control" name="mainTags"  [(ngModel)]="mainTags" mdbInput>
+                            <label for="mainTags">Tagi główne</label>
+                        </div>
+
+                        <div class="md-form mt-3">
+                            <input type="text" id="secondaryTags" class="form-control" name="secondaryTags"  [(ngModel)]="secondaryTags" mdbInput>
+                            <label for="secondaryTags">Tagi pomocnicze</label>
+                        </div>
+                        <div class="md-form mt-3">
+                            <input type="text" id="count" class="form-control" name="count"  [(ngModel)]="count" mdbInput>
+                            <label for="count">Ilość</label>
+                        </div>
+                        <!-- Sign in button -->
+                        <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect
+                        type="submit">Wyślij</button>
+
+                    </form>
+                </mdb-card-body>
+            </mdb-card>
+        </div>
+    </div>
+</div>
+

@@ -7,6 +7,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class AddOfferComponent implements OnInit {
 	city: string;
+	restaurantName: string;
+	restaurantAddress: string;
+	contact: string;
+	type: string;
+	openHour: number;
+	closeHour: number;
 
 
 	constructor() { }
@@ -16,6 +22,14 @@ export class AddOfferComponent implements OnInit {
 	}
 
 	sendData() {
-		alert(this.city);
+		console.log({
+			city: this.city,
+			restaurantName: this.restaurantName,
+			restaurantAddress: this.restaurantAddress,
+			contact: this.contact,
+			type: this.type,
+			openHour: this.openHour,
+			closeHour: this.closeHour,
+		});
 	}
 }
