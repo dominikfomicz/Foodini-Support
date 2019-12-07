@@ -49,5 +49,6 @@ export class AddOfferComponent implements OnInit {
 			openHour: this.openHour,
 			closeHour: this.closeHour,
 		});
+		// this.connection.getDataByPost();
 	}
 }
