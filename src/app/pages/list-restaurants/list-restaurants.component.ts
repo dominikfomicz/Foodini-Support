@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { ConnectionService } from 'src/app/core/services/connection.service';
 
 @Component({
 	selector: 'app-list-restaurants',
@@ -24,13 +25,15 @@ export class ListRestaurantsComponent implements OnInit {
 	{id: 10, name: 'FRYTKARNIA' },
 	{id: 11, name: 'FABUŁA' }];
 
-	constructor(public alert: AlertService, public router: Router) { }
+	constructor(public alert: AlertService, public router: Router, public connection: ConnectionService) { }
 
 	onDeleteClick(id) {
 		this.alert.alertQuestion('Czy napewno chcesz usunąć lokal?').then(
 			callback => {
 				if (callback === true) {
-					console.log('post delete');
+				// 	this.connection.getDataByPost('',).subscribe(data => {
+				// 		console.log(data);
+				// })
 				}
 			}
 		);
@@ -41,6 +44,10 @@ export class ListRestaurantsComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		// this.connection.getDataByGet('lokal/all?idMiasta=OQ==').subscribe(data => {
+		// 	console.log(data);
+		// });
+		
 	}
 
 }

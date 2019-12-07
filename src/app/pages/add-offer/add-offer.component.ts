@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ConnectionService } from 'src/app/core/services/connection.service';
 
 @Component({
 	selector: 'app-add-offer',
@@ -32,7 +33,7 @@ export class AddOfferComponent implements OnInit {
 		value: 2, name: 'Wigilie'
 	}];
 
-	constructor() { }
+	constructor(connection: ConnectionService) { }
 
 	ngOnInit() {
 		console.log(this.city);
