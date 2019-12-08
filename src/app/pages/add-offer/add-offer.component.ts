@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ConnectionService } from 'src/app/core/services/connection.service';
 export interface Restaurant {
 	city: string;
 	restaurantName: string;
@@ -48,7 +49,7 @@ export class AddOfferComponent implements OnInit {
 
 	staticEditCoupon: Restaurant;
 
-	constructor(private route: ActivatedRoute) {
+	constructor(private route: ActivatedRoute, public connection: ConnectionService) {
 		this.route.params.subscribe(
 			(params) => {
 				if (params.id) {
@@ -97,7 +98,7 @@ export class AddOfferComponent implements OnInit {
 					};
 				}
 			}
-		)
+		);
 	}
 
 	ngOnInit() {
@@ -113,6 +114,11 @@ export class AddOfferComponent implements OnInit {
 			type: this.type,
 			openHour: this.openHour,
 			closeHour: this.closeHour,
+		});
+		this.connection.getDataByPost('/lokal/new', [{
+			idCity: 'OQ=='
+		}]).subscribe(data => {
+			console.log(data);
 		});
 	}
 }

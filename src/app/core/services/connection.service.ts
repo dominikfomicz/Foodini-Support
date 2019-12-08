@@ -13,7 +13,7 @@ export class ConnectionService {
 
 	constructor(private http: HttpClient, private router: Router, private alert: AlertService) { }
 
-	mainUrl = 'https://repo.foodini.net.pl/bifrost/';
+	mainUrl = 'https://repo.foodini.net.pl/api-one/';
 
 	httpOptions = {};
 	authOptions = { headers: new HttpHeaders({
@@ -23,13 +23,6 @@ export class ConnectionService {
 
 	setToken(token: string) {
 		localStorage.setItem('token', token);
-
-		this.httpOptions = {
-			headers: new HttpHeaders({
-				'Authorization': 'Basic ' + this.getToken(),
-				'Content-Type': 'application/json;charset=utf-8'
-			})
-		};
 	}
 
 	getToken() {
@@ -38,26 +31,33 @@ export class ConnectionService {
 
 	login(username: string, password: string) {
 		const post_data = new HttpParams()
-		.set('username', username)
-		.set('password', password)
-		.set('grant_type', 'password');
+			.set('username', username)
+			.set('password', password)
+			.set('grant_type', 'password');
 
-		return this.http.post(this.mainUrl + 'oauth/token', post_data, this.authOptions).subscribe(
+		return this.http.post('https://repo.foodini.net.pl/bifrost/oauth/token', post_data, this.authOptions).subscribe(
 			(data) => {
 				if (data && data['access_token']) {
 					console.log(data['access_token']);
 					this.setToken(data['access_token']);
-		}
+				}
 				return this.router.navigateByUrl('add-restaurant');
 			},
 			response => {
-		this.alert.alertError(response.message);
+				this.alert.alertError(response.message);
 				console.log(response);
 			});
 	}
 
 	getDataByPost(url: String, post_data: any) {
-		return this.http.post(this.mainUrl + url, post_data, this.httpOptions)
+		this.httpOptions = {
+			headers: new HttpHeaders({
+				'Authorization': 'Bearer ' + this.getToken(),
+				'Content-Type': 'application/json;charset=utf-8'
+			})
+		};
+		console.log(JSON.stringify(post_data));
+		return this.http.post(this.mainUrl + url, JSON.stringify(post_data), this.httpOptions)
 			.pipe(
 				(data => {
 					return data;
@@ -78,6 +78,12 @@ export class ConnectionService {
 	}
 
 	getDataByGet(url: String) {
+		this.httpOptions = {
+			headers: new HttpHeaders({
+				'Authorization': 'Bearer ' + this.getToken(),
+				'Content-Type': 'application/json;charset=utf-8'
+			})
+		};
 
 		return this.http.get(this.mainUrl + url, this.httpOptions)
 			.pipe((data => {
@@ -98,20 +104,20 @@ export class ConnectionService {
 			);
 	}
 
-	logout() {
-		return this.getDataByGet('/logout')
-					.subscribe(data => {
-							this.router.navigateByUrl('');
-					});
-	}
-
 	showError(message) {
 		Swal.fire({
-			title: 'Error!',
+			title: '',
 			text: message,
 			icon: 'error',
-			confirmButtonText: 'Cool'
+			confirmButtonText: 'Ok'
+		})
+		.then((result) => {
+			if (result.value) {
+				localStorage.clear();
+				this.router.navigateByUrl('login');
+			}
 		});
+
 	}
 }
 
