@@ -98,8 +98,3 @@ export class AddCouponComponent implements OnInit {
 		});
 	}
 }
-
-interface AutoCompleteModel {
-	value: number;
-	display: string;
- }
