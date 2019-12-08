@@ -56,7 +56,8 @@ export class ConnectionService {
 				'Content-Type': 'application/json;charset=utf-8'
 			})
 		};
-		return this.http.post(this.mainUrl + url, post_data, this.httpOptions)
+		console.log(JSON.stringify(post_data));
+		return this.http.post(this.mainUrl + url, JSON.stringify(post_data), this.httpOptions)
 			.pipe(
 				(data => {
 					return data;
@@ -103,25 +104,19 @@ export class ConnectionService {
 			);
 	}
 
-	logout() {
-		return this.getDataByGet('/logout')
-					.subscribe(data => {
-							this.router.navigateByUrl('');
-					});
-	}
-
 	showError(message) {
 		Swal.fire({
 			title: '',
 			text: message,
 			icon: 'error',
 			confirmButtonText: 'Ok'
-		}).then((result) => {
-				if (result.value) {
-					localStorage.clear();
-					this.router.navigateByUrl('login');
-				}
-			})
+		})
+		.then((result) => {
+			if (result.value) {
+				localStorage.clear();
+				this.router.navigateByUrl('login');
+			}
+		});
 
 	}
 }

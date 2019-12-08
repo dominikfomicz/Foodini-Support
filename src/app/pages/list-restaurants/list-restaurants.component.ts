@@ -44,10 +44,9 @@ export class ListRestaurantsComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		// this.connection.getDataByGet('lokal/all?idMiasta=OQ==').subscribe(data => {
-		// 	console.log(data);
-		// });
-		
+		this.connection.getDataByGet('lokal/all?idMiasta=OQ==').subscribe(data => {
+			console.log(data);
+		});
 	}
 
 }

@@ -33,7 +33,7 @@ export class AddOfferComponent implements OnInit {
 		value: 2, name: 'Wigilie'
 	}];
 
-	constructor(connection: ConnectionService) { }
+	constructor(public connection: ConnectionService) { }
 
 	ngOnInit() {
 		console.log(this.city);
@@ -49,6 +49,10 @@ export class AddOfferComponent implements OnInit {
 			openHour: this.openHour,
 			closeHour: this.closeHour,
 		});
-		// this.connection.getDataByPost();
+		this.connection.getDataByPost('/lokal/new', [{
+			idCity: 'OQ=='
+		}]).subscribe(data => {
+			console.log(data)
+		});
 	}
 }
