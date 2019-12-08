@@ -6,44 +6,44 @@
                         <form class="text-center" style="color: #757575;" (submit)="sendData()">
                             <!-- Name -->
                             <div class="md-form mt-3">
-                                <input type="text" id="city" class="form-control" name="city" [(ngModel)]="city" mdbInput>
+                                <input type="text" id="city" class="form-control" name="city" [(ngModel)]="staticEditCoupon.city" mdbInput>
                                 <label for="city">Miasto</label>
                             </div>
 
                             <!-- E-mai -->
                             <div class="md-form">
-                                <input type="email" id="restaurantName" class="form-control" name="restaurantName" [(ngModel)]="restaurantName"  mdbInput>
+                                <input type="email" id="restaurantName" class="form-control" name="restaurantName" [(ngModel)]="staticEditCoupon.restaurantName"  mdbInput>
                                 <label for="restaurantName">Nazwa lokalu</label>
                             </div>
 
                             <div class="md-form">
-                                <input type="email" id="restaurantAddress" class="form-control" name="restaurantAddress" [(ngModel)]="restaurantAddress" mdbInput>
+                                <input type="email" id="restaurantAddress" class="form-control" name="restaurantAddress" [(ngModel)]="staticEditCoupon.restaurantAddress" mdbInput>
                                 <label for="restaurantAddress">Adres</label>
                             </div>
 
                             <div class="md-form">
-                                <input type="email" id="contact" class="form-control" name="contact" [(ngModel)]="contact" mdbInput>
+                                <input type="email" id="contact" class="form-control" name="contact" [(ngModel)]="staticEditCoupon.contact" mdbInput>
                                 <label for="contact">Kontakt</label>
                             </div>
 
                             <div class="md-form">
-                                <input type="email" id="type" class="form-control" name="type" [(ngModel)]="type" mdbInput>
+                                <input type="email" id="type" class="form-control" name="type" [(ngModel)]="staticEditCoupon.type" mdbInput>
                                 <label for="type">Rodzaj kuchni</label>
                             </div>
                             <div class="md-form mt-3">
-                                <tag-input id="mainTags" name="mainTags" [(ngModel)]='mainTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'" [separatorKeyCodes]="[32]"></tag-input>
+                                <tag-input id="mainTags" name="mainTags" [(ngModel)]='staticEditCoupon.mainTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'" [separatorKeyCodes]="[32]"></tag-input>
                             </div>
 
                             <div class="md-form mt-3">
-                                <tag-input id="secondaryTags" name="secondaryTags" [(ngModel)]='secondaryTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'"></tag-input>
+                                <tag-input id="secondaryTags" name="secondaryTags" [(ngModel)]='staticEditCoupon.secondaryTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'"></tag-input>
                             </div>
                             <div class="md-form">
-                                <input type="email" id="openHour" class="form-control" name="openHour" [(ngModel)]="openHour"  mdbInput>
+                                <input type="email" id="openHour" class="form-control" name="openHour" [(ngModel)]="staticEditCoupon.openHour"  mdbInput>
                                 <label for="openHour">Godziny otwarcia od:</label>
                             </div>
 
                             <div class="md-form">
-                                <input type="email" id="closeHour" class="form-control" name="closeHour" [(ngModel)]="closeHour"  mdbInput>
+                                <input type="email" id="closeHour" class="form-control" name="closeHour" [(ngModel)]="staticEditCoupon.closeHour"  mdbInput>
                                 <label for="closeHour">Godziny otwarcia do:</label>
                             </div>
 

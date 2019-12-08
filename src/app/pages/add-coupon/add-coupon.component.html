@@ -6,25 +6,25 @@
                     <form class="text-center" style="color: #757575;" (submit)="sendData()">
                         <!-- Name -->
                         <div class="md-form mt-3">
-                            <input type="text" id="couponTitle" class="form-control" name="couponTitle" [(ngModel)]="couponTitle" [value]="title" mdbInput>
+                            <input type="text" id="couponTitle" class="form-control" name="couponTitle" [(ngModel)]="staticEditCoupon.couponTitle" [value]="title" mdbInput>
                             <label for="couponTitle">Tytul kuponu</label>
                         </div>
 
                         <div class="md-form mt-3">
                             <!-- <input type="text" id="materialSubscriptionFormPasswords" class="form-control"  mdbInput> -->
-                            <textarea id="couponText" class="md-textarea form-control" name="couponText"  [(ngModel)]="couponText" rows="4"></textarea>
+                            <textarea id="couponText" class="md-textarea form-control" name="couponText"  [(ngModel)]="staticEditCoupon.couponText" rows="4"></textarea>
                             <label for="couponText">Tresc kuponu</label>
                         </div>
 
                         <div class="md-form mt-3">
-                            <tag-input id="mainTags" name="mainTags" [(ngModel)]='mainTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'" [separatorKeyCodes]="[32]"></tag-input>
+                            <tag-input id="mainTags" name="mainTags" [(ngModel)]='staticEditCoupon.mainTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'" [separatorKeyCodes]="[32]"></tag-input>
                         </div>
 
                         <div class="md-form mt-3">
-                            <tag-input id="secondaryTags" name="secondaryTags" [(ngModel)]='secondaryTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'"></tag-input>
+                            <tag-input id="secondaryTags" name="secondaryTags" [(ngModel)]='staticEditCoupon.secondaryTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'"></tag-input>
                         </div>
                         <div class="md-form mt-3">
-                            <input type="text" id="count" class="form-control" name="count"  [(ngModel)]="count" mdbInput>
+                            <input type="text" id="count" class="form-control" name="count"  [(ngModel)]="staticEditCoupon.count" mdbInput>
                             <label for="count">Ilość</label>
                         </div>
                         <!-- Sign in button -->

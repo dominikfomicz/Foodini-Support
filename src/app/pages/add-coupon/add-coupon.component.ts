@@ -3,8 +3,8 @@ import { Router, ActivatedRoute  } from '@angular/router';
 export interface Coupon {
 	couponTitle: string;
 	couponText: string;
-	mainTags: string;
-	secondaryTags: string;
+	mainTags: {};
+	secondaryTags: {};
 	count: number;
 }
 @Component({
@@ -42,7 +42,37 @@ export class AddCouponComponent implements OnInit {
 			(params) => {
 				// console.log(params);
 				if (params.id) {
+					this.couponTitle = 'Tytul kuponu';
+					this.couponText = 'Text kuponu';
+					this.count = 100;
 
+					this.staticEditCoupon = {
+						couponTitle: 'Tytul kuponu',
+						couponText: 'Text kuponu',
+						mainTags: [{
+							value: 0, name: 'Pizza'
+						}, {
+							value: 1, name: 'Pasta'
+						}, {
+							value: 2, name: 'Parmesan'
+						}],
+						secondaryTags: [{
+							value: 0, name: 'Napoje'
+						}, {
+							value: 1, name: 'Soki'
+						}, {
+							value: 2, name: 'Wigilie'
+						}],
+						count: 100
+					};
+				} else {
+					this.staticEditCoupon = {
+						couponTitle: '',
+						couponText: '',
+						mainTags: [],
+						secondaryTags: [],
+						count: 0
+					};
 				}
 			}
 		);
