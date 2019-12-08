@@ -8,11 +8,11 @@ export interface Coupon {
 	count: number;
 }
 @Component({
-	selector: 'app-add-coupon',
-	templateUrl: './add-coupon.component.html',
-	styleUrls: ['./add-coupon.component.scss']
+	selector: 'app-coupons',
+	templateUrl: './coupons.component.html',
+	styleUrls: ['./coupons.component.scss']
 })
-export class AddCouponComponent implements OnInit {
+export class CouponsComponent implements OnInit {
 	coupon = [];
 	couponTitle: string;
 	couponText: string;

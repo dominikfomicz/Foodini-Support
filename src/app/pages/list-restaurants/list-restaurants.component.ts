@@ -39,7 +39,7 @@ export class ListRestaurantsComponent implements OnInit {
 		);
 	}
 
-	onEditClick(id){
+	onEditClick(id) {
 		this.router.navigateByUrl('edit-restaurant/' + id);
 	}
 

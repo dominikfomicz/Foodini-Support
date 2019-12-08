@@ -15,11 +15,11 @@ export interface Restaurant {
 	secondaryTags: {};
 }
 @Component({
-	selector: 'app-add-offer',
-	templateUrl: './add-offer.component.html',
-	styleUrls: ['./add-offer.component.scss']
+	selector: 'app-restaurants',
+	templateUrl: './restaurants.component.html',
+	styleUrls: ['./restaurants.component.scss']
 })
-export class AddOfferComponent implements OnInit {
+export class RestaurantsComponent implements OnInit {
 	city: string;
 	restaurantName: string;
 	restaurantAddress: string;
