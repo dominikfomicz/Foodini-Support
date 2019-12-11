@@ -35,6 +35,7 @@ export class ListRestaurantsComponent implements OnInit {
 	ngOnInit() {
 		this.connection.getDataByGet('local/all?idMiasta=1').subscribe(data => {
 			this.items = data;
+			console.log(data)
 		});
 	}
 
