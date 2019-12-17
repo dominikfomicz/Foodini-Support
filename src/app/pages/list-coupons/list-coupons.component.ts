@@ -17,7 +17,7 @@ export class ListCouponsComponent implements OnInit {
 		{id: 6, local_name: 'KOFEINA 2.0x', title: 'Kupon na kurczaka' },
 		{id: 7, local_name: 'SMAKOBAO', title: 'Kupon na kurczaka' },
 		{id: 8, local_name: 'SAN ESCOBAR', title: 'Kupon na kurczaka' },
-		{id: 9, local_name: 'TYLKO PIZZA', title: 'Kupon na kurczaka' },
+		{id: 9, local_name: 'TYLKO PIZZA', title: 'Kupon na kurczakaaa' },
 		{id: 10, local_name: 'FRYTKARNIA', title: 'Kupon na kurczaka' },
 		{id: 11, local_name: 'FABUŁA', title: 'Kupon na kurczaka' }
   ];
