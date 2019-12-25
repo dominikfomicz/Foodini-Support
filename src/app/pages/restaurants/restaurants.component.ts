@@ -46,10 +46,16 @@ export class RestaurantsComponent implements OnInit {
 		value: 2, name: 'Wigilie'
 	}];
 
+	cities = {};
+
 
 	staticEditCoupon: Restaurant;
 
 	constructor(private route: ActivatedRoute, public connection: ConnectionService) {
+		this.connection.selectItem('CityConstType').subscribe(data => {
+			this.cities = data;
+			console.log(this.cities);
+		});
 		this.route.params.subscribe(
 			(params) => {
 				if (params.id) {
@@ -58,7 +64,7 @@ export class RestaurantsComponent implements OnInit {
 					this.count = 100;
 
 					this.staticEditCoupon = {
-						city: 'OPole',
+						city: 'Opole',
 						restaurantName: 'Pizza Hut',
 						restaurantAddress: 'Fioolkowa',
 						contact: '+481233333',
@@ -102,7 +108,6 @@ export class RestaurantsComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log(this.city);
 	}
 
 	sendData() {

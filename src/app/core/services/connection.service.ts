@@ -13,13 +13,9 @@ export class ConnectionService {
 
 	constructor(private http: HttpClient, private router: Router, private alert: AlertService) { }
 
-	mainUrl = 'https://repo.foodini.net.pl/api-one/';
+	mainUrl = 'http://repo.foodini.net.pl/';
 
 	httpOptions = {};
-	authOptions = { headers: new HttpHeaders({
-					'Authorization': 'Basic YXV0aHNlcnZlcjpEamlKOTltR0NkeDVsa1VEM0I=',
-					'Content-Type': 'application/x-www-form-urlencoded'
-				})};
 
 	setToken(token: string) {
 		localStorage.setItem('token', token);
@@ -33,9 +29,12 @@ export class ConnectionService {
 		const post_data = new HttpParams()
 			.set('username', username)
 			.set('password', password)
+			.set('client_id', '1')
+			.set('client_secret', 'wYp5wj6LRF6zE8M2DAQofcOUAc7JHeGVlFF5P8au')
+			.set('scope', '')
 			.set('grant_type', 'password');
 
-		return this.http.post('https://repo.foodini.net.pl/bifrost/oauth/token', post_data, this.authOptions).subscribe(
+		return this.http.post('http://repo.foodini.net.pl/oauth/token', post_data, this.httpOptions).subscribe(
 			(data) => {
 				if (data && data['access_token']) {
 					console.log(data['access_token']);
@@ -44,7 +43,6 @@ export class ConnectionService {
 				return this.router.navigateByUrl('add-restaurant');
 			},
 			response => {
-				this.alert.alertError(response.message);
 				console.log(response);
 			});
 	}
@@ -56,8 +54,8 @@ export class ConnectionService {
 				'Content-Type': 'application/json;charset=utf-8'
 			})
 		};
-		console.log(JSON.stringify(post_data));
-		return this.http.post(this.mainUrl + url, JSON.stringify(post_data), this.httpOptions)
+
+		return this.http.post(this.mainUrl + url, post_data, this.httpOptions)
 			.pipe(
 				(data => {
 					return data;
@@ -102,6 +100,10 @@ export class ConnectionService {
 					return throwError(error);
 				})
 			);
+	}
+
+	selectItem(app_list_string){
+		return this.getDataByPost('tools/getList', {app_list_string: app_list_string});
 	}
 
 	showError(message) {

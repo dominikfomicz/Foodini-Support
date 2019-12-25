@@ -6,8 +6,11 @@
                         <form class="text-center" style="color: #757575;" (submit)="sendData()">
                             <!-- Name -->
                             <div class="md-form mt-3">
-                                <input type="text" id="city" class="form-control" name="city" [(ngModel)]="staticEditCoupon.city" mdbInput>
-                                <label for="city">Miasto</label>
+                                <select class="browser-default custom-select" mdbSelect>>
+                                    <option *ngFor="let city of cities" value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                  </select>
                             </div>
 
                             <!-- E-mai -->
