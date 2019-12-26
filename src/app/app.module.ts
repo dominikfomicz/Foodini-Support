@@ -20,6 +20,10 @@ import { ListRestaurantsComponent } from './pages/list-restaurants/list-restaura
 import { AlertService } from './core/services/alert.service';
 import { ListCouponsComponent } from './pages/list-coupons/list-coupons.component';
 
+
+import { NgSelectModule } from '@ng-select/ng-select';
+
+
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -39,7 +43,8 @@ import { ListCouponsComponent } from './pages/list-coupons/list-coupons.componen
 		BrowserAnimationsModule,
 		ReactiveFormsModule,
 		AgGridModule.withComponents([
-		])
+		]),
+		NgSelectModule
 	],
 	providers: [ConnectionService, AuthService, AuthGuard, AlertService],
 	bootstrap: [AppComponent]

@@ -1,61 +1,120 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
+            <form class="text-center" style="color: #757575;" (submit)="sendData()">
                 <mdb-card>
                     <mdb-card-body>
-                        <form class="text-center" style="color: #757575;" (submit)="sendData()">
-                            <!-- Name -->
-                            <div class="md-form mt-3">
-                                <input type="text" id="city" class="form-control" name="city" [(ngModel)]="staticEditCoupon.city" mdbInput>
-                                <label for="city">Miasto</label>
-                            </div>
 
-                            <!-- E-mai -->
-                            <div class="md-form">
-                                <input type="email" id="restaurantName" class="form-control" name="restaurantName" [(ngModel)]="staticEditCoupon.restaurantName"  mdbInput>
-                                <label for="restaurantName">Nazwa lokalu</label>
-                            </div>
+                        <div class="md-form mt-3">
+                            <input type="text" id="city" class="form-control" name="city" [(ngModel)]="staticEditCoupon.city" mdbInput>
+                            <label for="city">Miasto</label>
+                        </div>
 
-                            <div class="md-form">
-                                <input type="email" id="restaurantAddress" class="form-control" name="restaurantAddress" [(ngModel)]="staticEditCoupon.restaurantAddress" mdbInput>
-                                <label for="restaurantAddress">Adres</label>
-                            </div>
+                        <div class="md-form">
+                            <input type="text" id="restaurantName" class="form-control" name="restaurantName" [(ngModel)]="staticEditCoupon.restaurantName"  mdbInput>
+                            <label for="restaurantName">Nazwa lokalu</label>
+                        </div>
 
-                            <div class="md-form">
-                                <input type="email" id="contact" class="form-control" name="contact" [(ngModel)]="staticEditCoupon.contact" mdbInput>
-                                <label for="contact">Kontakt</label>
-                            </div>
+                        <div class="md-form">
+                            <input type="text" id="restaurantAddress" class="form-control" name="restaurantAddress" [(ngModel)]="staticEditCoupon.restaurantAddress" mdbInput>
+                            <label for="restaurantAddress">Adres</label>
+                        </div>
 
-                            <div class="md-form">
-                                <input type="email" id="type" class="form-control" name="type" [(ngModel)]="staticEditCoupon.type" mdbInput>
-                                <label for="type">Rodzaj kuchni</label>
-                            </div>
-                            <div class="md-form mt-3">
-                                <tag-input id="mainTags" name="mainTags" [(ngModel)]='staticEditCoupon.mainTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'" [separatorKeyCodes]="[32]"></tag-input>
-                            </div>
+                        <div class="md-form">
+                            <input type="number" id="contact" class="form-control" name="contact" [(ngModel)]="staticEditCoupon.contact" mdbInput>
+                            <label for="contact">Telefon</label>
+                        </div>
 
-                            <div class="md-form mt-3">
-                                <tag-input id="secondaryTags" name="secondaryTags" [(ngModel)]='staticEditCoupon.secondaryTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'"></tag-input>
-                            </div>
-                            <div class="md-form">
-                                <input type="email" id="openHour" class="form-control" name="openHour" [(ngModel)]="staticEditCoupon.openHour"  mdbInput>
-                                <label for="openHour">Godziny otwarcia od:</label>
-                            </div>
+                        <div class="md-form">
+                            <input type="text" id="type" class="form-control" name="type" [(ngModel)]="staticEditCoupon.type" mdbInput>
+                            <label for="type">Rodzaj kuchni</label>
+                        </div>
+                        <div class="md-form">
+                            <ng-select id="mainTags" [multiple]="true" name="mainTags" [(ngModel)]="selectedMainTags" (change)="selectMainTags($event)" >
+                                <ng-option *ngFor="let tag of mainTags" [value]="tag">{{tag.name}}</ng-option>
+                            </ng-select>
+                            <label for="mainTags">Tagi główne (max 3)</label>
+                        </div>
 
-                            <div class="md-form">
-                                <input type="email" id="closeHour" class="form-control" name="closeHour" [(ngModel)]="staticEditCoupon.closeHour"  mdbInput>
-                                <label for="closeHour">Godziny otwarcia do:</label>
-                            </div>
-
-
-                            <!-- Sign in button -->
-                            <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect
-                            type="submit">Wyślij</button>
-
-                        </form>
+                        <div class="md-form">
+                            <ng-select id="secondaryTags" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags" (change)="selectSecondaryTags($event)">
+                                <ng-option *ngFor="let tag of secondaryTags" [value]="tag" >{{tag.name}}</ng-option>
+                            </ng-select>
+                            <label for="secondaryTags">Tagi dodatkowe</label>
+                        </div>
                     </mdb-card-body>
                 </mdb-card>
+                <ul class="nav grey day_tab lighten-4 py-4">
+                    <li class="nav-item" *ngFor="let item of days; let i = index"  [class.active]="i === selectedDayId">
+                        <div class="day ml-2 mr-2" (click)="selectDay(item.id_const_name, i)">{{item.day_name}}</div>
+                    </li>
+                </ul>
+                <mdb-card>
+                    <mdb-card-body>
+                        <div class="row">
+                            <div class="col-12 text-left">
+                                <p>Godziny otwarcia lokalu</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="md-form">
+                                    <input type="time" id="openHour" class="form-control" name="days.from" [(ngModel)]="days[selectedDayId].local_from"  mdbInput>
+                                    <label for="openHour">od:</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="md-form">
+                                    <input type="time" id="closeHour" class="form-control" name="days.to" [(ngModel)]="days[selectedDayId].local_to"  mdbInput>
+                                    <label for="closeHour">do:</label>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-12 text-left">
+                                <p>GOdziny otwarcia kuchni</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="md-form">
+                                    <input type="time" id="openHour" class="form-control" name="days.from" [(ngModel)]="days[selectedDayId].kitchen_from"  mdbInput>
+                                    <label for="openHour">od:</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="md-form">
+                                    <input type="time" id="closeHour" class="form-control" name="days.to" [(ngModel)]="days[selectedDayId].kitchen_to"  mdbInput>
+                                    <label for="closeHour">do:</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 text-left">
+                                <p>Godziny dowozu</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="md-form">
+                                    <input type="time" id="openHour" class="form-control" name="days.from" [(ngModel)]="days[selectedDayId].delivery_from"  mdbInput>
+                                    <label for="openHour">od:</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="md-form">
+                                    <input type="time" id="closeHour" class="form-control" name="days.to" [(ngModel)]="days[selectedDayId].delivery_to"  mdbInput>
+                                    <label for="closeHour">do:</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect
+                        type="submit">Wyślij</button>
+                    </mdb-card-body>
+                </mdb-card>
+            </form>
         </div>
     </div>
 </div>
