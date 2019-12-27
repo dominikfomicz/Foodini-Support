@@ -1,30 +1,22 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <mdb-card>
-                <mdb-card-header class="info-color white-text text-center py-4">
-                    <h5>
-                        <strong>FoodiniApp : Support</strong>
-                    </h5>
-                </mdb-card-header>
-                <mdb-card-body class="px-lg-5">
-                    <form class="text-center border border-light p-5" (submit)="login()">
+            <form class="text-center border border-light p-5" (submit)="login()">
 
-                        <div class="md-form">
-                            <input mdbInput type="text" name="username" class="form-control" [(ngModel)]="username">
-                            <label for="login" class="">Login</label>
-                        </div>
-                        
-                        <div class="md-form">
-                            <input mdbInput type="password" name="password" class="form-control" [(ngModel)]="password">
-                            <label for="password" class="">Hasło</label>
-                        </div>
-                        
-                        <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect
-                        type="submit">Zaloguj</button>
-                    </form>
-                </mdb-card-body>
-            </mdb-card>    
+                <div class="md-form">
+                    <input mdbInput type="text" name="username" class="form-control" [(ngModel)]="username">
+                    <label for="login" class="">Login</label>
+                </div>
+                
+                <div class="md-form">
+                    <input mdbInput type="password" name="password" class="form-control" [(ngModel)]="password">
+                    <label for="password" class="">Hasło</label>
+                </div>
+                
+                <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect
+                type="submit">Zaloguj</button>
+                
+            </form>
         </div>
     </div>
 </div>

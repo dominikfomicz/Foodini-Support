@@ -7,8 +7,8 @@ import { ConnectionService } from 'src/app/core/services/connection.service';
 	styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-	public username = 'MTAz';
-	public password = 'RG9taW5paw==';
+	public username = 'dominik@excode.eu';
+	public password = 'codex2435';
 
 	constructor(public service: ConnectionService) {}
 
