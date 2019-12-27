@@ -137,6 +137,11 @@ export class RestaurantsComponent implements OnInit {
 	disabledSecondaryTags = false;
 
 	staticEditCoupon: Restaurant;
+	cities = [{
+		name: 'Opole'
+	},{
+		name: 'Wrocław'
+	}];
 
 	constructor(private route: ActivatedRoute, public connection: ConnectionService) {
 		// this.connection.selectItem('CityConstType').subscribe(data => {

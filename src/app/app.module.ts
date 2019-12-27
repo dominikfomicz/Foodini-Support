@@ -19,6 +19,7 @@ import { CouponsComponent } from './pages/coupons/coupons.component';
 import { ListRestaurantsComponent } from './pages/list-restaurants/list-restaurants.component';
 import { AlertService } from './core/services/alert.service';
 import { ListCouponsComponent } from './pages/list-coupons/list-coupons.component';
+import { TagsComponent } from './pages/tags/tags.component';
 
 
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -32,6 +33,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 		CouponsComponent,
 		ListRestaurantsComponent,
 		ListCouponsComponent,
+		TagsComponent,
 	],
 	imports: [
 		TagInputModule,

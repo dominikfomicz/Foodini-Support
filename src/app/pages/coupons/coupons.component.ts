@@ -32,7 +32,11 @@ export class CouponsComponent implements OnInit {
 		value: 2, name: 'Wigilie'
 	}];
 
-
+	tags = [];
+	selectedMainTags;
+	disabledMainTags = false;
+	selectedSecondaryTags;
+	disabledSecondaryTags = false;
 
 	staticEditCoupon: Coupon;
 
@@ -95,6 +99,23 @@ export class CouponsComponent implements OnInit {
 	onAdd(e) {
 		e.map( o => {
 			console.log(o);
+		});
+	}
+	selectMainTags(value) {
+		console.log(value[0].value);
+		if (this.selectedMainTags.length < 3) {
+			this.tags.push({
+				id: value[0].value,
+				priority_status: true
+			});
+		}
+	}
+
+	selectSecondaryTags(value) {
+		console.log(value);
+		this.tags.push({
+			id: value[0].value,
+			priority_status: false
 		});
 	}
 }

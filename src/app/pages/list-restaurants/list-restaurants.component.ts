@@ -16,6 +16,15 @@ export class ListRestaurantsComponent implements OnInit {
 
 	constructor(public alert: AlertService, public router: Router, public connection: ConnectionService) { }
 
+
+
+	ngOnInit() {
+		this.connection.getDataByGet('local/all?idMiasta=1').subscribe(data => {
+			this.items = data;
+			console.log(data);
+		});
+	}
+
 	onDeleteClick(id) {
 		this.alert.alertQuestion('Czy napewno chcesz usunąć lokal?').then(
 			callback => {
@@ -31,12 +40,4 @@ export class ListRestaurantsComponent implements OnInit {
 	onEditClick(id) {
 		this.router.navigateByUrl('edit-restaurant/' + id);
 	}
-
-	ngOnInit() {
-		this.connection.getDataByGet('local/all?idMiasta=1').subscribe(data => {
-			this.items = data;
-			console.log(data)
-		});
-	}
-
 }
