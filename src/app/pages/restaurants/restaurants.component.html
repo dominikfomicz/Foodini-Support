@@ -6,33 +6,88 @@
                     <mdb-card-body>
 
                         <div class="md-form mt-3">
-                            <!-- <input type="text" id="city" class="form-control" name="city" [(ngModel)]="staticEditCoupon.city" mdbInput>
+                            <!-- <input type="text" id="city" class="form-control" name="city" [(ngModel)]="local_data.city" mdbInput>
                             <label for="city">Miasto</label> -->
-                            <ng-select id="city" name="city" [(ngModel)]="staticEditCoupon.city">
-                                <ng-option *ngFor="let item of cities" [value]="item" >{{item.name}}</ng-option>
+                            <ng-select id="city" name="city" [(ngModel)]="local_data.id_city_const_type">
+                                <ng-option *ngFor="let item of cities" [value]="item.item_id" #cityName>{{item.item_name}}</ng-option>
                             </ng-select>
                             <label for="city">Miasto</label>
                         </div>
 
                         <div class="md-form">
-                            <input type="text" id="restaurantName" class="form-control" name="restaurantName" [(ngModel)]="staticEditCoupon.restaurantName"  mdbInput>
+                            <input type="text" id="restaurantName" class="form-control" name="restaurantName" [(ngModel)]="local_data.name"  mdbInput>
                             <label for="restaurantName">Nazwa lokalu</label>
                         </div>
 
                         <div class="md-form">
-                            <input type="text" id="restaurantAddress" class="form-control" name="restaurantAddress" [(ngModel)]="staticEditCoupon.restaurantAddress" mdbInput>
+                            <input type="text" id="restaurantAddress" class="form-control" name="restaurantAddress" [(ngModel)]="local_data.address" mdbInput>
                             <label for="restaurantAddress">Adres</label>
                         </div>
 
                         <div class="md-form">
-                            <input type="number" id="contact" class="form-control" name="contact" [(ngModel)]="staticEditCoupon.contact" mdbInput>
+                            <input type="number" id="contact" class="form-control" name="contact" [(ngModel)]="local_data.phone_number" mdbInput>
                             <label for="contact">Telefon</label>
                         </div>
 
                         <div class="md-form">
-                            <input type="text" id="type" class="form-control" name="type" [(ngModel)]="staticEditCoupon.type" mdbInput>
-                            <label for="type">Rodzaj kuchni</label>
+                            <textarea id="description" class="md-textarea form-control" name="description" [(ngModel)]="local_data.description" rows="3"></textarea>
+                            <label for="description">Opis</label>
                         </div>
+
+                        <div class="md-form">
+                            <textarea id="other_info" class="md-textarea form-control" name="other_info" [(ngModel)]="local_data.other_info" rows="3"></textarea>
+                            <label for="other_info">Informacje o lokalu</label>
+                        </div>
+
+                        <div class="md-form">
+                            <input type="text" id="facebook_url" class="form-control" name="facebook_url" [(ngModel)]="local_data.facebook_url" mdbInput>
+                            <label for="facebook_url">Adres facebook</label>
+                        </div>
+
+                        <div class="md-form">
+                            <input type="text" id="instagram_url" class="form-control" name="instagram_url" [(ngModel)]="local_data.instagram_url" mdbInput>
+                            <label for="instagram_url">Adres instagram</label>
+                        </div>
+
+                        <div class="text-left">
+                            <p>Forma dostawy:</p>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="delivery" name="delivery" [(ngModel)]="local_data.delivery">
+                                <label class="form-check-label" for="delivery">Dowóz</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="eat_in_local" name="eat_in_local" [(ngModel)]="local_data.eat_in_local">
+                                <label class="form-check-label" for="eat_in_local">Na miejscu</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="pick_up_local" name="pick_up_local" [(ngModel)]="local_data.pick_up_local">
+                                <label class="form-check-label" for="pick_up_local">Odbiór osobisty</label>
+                            </div>
+                        </div>
+                        <div class="text-left">
+                            <p>Płatności:</p>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="materialUnchecked" name="cash_payment" [(ngModel)]="local_data.cash_payment">
+                                <label class="form-check-label" for="cash_payment">Platnosc gotowka</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="materialUnchecked" name="creditcards_payment" [(ngModel)]="local_data.creditcards_payment">
+                                <label class="form-check-label" for="creditcards_payment">Platnosc karta</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="materialUnchecked" name="contackless_payment" [(ngModel)]="local_data.contackless_payment">
+                                <label class="form-check-label" for="contackless_payment">Platnosc zblizeniowa</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="materialUnchecked" name="blik_payment" [(ngModel)]="local_data.blik_payment">
+                                <label class="form-check-label" for="blik_payment">Platnosc blikiem</label>
+                            </div>
+                        </div>
+
+                        <!-- <div class="md-form">
+                            <input type="text" id="type" class="form-control" name="type" [(ngModel)]="local_data.type" mdbInput>
+                            <label for="type">Rodzaj kuchni</label>
+                        </div> -->
                         <div class="row">
                             <div class="col">
                                 <div class="md-form">
@@ -54,8 +109,8 @@
                     </mdb-card-body>
                 </mdb-card>
                 <ul class="nav grey day_tab lighten-4 py-4">
-                    <li class="nav-item" *ngFor="let item of days; let i = index"  [class.active]="i === selectedDayId">
-                        <div class="day ml-2 mr-2" (click)="selectDay(item.id_const_name, i)">{{item.day_name}}</div>
+                    <li class="nav-item" *ngFor="let item of open_hours; let i = index"  [class.active]="i === selectedDayId">
+                        <div class="day ml-2 mr-2" (click)="selectDay(item.id_week_day, i)">{{item.day_name}}</div>
                     </li>
                 </ul>
                 <mdb-card>
@@ -68,13 +123,13 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="openLocalHour" class="form-control" name="days.from" [(ngModel)]="days[selectedDayId].local_from"  mdbInput>
+                                    <input type="time" id="openLocalFrom" class="form-control" name="openLocalFrom" [(ngModel)]="open_hours[selectedDayId].local_from" [disabled]="!local_data.pick_up_local && !local_data.eat_in_local"  mdbInput>
                                     <label for="openLocalHour">od:</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="closeLocalHour" class="form-control" name="days.to" [(ngModel)]="days[selectedDayId].local_to"  mdbInput>
+                                    <input type="time" id="openLocalTo" class="form-control" name="openLocalTo" [(ngModel)]="open_hours[selectedDayId].local_to" [disabled]="!open_hours[selectedDayId].local_from || !local_data.pick_up_local"  mdbInput>
                                     <label for="closeLocalHour">do:</label>
                                 </div>
                             </div>
@@ -88,13 +143,13 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="openKitchenHour" class="form-control" name="days.from" [(ngModel)]="days[selectedDayId].kitchen_from"  mdbInput>
+                                    <input type="time" id="openKitchenFrom" class="form-control" name="openKitchenFrom" [(ngModel)]="open_hours[selectedDayId].kitchen_from" [disabled]="!local_data.pick_up_local && !local_data.eat_in_local"  mdbInput>
                                     <label for="openKitchenHour">od:</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="closeKitchenHour" class="form-control" name="days.to" [(ngModel)]="days[selectedDayId].kitchen_to"  mdbInput>
+                                    <input type="time" id="openKitchenTo" class="form-control" name="openKitchenTo" [(ngModel)]="open_hours[selectedDayId].kitchen_to" [disabled]="!open_hours[selectedDayId].kitchen_from || !local_data.eat_in_local"  mdbInput>
                                     <label for="closeKitchenHour">do:</label>
                                 </div>
                             </div>
@@ -108,13 +163,13 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="openDeliveryHour" class="form-control" name="days.from" [(ngModel)]="days[selectedDayId].delivery_from"  mdbInput>
+                                    <input type="time" id="OpenDeliveryFrom" class="form-control" name="OpenDeliveryFrom" [(ngModel)]="open_hours[selectedDayId].delivery_from" [disabled]="!local_data.delivery"  mdbInput>
                                     <label for="openDeliveryHour">od:</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="closeDeliveryHour" class="form-control" name="days.to" [(ngModel)]="days[selectedDayId].delivery_to"  mdbInput>
+                                    <input type="time" id="OpenDeliveryTo" class="form-control" name="OpenDeliveryTo" [(ngModel)]="open_hours[selectedDayId].delivery_to" [disabled]="!open_hours[selectedDayId].delivery_from || !local_data.delivery"  mdbInput>
                                     <label for="closeDeliveryHour">do:</label>
                                 </div>
                             </div>

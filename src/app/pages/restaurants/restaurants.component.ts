@@ -1,25 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, QueryList } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConnectionService } from 'src/app/core/services/connection.service';
-export interface Restaurant {
-	city: string;
-	restaurantName: string;
-	restaurantAddress: string;
-	contact: string;
-	type: string;
-	openHour: string;
-	closeHour: string;
-	couponTitle: string;
-	couponText: string;
-	mainTags: {};
-	secondaryTags: {};
-}
+import { Restaurant } from '../../model/restaurant';
+
 @Component({
 	selector: 'app-restaurants',
 	templateUrl: './restaurants.component.html',
 	styleUrls: ['./restaurants.component.scss']
 })
 export class RestaurantsComponent implements OnInit {
+	@ViewChild('cityName', {static: false}) cityName: any;
+
 	city: string;
 	restaurantName: string;
 	restaurantAddress: string;
@@ -51,9 +42,9 @@ export class RestaurantsComponent implements OnInit {
 		value: 2, name: 'Makaron3', disabled: false
 	}];
 
-	days = [
+	open_hours = [
 		{
-			id_const_name: 1,
+			id_week_day: 1,
 			day_name: 'Poniedziałek',
 			kitchen_from: null,
 			kitchen_to: null,
@@ -63,7 +54,7 @@ export class RestaurantsComponent implements OnInit {
 			delivery_to: null,
 		},
 		{
-			id_const_name: 2,
+			id_week_day: 2,
 			day_name: 'Wtorek',
 			kitchen_from: null,
 			kitchen_to: null,
@@ -73,7 +64,7 @@ export class RestaurantsComponent implements OnInit {
 			delivery_to: null,
 		},
 		{
-			id_const_name: 3,
+			id_week_day: 3,
 			day_name: 'Środa',
 			kitchen_from: null,
 			kitchen_to: null,
@@ -83,7 +74,7 @@ export class RestaurantsComponent implements OnInit {
 			delivery_to: null,
 		},
 		{
-			id_const_name: 4,
+			id_week_day: 4,
 			day_name: 'Czwartek',
 			kitchen_from: null,
 			kitchen_to: null,
@@ -93,7 +84,7 @@ export class RestaurantsComponent implements OnInit {
 			delivery_to: null,
 		},
 		{
-			id_const_name: 5,
+			id_week_day: 5,
 			day_name: 'Piątek',
 			kitchen_from: null,
 			kitchen_to: null,
@@ -103,7 +94,7 @@ export class RestaurantsComponent implements OnInit {
 			delivery_to: null,
 		},
 		{
-			id_const_name: 6,
+			id_week_day: 6,
 			day_name: 'Sobota',
 			kitchen_from: null,
 			kitchen_to: null,
@@ -113,7 +104,7 @@ export class RestaurantsComponent implements OnInit {
 			delivery_to: null,
 		},
 		{
-			id_const_name: 7,
+			id_week_day: 7,
 			day_name: 'Niedziela',
 			kitchen_from: null,
 			kitchen_to: null,
@@ -125,9 +116,9 @@ export class RestaurantsComponent implements OnInit {
 	];
 	selectedDay = false;
 	selectedDayId = 0;
-	delivery = false;
-	eatInLocal = false;
-	pickUpLocal = false;
+	// delivery = false;
+	// eatInLocal = false;
+	// pickUpLocal = false;
 	tags = [];
 	selectedPersonId = '5a15b13c36e7a7f00cf0d7cb';
 
@@ -136,64 +127,40 @@ export class RestaurantsComponent implements OnInit {
 	selectedSecondaryTags;
 	disabledSecondaryTags = false;
 
-	staticEditCoupon: Restaurant;
-	cities = [{
-		name: 'Opole'
-	},{
-		name: 'Wrocław'
-	}];
+	// staticEditCoupon: [];
+	cities;
+
+
+	// local_data object
+	local_data = {
+		name: '',
+		address: '',
+		id_city_const_type: '',
+		phone_number: 0,
+		description: '',
+		other_info: '',
+		facebook_url: '',
+		instagram_url: '',
+		delivery: false,
+		eat_in_local: false,
+		pick_up_local: false,
+		cash_payment: false,
+		creditcards_payment: false,
+		contactless_payment: false,
+		blik_payment: false
+	};
+
+	id_local_data_main: number;
 
 	constructor(private route: ActivatedRoute, public connection: ConnectionService) {
-		// this.connection.selectItem('CityConstType').subscribe(data => {
-		// 	this.cities = data;
-		// 	console.log(this.cities);
-		// });
+		this.connection.selectItem('CityConstType').subscribe(data => {
+			this.cities = data;
+			console.log(this.cities);
+		});
 		this.route.params.subscribe(
 			(params) => {
 				if (params.id) {
-					this.couponTitle = 'Tytul kuponu';
-					this.couponText = 'Text kuponu';
-					this.count = 100;
-
-					this.staticEditCoupon = {
-						city: 'Opole',
-						restaurantName: 'Pizza Hut',
-						restaurantAddress: 'Fioolkowa',
-						contact: '+481233333',
-						type: 'Fast Food',
-						openHour: '09:00',
-						closeHour: '22:00',
-						couponTitle: 'NOwy kupon',
-						couponText: 'Nowy kupon -tekst',
-						mainTags: [{
-							value: 0, name: 'Pizza'
-						}, {
-							value: 1, name: 'Pasta'
-						}, {
-							value: 2, name: 'Parmesan'
-						}],
-						secondaryTags: [{
-							value: 0, name: 'Napoje'
-						}, {
-							value: 1, name: 'Soki'
-						}, {
-							value: 2, name: 'Wigilie'
-						}]
-					};
-				} else {
-					this.staticEditCoupon = {
-						city: '',
-						restaurantName: '',
-						restaurantAddress: '',
-						contact: '',
-						type: '',
-						openHour: '',
-						closeHour: '',
-						couponTitle: '',
-						couponText: '',
-						mainTags: [],
-						secondaryTags: []
-					};
+					this.id_local_data_main = params.id;
 				}
 			}
 		);
@@ -201,24 +168,63 @@ export class RestaurantsComponent implements OnInit {
 
 	ngOnInit() {
 	}
-
+	// getData(id) {
+	// 	this.connection.getDataByGet('/locals/getList/' + id).subscribe((data: Restaurant) => {
+	// 		// this.items = data;
+	// 		console.log(data);
+	// 		this.local_data = {
+	// 			name: data.name,
+	// 			address: data.address,
+	// 			id_city_const_type: data.id_city_const_type,
+	// 			phone_number: data.phone_number,
+	// 			description: data.description,
+	// 			other_info: data.other_info,
+	// 			facebook_url: data.facebook_url,
+	// 			instagram_url: data.instagram_url,
+	// 			delivery: data.delivery,
+	// 			eat_in_local: data.eat_in_local,
+	// 			pick_up_local: data.pick_up_local,
+	// 			cash_payment: data.cash_payment,
+	// 			creditcards_payment: data.creditcards_payment,
+	// 			contackless_payment: data.contackless_payment,
+	// 			blik_payment: data.blik_payment
+	// 		};
+	// 		console.log(this.cityName);
+	// 		// console.log([data.id_city_const_type].select(this.cities[data.id_city_const_type].value))
+	// 	});
+	// }
 	sendData() {
 		// console.log(this.tags);
 		// console.log(this.selectedSecondaryTags);
-		console.log({
-			details: {
-				city: this.staticEditCoupon.city,
-				restaurantName: this.staticEditCoupon.restaurantName,
-				restaurantAddress: this.staticEditCoupon.restaurantAddress,
-				contact: this.staticEditCoupon.contact,
-				type: this.staticEditCoupon.type,
-			},
-			tags: this.tags,
-			dayOpen: this.days
-		});
-		this.connection.getDataByPost('/lokal/new', [{
-			idCity: 'OQ=='
-		}]).subscribe(data => {
+		// this.local_data = {
+		// 	name: this.name,
+		// 	address: this.staticEditCoupon.address,
+		// 	id_city_const_type: this.staticEditCoupon.city,
+		// 	phone_number: this.staticEditCoupon.contact,
+		// 	description: this.staticEditCoupon.type,
+		// 	other_info: this.other_info,
+		// 	facebook_url: this.facebook_url,
+		// 	instagram_url: this.instagram_url,
+		// 	delivery: this.delivery,
+		// 	eat_in_local: this.eat_in_local,
+		// 	pick_up_local: this.pick_up_local,
+		// 	cash_payment: this.cash_payment,
+		// 	creditcards_payment: this.creditcards_payment,
+		// 	contackless_payment: this.contackless_payment,
+		// 	blik_payment: this.blik_payment
+
+		// };
+
+		console.log(this.id_local_data_main);
+		console.log(JSON.stringify(this.local_data));
+		console.log(JSON.stringify(this.tags));
+		console.log(JSON.stringify(this.open_hours));
+		// console.log(this.tags);
+		this.local_data.id_city_const_type = this.cityName.value;
+		this.connection.getDataByPost('locals/changeLocal',
+						{id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
+							local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours)})
+						.subscribe(data => {
 			console.log(data);
 		});
 	}
@@ -228,7 +234,7 @@ export class RestaurantsComponent implements OnInit {
 		// this.selectedDayId = el > 0 ? el - 1 : el;
 	}
 	selectMainTags(value) {
-		console.log(value[0].value);
+		console.log(value);
 		if (this.selectedMainTags.length < 3) {
 			this.tags.push({
 				id: value[0].value,
@@ -238,7 +244,7 @@ export class RestaurantsComponent implements OnInit {
 	}
 
 	selectSecondaryTags(value) {
-		console.log(value);
+		console.log(value[0].value);
 		this.tags.push({
 			id: value[0].value,
 			priority_status: false
