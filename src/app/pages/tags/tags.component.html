@@ -6,50 +6,22 @@
                     <form class="text-center" style="color: #757575;" (submit)="sendData()">
                         <!-- Name -->
                         <div class="md-form mt-3">
-                            <input type="text" id="couponTitle" class="form-control" name="couponTitle" [(ngModel)]="staticEditCoupon.couponTitle" [value]="title" mdbInput>
-                            <label for="couponTitle">Tytul kuponu</label>
+                            <input type="text" id="couponTitle" class="form-control" name="couponTitle" [(ngModel)]="tagTitle" [value]="tagTitle" mdbInput>
+                            <label for="couponTitle">Tytul tagu</label>
                         </div>
-
+                        <div class="md-form">
+                            <ng-select [items]="categories"  bindLabel="item_name"
+                                autofocus
+                                bindValue="item_id"
+                                name="selectedTagCategories"
+                                [(ngModel)]="selectedTagCategories">
+                            </ng-select>
+                            <label for="secondaryTags">Tagi dodatkowe</label>
+                        </div>
                         <div class="md-form mt-3">
                             <!-- <input type="text" id="materialSubscriptionFormPasswords" class="form-control"  mdbInput> -->
-                            <textarea id="couponText" class="md-textarea form-control" name="couponText"  [(ngModel)]="staticEditCoupon.couponText" rows="4" mdbInput></textarea>
-                            <label for="couponText">Tresc kuponu</label>
-                        </div>
-
-                        <!-- <div class="md-form">
-                            <textarea type="text" id="form7" class="md-textarea form-control" mdbInput></textarea>
-                            <label for="form7">Basic textarea</label>
-                          </div> -->
-
-                        <!-- <div class="md-form mt-3">
-                            <tag-input id="mainTags" name="mainTags" [(ngModel)]='staticEditCoupon.mainTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'" [separatorKeyCodes]="[32]"></tag-input>
-                        </div>
-
-                        <div class="md-form mt-3">
-                            <tag-input id="secondaryTags" name="secondaryTags" [(ngModel)]='staticEditCoupon.secondaryTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'"></tag-input>
-                        </div>
-                     -->
-                        <div class="row">
-                            <div class="col">
-                                <div class="md-form">
-                                    <ng-select id="mainTags" [multiple]="true" name="mainTags" [(ngModel)]="selectedMainTags" (change)="selectMainTags($event)" >
-                                        <ng-option *ngFor="let tag of mainTags" [value]="tag">{{tag.name}}</ng-option>
-                                    </ng-select>
-                                    <label for="mainTags">Tagi główne (max 3)</label>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="md-form">
-                                    <ng-select id="secondaryTags" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags" (change)="selectSecondaryTags($event)">
-                                        <ng-option *ngFor="let tag of secondaryTags" [value]="tag" >{{tag.name}}</ng-option>
-                                    </ng-select>
-                                    <label for="secondaryTags">Tagi dodatkowe</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md-form mt-3">
-                            <input type="text" id="count" class="form-control" name="count"  [(ngModel)]="staticEditCoupon.count" mdbInput>
-                            <label for="count">Ilość</label>
+                            <textarea id="couponText" class="md-textarea form-control" name="couponText"  [(ngModel)]="tagDescription" rows="4" mdbInput></textarea>
+                            <label for="couponText">Opis</label>
                         </div>
                         <!-- Sign in button -->
                         <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect

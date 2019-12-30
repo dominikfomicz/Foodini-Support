@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, QueryList } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConnectionService } from 'src/app/core/services/connection.service';
 import { Restaurant } from '../../model/restaurant';
+import { AlertService } from 'src/app/core/services/alert.service';
 
 @Component({
 	selector: 'app-restaurants',
@@ -46,72 +47,72 @@ export class RestaurantsComponent implements OnInit {
 		{
 			id_week_day: 1,
 			day_name: 'Poniedziałek',
-			kitchen_from: null,
-			kitchen_to: null,
-			local_from: null,
-			local_to: null,
-			delivery_from: null,
-			delivery_to: null,
+			kitchen_hour_from: null,
+			kitchen_hour_to: null,
+			local_hour_from: null,
+			local_hour_to: null,
+			delivery_hour_from: null,
+			delivery_hour_to: null,
 		},
 		{
 			id_week_day: 2,
 			day_name: 'Wtorek',
-			kitchen_from: null,
-			kitchen_to: null,
-			local_from: null,
-			local_to: null,
-			delivery_from: null,
-			delivery_to: null,
+			kitchen_hour_from: null,
+			kitchen_hour_to: null,
+			local_hour_from: null,
+			local_hour_to: null,
+			delivery_hour_from: null,
+			delivery_hour_to: null,
 		},
 		{
 			id_week_day: 3,
 			day_name: 'Środa',
-			kitchen_from: null,
-			kitchen_to: null,
-			local_from: null,
-			local_to: null,
-			delivery_from: null,
-			delivery_to: null,
+			kitchen_hour_from: null,
+			kitchen_hour_to: null,
+			local_hour_from: null,
+			local_hour_to: null,
+			delivery_hour_from: null,
+			delivery_hour_to: null,
 		},
 		{
 			id_week_day: 4,
 			day_name: 'Czwartek',
-			kitchen_from: null,
-			kitchen_to: null,
-			local_from: null,
-			local_to: null,
-			delivery_from: null,
-			delivery_to: null,
+			kitchen_hour_from: null,
+			kitchen_hour_to: null,
+			local_hour_from: null,
+			local_hour_to: null,
+			delivery_hour_from: null,
+			delivery_hour_to: null,
 		},
 		{
 			id_week_day: 5,
 			day_name: 'Piątek',
-			kitchen_from: null,
-			kitchen_to: null,
-			local_from: null,
-			local_to: null,
-			delivery_from: null,
-			delivery_to: null,
+			kitchen_hour_from: null,
+			kitchen_hour_to: null,
+			local_hour_from: null,
+			local_hour_to: null,
+			delivery_hour_from: null,
+			delivery_hour_to: null,
 		},
 		{
 			id_week_day: 6,
 			day_name: 'Sobota',
-			kitchen_from: null,
-			kitchen_to: null,
-			local_from: null,
-			local_to: null,
-			delivery_from: null,
-			delivery_to: null,
+			kitchen_hour_from: null,
+			kitchen_hour_to: null,
+			local_hour_from: null,
+			local_hour_to: null,
+			delivery_hour_from: null,
+			delivery_hour_to: null,
 		},
 		{
 			id_week_day: 7,
 			day_name: 'Niedziela',
-			kitchen_from: null,
-			kitchen_to: null,
-			local_from: null,
-			local_to: null,
-			delivery_from: null,
-			delivery_to: null,
+			kitchen_hour_from: null,
+			kitchen_hour_to: null,
+			local_hour_from: null,
+			local_hour_to: null,
+			delivery_hour_from: null,
+			delivery_hour_to: null,
 		}
 	];
 	selectedDay = false;
@@ -152,7 +153,8 @@ export class RestaurantsComponent implements OnInit {
 
 	id_local_data_main: number;
 
-	constructor(private route: ActivatedRoute, public connection: ConnectionService) {
+	tagList;
+	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
 			console.log(this.cities);
@@ -167,6 +169,10 @@ export class RestaurantsComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.connection.getDataByGet('/tags/getList').subscribe(data => {
+			this.tagList = data;
+			console.log(data);
+		});
 	}
 	// getData(id) {
 	// 	this.connection.getDataByGet('/locals/getList/' + id).subscribe((data: Restaurant) => {
@@ -194,38 +200,16 @@ export class RestaurantsComponent implements OnInit {
 	// 	});
 	// }
 	sendData() {
-		// console.log(this.tags);
-		// console.log(this.selectedSecondaryTags);
-		// this.local_data = {
-		// 	name: this.name,
-		// 	address: this.staticEditCoupon.address,
-		// 	id_city_const_type: this.staticEditCoupon.city,
-		// 	phone_number: this.staticEditCoupon.contact,
-		// 	description: this.staticEditCoupon.type,
-		// 	other_info: this.other_info,
-		// 	facebook_url: this.facebook_url,
-		// 	instagram_url: this.instagram_url,
-		// 	delivery: this.delivery,
-		// 	eat_in_local: this.eat_in_local,
-		// 	pick_up_local: this.pick_up_local,
-		// 	cash_payment: this.cash_payment,
-		// 	creditcards_payment: this.creditcards_payment,
-		// 	contackless_payment: this.contackless_payment,
-		// 	blik_payment: this.blik_payment
 
-		// };
-
-		console.log(this.id_local_data_main);
-		console.log(JSON.stringify(this.local_data));
-		console.log(JSON.stringify(this.tags));
-		console.log(JSON.stringify(this.open_hours));
+		console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
+		local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours)});
 		// console.log(this.tags);
 		this.local_data.id_city_const_type = this.cityName.value;
 		this.connection.getDataByPost('locals/changeLocal',
 						{id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
 							local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours)})
 						.subscribe(data => {
-			console.log(data);
+							this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
 		});
 	}
 	selectDay(el, i) {
@@ -237,9 +221,10 @@ export class RestaurantsComponent implements OnInit {
 		console.log(value);
 		if (this.selectedMainTags.length < 3) {
 			this.tags.push({
-				id: value[0].value,
+				id: value[0].id,
 				priority_status: true
 			});
+			this.tagList = this.tagList.filter( tag => tag.id !== value[0].id);
 		}
 	}
 
@@ -249,5 +234,6 @@ export class RestaurantsComponent implements OnInit {
 			id: value[0].value,
 			priority_status: false
 		});
+		this.tagList = this.tagList.filter( tag => tag.id !== value[0].id);
 	}
 }

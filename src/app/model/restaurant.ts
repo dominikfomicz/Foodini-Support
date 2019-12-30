@@ -12,6 +12,6 @@ export interface Restaurant {
 	pick_up_local: boolean;
 	cash_payment: boolean;
 	creditcards_payment: boolean;
-	contackless_payment: boolean;
+	contactless_payment: boolean;
 	blik_payment: boolean;
 }

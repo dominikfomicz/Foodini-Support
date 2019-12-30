@@ -11,11 +11,15 @@ import { AlertService } from './alert.service';
 })
 export class ConnectionService {
 
-	constructor(private http: HttpClient, private router: Router, private alert: AlertService) { }
-
 	mainUrl = 'http://repo.foodini.net.pl/';
 
 	httpOptions = {};
+
+	constructor(private http: HttpClient, private router: Router, private alert: AlertService) {
+
+	}
+
+
 
 	setToken(token: string) {
 		localStorage.setItem('token', token);

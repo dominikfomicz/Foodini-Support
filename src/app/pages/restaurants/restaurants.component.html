@@ -75,8 +75,8 @@
                                 <label class="form-check-label" for="creditcards_payment">Platnosc karta</label>
                             </div>
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="materialUnchecked" name="contackless_payment" [(ngModel)]="local_data.contackless_payment">
-                                <label class="form-check-label" for="contackless_payment">Platnosc zblizeniowa</label>
+                                <input type="checkbox" class="form-check-input" id="materialUnchecked" name="contactless_payment" [(ngModel)]="local_data.contactless_payment">
+                                <label class="form-check-label" for="contactless_payment">Platnosc zblizeniowa</label>
                             </div>
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="materialUnchecked" name="blik_payment" [(ngModel)]="local_data.blik_payment">
@@ -92,7 +92,7 @@
                             <div class="col">
                                 <div class="md-form">
                                     <ng-select id="mainTags" [multiple]="true" name="mainTags" [(ngModel)]="selectedMainTags" (change)="selectMainTags($event)" >
-                                        <ng-option *ngFor="let tag of mainTags" [value]="tag">{{tag.name}}</ng-option>
+                                        <ng-option *ngFor="let tag of tagList" [value]="tag">{{tag.name}}</ng-option>
                                     </ng-select>
                                     <label for="mainTags">Tagi główne (max 3)</label>
                                 </div>
@@ -100,7 +100,7 @@
                             <div class="col">
                                 <div class="md-form">
                                     <ng-select id="secondaryTags" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags" (change)="selectSecondaryTags($event)">
-                                        <ng-option *ngFor="let tag of secondaryTags" [value]="tag" >{{tag.name}}</ng-option>
+                                        <ng-option *ngFor="let tag of tagList" [value]="tag" >{{tag.name}}</ng-option>
                                     </ng-select>
                                     <label for="secondaryTags">Tagi dodatkowe</label>
                                 </div>
@@ -123,13 +123,13 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="openLocalFrom" class="form-control" name="openLocalFrom" [(ngModel)]="open_hours[selectedDayId].local_from" [disabled]="!local_data.pick_up_local && !local_data.eat_in_local"  mdbInput>
+                                    <input type="time" id="openLocalFrom" class="form-control" name="openLocalFrom" [(ngModel)]="open_hours[selectedDayId].local_hour_from" [disabled]="!local_data.pick_up_local && !local_data.eat_in_local"  mdbInput>
                                     <label for="openLocalHour">od:</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="openLocalTo" class="form-control" name="openLocalTo" [(ngModel)]="open_hours[selectedDayId].local_to" [disabled]="!open_hours[selectedDayId].local_from || !local_data.pick_up_local"  mdbInput>
+                                    <input type="time" id="openLocalTo" class="form-control" name="openLocalTo" [(ngModel)]="open_hours[selectedDayId].local_hour_to" [disabled]="!open_hours[selectedDayId].local_hour_from || !local_data.pick_up_local"  mdbInput>
                                     <label for="closeLocalHour">do:</label>
                                 </div>
                             </div>
@@ -143,13 +143,13 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="openKitchenFrom" class="form-control" name="openKitchenFrom" [(ngModel)]="open_hours[selectedDayId].kitchen_from" [disabled]="!local_data.pick_up_local && !local_data.eat_in_local"  mdbInput>
+                                    <input type="time" id="openKitchenFrom" class="form-control" name="openKitchenFrom" [(ngModel)]="open_hours[selectedDayId].kitchen_hour_from" [disabled]="!local_data.pick_up_local && !local_data.eat_in_local"  mdbInput>
                                     <label for="openKitchenHour">od:</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="openKitchenTo" class="form-control" name="openKitchenTo" [(ngModel)]="open_hours[selectedDayId].kitchen_to" [disabled]="!open_hours[selectedDayId].kitchen_from || !local_data.eat_in_local"  mdbInput>
+                                    <input type="time" id="openKitchenTo" class="form-control" name="openKitchenTo" [(ngModel)]="open_hours[selectedDayId].kitchen_hour_to" [disabled]="!open_hours[selectedDayId].kitchen_hour_from || !local_data.eat_in_local"  mdbInput>
                                     <label for="closeKitchenHour">do:</label>
                                 </div>
                             </div>
@@ -163,13 +163,13 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="OpenDeliveryFrom" class="form-control" name="OpenDeliveryFrom" [(ngModel)]="open_hours[selectedDayId].delivery_from" [disabled]="!local_data.delivery"  mdbInput>
+                                    <input type="time" id="OpenDeliveryFrom" class="form-control" name="OpenDeliveryFrom" [(ngModel)]="open_hours[selectedDayId].delivery_hour_from" [disabled]="!local_data.delivery"  mdbInput>
                                     <label for="openDeliveryHour">od:</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="OpenDeliveryTo" class="form-control" name="OpenDeliveryTo" [(ngModel)]="open_hours[selectedDayId].delivery_to" [disabled]="!open_hours[selectedDayId].delivery_from || !local_data.delivery"  mdbInput>
+                                    <input type="time" id="OpenDeliveryTo" class="form-control" name="OpenDeliveryTo" [(ngModel)]="open_hours[selectedDayId].delivery_hour_to" [disabled]="!open_hours[selectedDayId].delivery_hour_from || !local_data.delivery"  mdbInput>
                                     <label for="closeDeliveryHour">do:</label>
                                 </div>
                             </div>

@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { TagInputModule } from 'ngx-chips';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
 import { AgGridModule } from 'ag-grid-angular';
@@ -23,6 +22,7 @@ import { TagsComponent } from './pages/tags/tags.component';
 
 
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ListTagsComponent } from './pages/list-tags/list-tags.component';
 
 
 @NgModule({
@@ -34,9 +34,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
 		ListRestaurantsComponent,
 		ListCouponsComponent,
 		TagsComponent,
+		ListTagsComponent,
 	],
 	imports: [
-		TagInputModule,
 		BrowserModule,
 		FormsModule,
 		MDBBootstrapModule.forRoot(),

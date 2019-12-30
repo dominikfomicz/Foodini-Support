@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute  } from '@angular/router';
 import { ConnectionService } from 'src/app/core/services/connection.service';
+import { AlertService } from 'src/app/core/services/alert.service';
 export interface Coupon {
 	couponTitle: string;
 	couponText: string;
@@ -50,8 +51,17 @@ export class CouponsComponent implements OnInit {
 
 	locals;
 	selectedLocal;
+	id_coupon_data_main = -1;
+	tagList;
 
-	constructor(private route: ActivatedRoute,  public connection: ConnectionService) {
+	constructor(private router: Router, private route: ActivatedRoute,  public connection: ConnectionService, public alert: AlertService) {
+		this.route.params.subscribe(
+			(params) => {
+				if (params.id) {
+					this.id_coupon_data_main = params.id;
+				}
+			}
+		);
 		// this.route.params
 		// .subscribe(
 		// 	(params) => {
@@ -95,6 +105,10 @@ export class CouponsComponent implements OnInit {
 
 	ngOnInit() {
 		this.getlocals();
+		this.connection.getDataByGet('/tags/getList').subscribe(data => {
+			this.tagList = data;
+			console.log(data);
+		});
 	}
 	getlocals() {
 		this.connection.getDataByPost('tools/getList',
@@ -114,12 +128,16 @@ export class CouponsComponent implements OnInit {
 		// 	mainTags: this.mainTags,
 		// 	secondaryTags: this.secondaryTags
 		// };
-		console.log({id_local_data_main: this.selectedLocal, coupon_data: this.coupon_data, tags: this.tags});
+		// console.log({id_coupon_data_main:  this.id_coupon_data_main ? this.id_coupon_data_main : '-1', id_local_data_main: this.selectedLocal,
+		// coupon_data: JSON.stringify(this.coupon_data), tags: JSON.stringify(this.tags)});
 		// console.log(this.tags);
+		console.log({id_coupon_data_main: this.id_coupon_data_main, id_local_data_main: this.selectedLocal,
+			coupon_data: this.coupon_data, tags: this.tags});
 		this.connection.getDataByPost('/coupons/changeCoupon',
-						{id_local_data_main: this.selectedLocal, coupon_data: JSON.stringify(this.coupon_data), tags: this.tags})
+						{id_coupon_data_main: this.id_coupon_data_main, id_local_data_main: this.selectedLocal,
+						 coupon_data: JSON.stringify(this.coupon_data), tags: JSON.stringify(this.tags)})
 						.subscribe(data => {
-			console.log(data);
+							this.alert.alertSuccess('Kupon został dodany').then(() => this.router.navigateByUrl('/list-coupons'));
 		});
 	}
 	onAdd(e) {
@@ -134,6 +152,7 @@ export class CouponsComponent implements OnInit {
 				id: value[0].value,
 				priority_status: true
 			});
+			this.tagList = this.tagList.filter( tag => tag.id !== value[0].id);
 		}
 	}
 
@@ -143,5 +162,6 @@ export class CouponsComponent implements OnInit {
 			id: value[0].value,
 			priority_status: false
 		});
+		this.tagList = this.tagList.filter( tag => tag.id !== value[0].id);
 	}
 }

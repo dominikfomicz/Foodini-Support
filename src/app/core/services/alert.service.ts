@@ -12,7 +12,7 @@ export class AlertService {
 		Swal.fire('', message, 'error');
 	}
 
-	alertSuccess(message) {
+	async alertSuccess(message) {
 		Swal.fire('', message, 'success');
 	}
 
