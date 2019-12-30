@@ -38,7 +38,7 @@ export class TagsComponent implements OnInit {
 						name: this.tagTitle, description: this.tagDescription, id_tag_const_category: this.selectedTagCategories})
 						.subscribe(data => {
 			console.log(data);
-			this.alert.alertSuccess('Tag został dodany').then(() => this.router.navigateByUrl('/list-tags'));
+			this.alert.alertSuccess('Tag został dodany').then(() => this.router.navigateByUrl('/add-tags'));
 		});
 	}
 }

@@ -6,17 +6,16 @@
                     <form class="text-center" style="color: #757575;" (submit)="sendData()">
                         <!-- Name -->
                         <div class="md-form mt-3">
-                            <input type="text" id="couponTitle" class="form-control" name="couponTitle" [(ngModel)]="tagTitle" [value]="tagTitle" mdbInput>
+                            <input type="text" id="couponTitle" class="form-control" name="couponTitle" [(ngModel)]="tagTitle" [value]="tagTitle" autofocus mdbInput>
                             <label for="couponTitle">Tytul tagu</label>
                         </div>
                         <div class="md-form">
                             <ng-select [items]="categories"  bindLabel="item_name"
-                                autofocus
                                 bindValue="item_id"
                                 name="selectedTagCategories"
                                 [(ngModel)]="selectedTagCategories">
                             </ng-select>
-                            <label for="secondaryTags">Tagi dodatkowe</label>
+                            <label for="secondaryTags">Kategoria tagów</label>
                         </div>
                         <div class="md-form mt-3">
                             <!-- <input type="text" id="materialSubscriptionFormPasswords" class="form-control"  mdbInput> -->
