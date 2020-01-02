@@ -159,7 +159,6 @@ export class RestaurantsComponent implements OnInit {
 
 	usedTags = [];
 	myFormData;
-	filedata;
 	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
@@ -176,12 +175,19 @@ export class RestaurantsComponent implements OnInit {
 
 	ngOnInit() {
 		this.connection.getDataByGet('/tags/getList').subscribe(data => {
-			this.tagList = data.map(
-				element => {
-					element.disabled = false;
-					return element;
+			// this.tagList = data.map(
+			// 	element => {
+			// 		element.disabled = false;
+			// 		return element;
+			// 	}
+			// );
+
+			for (const key in data) {
+				if (data.hasOwnProperty(key)) {
+					data[key].disabled = false;
 				}
-			);
+			}
+			this.tagList = data;
 			console.log(data);
 		});
 	}
