@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConnectionService } from 'src/app/core/services/connection.service';
 import { Restaurant } from '../../model/restaurant';
 import { AlertService } from 'src/app/core/services/alert.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
 	selector: 'app-restaurants',
@@ -11,7 +12,8 @@ import { AlertService } from 'src/app/core/services/alert.service';
 })
 export class RestaurantsComponent implements OnInit {
 	@ViewChild('cityName', {static: false}) cityName: any;
-
+	@ViewChild('checkbox', {static: false}) checkbox: any;
+	filedata:any;
 	city: string;
 	restaurantName: string;
 	restaurantAddress: string;
@@ -154,6 +156,10 @@ export class RestaurantsComponent implements OnInit {
 	id_local_data_main: number;
 
 	tagList;
+
+	usedTags = [];
+	myFormData;
+	filedata;
 	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
@@ -170,7 +176,12 @@ export class RestaurantsComponent implements OnInit {
 
 	ngOnInit() {
 		this.connection.getDataByGet('/tags/getList').subscribe(data => {
-			this.tagList = data;
+			this.tagList = data.map(
+				element => {
+					element.disabled = false;
+					return element;
+				}
+			);
 			console.log(data);
 		});
 	}
@@ -200,17 +211,26 @@ export class RestaurantsComponent implements OnInit {
 	// 	});
 	// }
 	sendData() {
-
-		console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
-		local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours)});
+		console.log(this.filedata.name)
+		console.log({
+			id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1', image: this.filedata
+		})
+		// console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
+		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours)});
 		// console.log(this.tags);
-		this.local_data.id_city_const_type = this.cityName.value;
-		this.connection.getDataByPost('locals/changeLocal',
-						{id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
-							local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours)})
-						.subscribe(data => {
-							this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
-		});
+		// this.local_data.id_city_const_type = this.cityName.value;
+		// this.connection.getDataByPost('locals/changeLocal',
+		// 				{id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
+		// 					local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours)})
+		// 				.subscribe(data => {
+							this.connection.getDataByPost('locals/files/addLogo', {
+								id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1', image: JSON.stringify(this.filedata)
+							}).subscribe(data => {
+								this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
+							});
+							// this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
+		// });
+
 	}
 	selectDay(el, i) {
 		this.selectedDayId = i;
@@ -218,22 +238,57 @@ export class RestaurantsComponent implements OnInit {
 		// this.selectedDayId = el > 0 ? el - 1 : el;
 	}
 	selectMainTags(value) {
-		console.log(value);
-		if (this.selectedMainTags.length < 3) {
-			this.tags.push({
-				id: value[0].id,
-				priority_status: true
-			});
-			this.tagList = this.tagList.filter( tag => tag.id !== value[0].id);
+		// console.log(value, value[value.length - 1]);
+		console.log(this.selectedMainTags.length)
+		if (value[value.length - 1]) {
+			if ((this.selectedMainTags.length - 1) < 3) {
+				// console.log('dodalem')
+				this.tags.push({
+					id: value[value.length - 1].id,
+					priority_status: true
+				});
+				this.tagList = this.tagList.filter( tag => {
+					if (tag.id === value[value.length - 1].id) {
+						this.usedTags.push(value[value.length - 1]);
+
+						console.log(this.tags);
+					}
+					return tag.id !== value[value.length - 1].id
+
+				});
+				// if (this.tags.length >= 3) {
+				// 	this.tagList.map(
+				// 		tag => {
+				// 			return tag.disabled = !tag.disabled;
+				// 		}
+				// 	)
+				// }
+			}
 		}
 	}
 
 	selectSecondaryTags(value) {
-		console.log(value[0].value);
-		this.tags.push({
-			id: value[0].value,
-			priority_status: false
-		});
-		this.tagList = this.tagList.filter( tag => tag.id !== value[0].id);
+
+		if (value[value.length - 1]) {
+			this.tagList = this.tagList.filter( tag => tag.id !== value[value.length - 1].id);
+			this.tags.push({
+				id: value[value.length - 1].value,
+				priority_status: false
+			});
+		}
 	}
+	remove(value) {
+		// console.log(value)
+		this.tagList.unshift(value.value);
+	}
+
+    fileEvent(e){
+
+		this.filedata = e.target.files[0];
+		// console.log(filedata);
+		// this.myFormData = new FormData();
+		// this.myFormData.append('image', filedata);
+		// this.my
+		// console.log(this.myFormData);
+    }
 }

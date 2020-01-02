@@ -8,12 +8,11 @@
                             <div class="col">
                                 <div class="md-form">
                                     <ng-select [items]="locals"  bindLabel="item_name"
-                                        autofocus
                                         bindValue="item_id"
                                         name="selectedLocal"
+                                        placeholder="Lokal"
                                         [(ngModel)]="selectedLocal">
                                     </ng-select>
-                                    <label for="mainTags">Lokal</label>
                                 </div>
                             </div>
                         </div>
@@ -28,6 +27,16 @@
                             <textarea id="couponText" class="md-textarea form-control" name="couponText"  [(ngModel)]="coupon_data.description" rows="4" mdbInput></textarea>
                             <label for="couponText">Tresc kuponu</label>
                         </div>
+                        <div class="input-group">
+                            <!-- <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                            </div> -->
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                aria-describedby="inputGroupFileAddon01" [(ngModel)]="myFile" name="myFile" (change)="fileEvent($event)">
+                                <label class="custom-file-label" for="inputGroupFile01">Wyślij icone</label>
+                            </div>
+                        </div>
                         <!-- <div class="md-form">
                             <textarea type="text" id="form7" class="md-textarea form-control" mdbInput></textarea>
                             <label for="form7">Basic textarea</label>
@@ -41,7 +50,7 @@
                             <tag-input id="secondaryTags" name="secondaryTags" [(ngModel)]='staticEditCoupon.secondaryTags' [blinkIfDupe]="true" [identifyBy]="'value'" [displayBy]="'name'"></tag-input>
                         </div>
                      -->
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col">
                                 <div class="md-form">
                                     <ng-select id="mainTags" [multiple]="true" name="mainTags" [(ngModel)]="selectedMainTags" (change)="selectMainTags($event)" >
@@ -56,6 +65,34 @@
                                         <ng-option *ngFor="let tag of tagList" [value]="tag" >{{tag.name}}</ng-option>
                                     </ng-select>
                                     <label for="secondaryTags">Tagi dodatkowe</label>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="row">
+                            <div class="col">
+                                <div class="md-form">
+                                    <ng-select id="mainTags"
+                                    bindValue="id" [multiple]="true" name="mainTags" [selectableGroup]="true"
+                                    placeholder="Tagi główne (max 3)"
+                                    [closeOnSelect]="false" [(ngModel)]="selectedMainTags" (change)="selectMainTags($event)"
+                                    (remove)="remove($event)">
+                                        <ng-option *ngFor="let tag of tagList" [value]="tag">
+                                            <!-- <input id="item-{{tag.id}}" type="checkbox"/> -->
+                                            {{tag.name}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <!-- <label for="mainTags">Tagi główne (max 3)</label> -->
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="md-form">
+                                    <ng-select id="secondaryTags"
+                                    placeholder="Tagi dodatkowe" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags"
+                                    bindValue="id" [multiple]="true" [selectableGroup]="true"
+                                    [closeOnSelect]="false" (change)="selectSecondaryTags($event)"
+                                    (remove)="remove($event)">
+                                        <ng-option *ngFor="let tag of tagList" [value]="tag" >{{tag.name}}</ng-option>
+                                    </ng-select>
                                 </div>
                             </div>
                         </div>

@@ -3,4 +3,22 @@
 
 ng-select {
     padding-bottom: 0 !important;
+    .ng-value-container {
+        .ng-value {
+            span {
+                input {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+.custom-file-label {
+    border: none;
+    border-bottom: 1px solid #ced4da;
+    text-align: left;
+    color: #757575;
+    font-weight: 300;
+    padding-left: 0;
 }
