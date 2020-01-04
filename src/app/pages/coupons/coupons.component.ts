@@ -51,10 +51,13 @@ export class CouponsComponent implements OnInit {
 
 	locals;
 	selectedLocal;
-	id_coupon_data_main = -1;
+	id_coupon_data_main = '-1';
 	tagList;
 	usedTags = [];
-
+	logo: File;
+	myFormData = new FormData();
+	uploadedLogo;
+	uploadedBackground;
 	constructor(private router: Router, private route: ActivatedRoute,  public connection: ConnectionService, public alert: AlertService) {
 		this.route.params.subscribe(
 			(params) => {
@@ -132,11 +135,17 @@ export class CouponsComponent implements OnInit {
 		// console.log({id_coupon_data_main:  this.id_coupon_data_main ? this.id_coupon_data_main : '-1', id_local_data_main: this.selectedLocal,
 		// coupon_data: JSON.stringify(this.coupon_data), tags: JSON.stringify(this.tags)});
 		// console.log(this.tags);
-		console.log({id_coupon_data_main: this.id_coupon_data_main, id_local_data_main: this.selectedLocal,
-			coupon_data: this.coupon_data, tags: this.tags});
-		this.connection.getDataByPost('/coupons/changeCoupon',
-						{id_coupon_data_main: this.id_coupon_data_main, id_local_data_main: this.selectedLocal,
-						 coupon_data: JSON.stringify(this.coupon_data), tags: JSON.stringify(this.tags)})
+		// console.log({id_coupon_data_main: this.id_coupon_data_main, id_local_data_main: this.selectedLocal,
+		// 	coupon_data: this.coupon_data, tags: this.tags});
+
+		this.myFormData.append('id_coupon_data_main', this.id_coupon_data_main);
+		this.myFormData.append('id_local_data_main', this.selectedLocal);
+		this.myFormData.append('coupon_data', JSON.stringify(this.coupon_data));
+		this.myFormData.append('tags', JSON.stringify(this.tags));
+		this.myFormData.append('file_logo', this.logo, this.logo.name);
+
+
+		this.connection.addLocal('/coupons/changeCoupon', this.myFormData)
 						.subscribe(data => {
 							this.alert.alertSuccess('Kupon został dodany').then(() => this.router.navigateByUrl('/list-coupons'));
 		});
@@ -181,7 +190,7 @@ export class CouponsComponent implements OnInit {
 		if (value[value.length - 1]) {
 			this.tagList = this.tagList.filter( tag => tag.id !== value[value.length - 1].id);
 			this.tags.push({
-				id: value[value.length - 1].value,
+				id: value[value.length - 1].id,
 				priority_status: false
 			});
 		}
@@ -189,5 +198,10 @@ export class CouponsComponent implements OnInit {
 	remove(value) {
 		// console.log(value)
 		this.tagList.unshift(value.value);
+	}
+	uploadLogo(e) {
+
+		this.logo = <File>e.target.files[0];
+		console.log(this.logo);
 	}
 }

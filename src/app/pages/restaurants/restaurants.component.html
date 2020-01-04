@@ -17,24 +17,27 @@
                             <input type="text" id="restaurantName" class="form-control" name="restaurantName" [(ngModel)]="local_data.name"  mdbInput>
                             <label for="restaurantName">Nazwa lokalu</label>
                         </div>
-                        <div class="input-group">
-                            <!-- <div class="input-group-prepend">
-                              <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-                            </div> -->
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                aria-describedby="inputGroupFileAddon01" [(ngModel)]="myFile" name="myFile" (change)="fileEvent($event)">
-                                <label class="custom-file-label" for="inputGroupFile01">Wyślij logo</label>
+
+                        <div class="md-form">
+                            <input type="number" id="deliveryRange" class="form-control" name="deliveryRange" [(ngModel)]="local_data.delivery_range"  mdbInput>
+                            <label for="deliveryRange">Zasięg dostawy</label>
+                        </div>
+                        <div class="md-form">
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="uploadLogo"
+                                    aria-describedby="uploadLogo" [(ngModel)]="uploadedLogo" name="uploadedLogo" (change)="uploadLogo($event)">
+                                    <label class="custom-file-label" for="uploadLogo">{{logo ? logo.name : 'Wyślij logo'}}</label>
+                                </div>
                             </div>
                         </div>
-                        <div class="input-group">
-                            <!-- <div class="input-group-prepend">
-                              <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-                            </div> -->
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                aria-describedby="inputGroupFileAddon01" [(ngModel)]="myFile" name="myFile" (change)="fileEvent($event)">
-                                <label class="custom-file-label" for="inputGroupFile01">Wyślij cover</label>
+                        <div class="md-form">
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="uploadBackground"
+                                    aria-describedby="uploadBackground" [(ngModel)]="uploadedBackground" name="uploadedBackground" (change)="uploadBackground($event)">
+                                    <label class="custom-file-label" for="uploadBackground">{{background ? background.name : 'Wyślij tło'}}</label>
+                                </div>
                             </div>
                         </div>
                         <!-- <div class="md-form">

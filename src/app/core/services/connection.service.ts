@@ -79,6 +79,33 @@ export class ConnectionService {
 			);
 	}
 
+	addLocal(url: String, post_data: any) {
+		this.httpOptions = {
+			headers: new HttpHeaders({
+				'Authorization': 'Bearer ' + this.getToken()
+			})
+		};
+
+		return this.http.post(this.mainUrl + url, post_data, this.httpOptions)
+			.pipe(
+				(data => {
+					return data;
+				}),
+				catchError(error => {
+					if (error.status === 401) {
+						this.showError(error.statusText);
+					} else if (error.status === 404) {
+						this.showError(error.statusText);
+					} else if (error.staatus === 500) {
+						this.showError(error.statusText);
+					} else {
+						this.showError(error.statusText);
+					}
+					return throwError(error);
+				})
+			);
+	}
+
 	getDataByGet(url: String) {
 		this.httpOptions = {
 			headers: new HttpHeaders({
@@ -124,6 +151,9 @@ export class ConnectionService {
 			}
 		});
 
+	}
+	test(data) {
+		return this.http.post('https://webhook.site/a8d1ab33-af3f-4466-a60d-445166dce1dc', data);
 	}
 }
 

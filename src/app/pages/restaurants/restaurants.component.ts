@@ -13,7 +13,8 @@ import {NgForm} from '@angular/forms';
 export class RestaurantsComponent implements OnInit {
 	@ViewChild('cityName', {static: false}) cityName: any;
 	@ViewChild('checkbox', {static: false}) checkbox: any;
-	filedata:any;
+	logo: File;
+	background: File;
 	city: string;
 	restaurantName: string;
 	restaurantAddress: string;
@@ -150,15 +151,18 @@ export class RestaurantsComponent implements OnInit {
 		cash_payment: false,
 		creditcards_payment: false,
 		contactless_payment: false,
-		blik_payment: false
+		blik_payment: false,
+		delivery_range: 0
 	};
 
-	id_local_data_main: number;
+	id_local_data_main: string = '-1';
 
 	tagList;
 
 	usedTags = [];
-	myFormData;
+	myFormData = new FormData();
+	uploadedLogo;
+	uploadedBackground;
 	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
@@ -217,26 +221,37 @@ export class RestaurantsComponent implements OnInit {
 	// 	});
 	// }
 	sendData() {
-		console.log(this.filedata.name)
-		console.log({
-			id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1', image: this.filedata
-		})
-		// console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
-		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours)});
-		// console.log(this.tags);
-		// this.local_data.id_city_const_type = this.cityName.value;
-		// this.connection.getDataByPost('locals/changeLocal',
-		// 				{id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
-		// 					local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours)})
-		// 				.subscribe(data => {
-							this.connection.getDataByPost('locals/files/addLogo', {
-								id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1', image: JSON.stringify(this.filedata)
-							}).subscribe(data => {
-								this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
-							});
-							// this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
+		// console.log(this.filedata.name)
+		// console.log({
+		// 	id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1', image: this.filedata
 		// });
+		// console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
+		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours),
+		//  image: this.myFormData});
+		// console.log(this.tags);
+		this.myFormData.append('id_local_data_main', this.id_local_data_main);
+		this.myFormData.append('local_data', JSON.stringify(this.local_data));
+		this.myFormData.append('tags', JSON.stringify(this.tags));
+		this.myFormData.append('open_hours', JSON.stringify(this.open_hours));
+		this.myFormData.append('file_logo', this.logo, this.logo.name);
+		this.myFormData.append('file_background', this.background, this.background.name);
 
+		this.local_data.id_city_const_type = this.cityName.value;
+		this.connection.addLocal('locals/changeLocal', this.myFormData)
+						.subscribe(data => {
+							console.log(data);
+							this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
+		});
+
+		// console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
+		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours),
+		//  image: this.filedata})
+		// this.connection.test({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
+		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours),
+		//  image: this.filedata}).subscribe(data => {
+		// 	console.log(data);
+		// 	this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
+		// });
 	}
 	selectDay(el, i) {
 		this.selectedDayId = i;
@@ -244,8 +259,8 @@ export class RestaurantsComponent implements OnInit {
 		// this.selectedDayId = el > 0 ? el - 1 : el;
 	}
 	selectMainTags(value) {
-		// console.log(value, value[value.length - 1]);
-		console.log(this.selectedMainTags.length)
+		console.log(value, value[value.length - 1]);
+		// console.log(this.selectedMainTags.length)
 		if (value[value.length - 1]) {
 			if ((this.selectedMainTags.length - 1) < 3) {
 				// console.log('dodalem')
@@ -259,7 +274,7 @@ export class RestaurantsComponent implements OnInit {
 
 						console.log(this.tags);
 					}
-					return tag.id !== value[value.length - 1].id
+					return tag.id !== value[value.length - 1].id;
 
 				});
 				// if (this.tags.length >= 3) {
@@ -278,7 +293,7 @@ export class RestaurantsComponent implements OnInit {
 		if (value[value.length - 1]) {
 			this.tagList = this.tagList.filter( tag => tag.id !== value[value.length - 1].id);
 			this.tags.push({
-				id: value[value.length - 1].value,
+				id: value[value.length - 1].id,
 				priority_status: false
 			});
 		}
@@ -288,13 +303,13 @@ export class RestaurantsComponent implements OnInit {
 		this.tagList.unshift(value.value);
 	}
 
-    fileEvent(e){
+	uploadLogo(e) {
 
-		this.filedata = e.target.files[0];
-		// console.log(filedata);
-		// this.myFormData = new FormData();
-		// this.myFormData.append('image', filedata);
-		// this.my
-		// console.log(this.myFormData);
-    }
+		this.logo = <File>e.target.files[0];
+		console.log(this.logo);
+	}
+	uploadBackground(e) {
+		this.background = <File>e.target.files[0];
+		console.log(this.background);
+	}
 }
