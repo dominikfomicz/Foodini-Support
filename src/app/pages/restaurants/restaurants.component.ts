@@ -15,6 +15,7 @@ export class RestaurantsComponent implements OnInit {
 	@ViewChild('checkbox', {static: false}) checkbox: any;
 	logo: File;
 	background: File;
+	menu: File;
 	city: string;
 	restaurantName: string;
 	restaurantAddress: string;
@@ -163,6 +164,7 @@ export class RestaurantsComponent implements OnInit {
 	myFormData = new FormData();
 	uploadedLogo;
 	uploadedBackground;
+	uploadedMenu;
 	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
@@ -228,13 +230,14 @@ export class RestaurantsComponent implements OnInit {
 		// console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
 		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours),
 		//  image: this.myFormData});
-		// console.log(this.tags);
+		console.log(this.open_hours);
 		this.myFormData.append('id_local_data_main', this.id_local_data_main);
 		this.myFormData.append('local_data', JSON.stringify(this.local_data));
 		this.myFormData.append('tags', JSON.stringify(this.tags));
 		this.myFormData.append('open_hours', JSON.stringify(this.open_hours));
 		this.myFormData.append('file_logo', this.logo, this.logo.name);
 		this.myFormData.append('file_background', this.background, this.background.name);
+		this.myFormData.append('file_menu', this.menu, this.menu.name);
 
 		this.local_data.id_city_const_type = this.cityName.value;
 		this.connection.addLocal('locals/changeLocal', this.myFormData)
@@ -254,6 +257,7 @@ export class RestaurantsComponent implements OnInit {
 		// });
 	}
 	selectDay(el, i) {
+		console.log(i);
 		this.selectedDayId = i;
 		// this.selectedDay = true;
 		// this.selectedDayId = el > 0 ? el - 1 : el;
@@ -311,5 +315,8 @@ export class RestaurantsComponent implements OnInit {
 	uploadBackground(e) {
 		this.background = <File>e.target.files[0];
 		console.log(this.background);
+	}
+	uploadMenu(e) {
+		this.menu = <File>e.target.files[0];
 	}
 }

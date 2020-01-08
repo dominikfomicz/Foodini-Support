@@ -40,6 +40,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="md-form">
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="uploadMenu"
+                                    aria-describedby="uploadMenu" [(ngModel)]="uploadedMenu" name="uploadedMenu" (change)="uploadMenu($event)">
+                                    <label class="custom-file-label" for="uploadMenu">{{menu ? menu.name : 'Wyślij menu'}}</label>
+                                </div>
+                            </div>
+                        </div>
                         <!-- <div class="md-form">
                             <div class="file-field">
                                 <div class="btn btn-primary btn-sm float-left">
@@ -66,10 +75,10 @@
                             <label for="description">Opis</label>
                         </div>
 
-                        <div class="md-form">
+                        <!-- <div class="md-form">
                             <textarea id="other_info" class="md-textarea form-control" name="other_info" [(ngModel)]="local_data.other_info" rows="3"></textarea>
                             <label for="other_info">Informacje o lokalu</label>
-                        </div>
+                        </div> -->
 
                         <div class="md-form">
                             <input type="text" id="facebook_url" class="form-control" name="facebook_url" [(ngModel)]="local_data.facebook_url" mdbInput>
