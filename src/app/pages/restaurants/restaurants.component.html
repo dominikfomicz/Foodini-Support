@@ -226,7 +226,7 @@
                             </div>
                         </div>
                         <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect
-                        type="submit">Wyślij</button>
+                        type="submit" [disabled]="logo && background && menu ? false : true" [class.disabled]="logo && background && menu ? false : true">Wyślij</button>
                     </mdb-card-body>
                 </mdb-card>
             </form>

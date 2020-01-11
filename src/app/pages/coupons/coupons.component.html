@@ -101,9 +101,33 @@
                             <input type="checkbox" class="form-check-input" id="delivery" name="delivery" [(ngModel)]="coupon_data.mature">
                             <label class="form-check-label" for="delivery">Dla dorosłych</label>
                         </div>
+                        <ul class="nav grey day_tab lighten-4 py-4">
+                            <li class="nav-item" *ngFor="let item of open_hours; let i = index"  [class.active]="i === selectedDayId">
+                                <div class="day ml-2 mr-2" (click)="selectDay(item.id_week_day, i)">{{item.day_name}}</div>
+                            </li>
+                        </ul>
+                        <div class="row">
+                            <div class="col-12 text-left">
+                                <p>Godziny otwarcia lokalu</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="md-form">
+                                    <input type="time" id="openLocalFrom" class="form-control" name="openLocalFrom" [(ngModel)]="open_hours[selectedDayId].hour_from" mdbInput>
+                                    <label for="openLocalHour">od:</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="md-form">
+                                    <input type="time" id="openLocalTo" class="form-control" name="openLocalTo" [(ngModel)]="open_hours[selectedDayId].hour_to"  mdbInput>
+                                    <label for="closeLocalHour">do:</label>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Sign in button -->
                         <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect
-                        type="submit">Wyślij</button>
+                        type="submit" [disabled]="logo ? false : true" [class.disabled]="logo ? false : true">Wyślij</button>
                     </form>
                 </mdb-card-body>
             </mdb-card>

@@ -109,7 +109,7 @@ export class RestaurantsComponent implements OnInit {
 			delivery_hour_to: null,
 		},
 		{
-			id_week_day: 7,
+			id_week_day: 0,
 			day_name: 'Niedziela',
 			kitchen_hour_from: null,
 			kitchen_hour_to: null,
@@ -140,7 +140,7 @@ export class RestaurantsComponent implements OnInit {
 	local_data = {
 		name: '',
 		address: '',
-		id_city_const_type: '',
+		id_city_const_type: 1,
 		phone_number: 0,
 		description: '',
 		other_info: '',
@@ -156,7 +156,7 @@ export class RestaurantsComponent implements OnInit {
 		delivery_range: 0
 	};
 
-	id_local_data_main: string = '-1';
+	id_local_data_main = -1;
 
 	tagList;
 
@@ -231,15 +231,26 @@ export class RestaurantsComponent implements OnInit {
 		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours),
 		//  image: this.myFormData});
 		console.log(this.open_hours);
-		this.myFormData.append('id_local_data_main', this.id_local_data_main);
+		console.log(this.id_local_data_main);
+		console.log(this.local_data);
+		console.log(this.open_hours);
+		console.log(this.open_hours);
+		// this.local_data.id_city_const_type = this.cityName.value;
+		this.myFormData.append('id_local_data_main', this.id_local_data_main.toString());
 		this.myFormData.append('local_data', JSON.stringify(this.local_data));
 		this.myFormData.append('tags', JSON.stringify(this.tags));
 		this.myFormData.append('open_hours', JSON.stringify(this.open_hours));
-		this.myFormData.append('file_logo', this.logo, this.logo.name);
-		this.myFormData.append('file_background', this.background, this.background.name);
-		this.myFormData.append('file_menu', this.menu, this.menu.name);
+		if (this.logo) {
+			this.myFormData.append('file_logo', this.logo, this.logo.name);
+		}
+		if (this.background) {
+			this.myFormData.append('file_background', this.background, this.background.name);
+		}
+		if (this.menu) {
+			this.myFormData.append('file_menu', this.menu, this.menu.name);
+		}
 
-		this.local_data.id_city_const_type = this.cityName.value;
+		console.log(this.cityName.value)
 		this.connection.addLocal('locals/changeLocal', this.myFormData)
 						.subscribe(data => {
 							console.log(data);

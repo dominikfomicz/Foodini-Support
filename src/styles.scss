@@ -22,3 +22,9 @@ ng-select {
     font-weight: 300;
     padding-left: 0;
 }
+button {
+    &.disabled {
+        border-color: grey !important;
+        color: grey !important;
+    }
+}
