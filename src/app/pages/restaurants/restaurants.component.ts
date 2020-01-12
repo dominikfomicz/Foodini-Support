@@ -203,11 +203,11 @@ export class RestaurantsComponent implements OnInit {
 	getData(id) {
 		this.connection.getDataByGet('/locals/getDetailsEdit/' + id).subscribe((data: Restaurant) => {
 			// this.items = data;
-			console.log(data.delivery_range);
+			console.log(data);
 			this.local_data = {
 				name: data.name ,
 				address: data.address,
-				id_city_const_type: data.id_city_const_type ? data.id_city_const_type : 1,
+				id_city_const_type: data.id_city_const_type,
 				phone_number: data.phone_number,
 				description: data.description,
 				other_info: data.other_info,
@@ -220,20 +220,20 @@ export class RestaurantsComponent implements OnInit {
 				creditcards_payment: data.creditcards_payment,
 				contactless_payment: data.contactless_payment,
 				blik_payment: data.blik_payment,
-				delivery_range: data.delivery_range ? data.delivery_range : 0,
+				delivery_range: data.delivery_range,
 			};
 			this.open_hours = data.work_hours;
 			console.log(data);
-			let main_tags = [];
-			let newDataMainTags = Object.values(data.main_tags);
+			const main_tags = [];
+			const newDataMainTags = Object.values(data.main_tags);
 			console.log(newDataMainTags)
 			for (let i = 0; i < newDataMainTags.length; i++) {
 				main_tags.push(newDataMainTags[i].id);
 				this.selectedMainTags = main_tags;
 				// console.log(data.main_tags[i])
 			}
-			let secondary_tags = [];
-			let newDataSecondaryTags = Object.values(data.secondary_tags);
+			const secondary_tags = [];
+			const newDataSecondaryTags = Object.values(data.secondary_tags);
 			console.log(newDataSecondaryTags)
 			for (let i = 0; i < newDataSecondaryTags.length; i++) {
 				secondary_tags.push(newDataSecondaryTags[i].id);

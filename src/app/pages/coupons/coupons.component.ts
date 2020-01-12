@@ -2,13 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute  } from '@angular/router';
 import { ConnectionService } from 'src/app/core/services/connection.service';
 import { AlertService } from 'src/app/core/services/alert.service';
-export interface Coupon {
-	couponTitle: string;
-	couponText: string;
-	mainTags: {};
-	secondaryTags: {};
-	count: number;
-}
+import { Coupon } from '../../model/coupons';
+
 @Component({
 	selector: 'app-coupons',
 	templateUrl: './coupons.component.html',
@@ -46,7 +41,7 @@ export class CouponsComponent implements OnInit {
 		name: '',
 		description: '',
 		amount: 0,
-		mature: false,
+		// mature: false,
 	};
 
 	locals;
@@ -62,43 +57,36 @@ export class CouponsComponent implements OnInit {
 	open_hours = [
 		{
 			id_week_day: 1,
-			day_name: 'Poniedziałek',
 			hour_from: null,
 			hour_to: null
 		},
 		{
 			id_week_day: 2,
-			day_name: 'Wtorek',
 			hour_from: null,
 			hour_to: null
 		},
 		{
 			id_week_day: 3,
-			day_name: 'Środa',
 			hour_from: null,
 			hour_to: null
 		},
 		{
 			id_week_day: 4,
-			day_name: 'Czwartek',
 			hour_from: null,
 			hour_to: null
 		},
 		{
 			id_week_day: 5,
-			day_name: 'Piątek',
 			hour_from: null,
 			hour_to: null
 		},
 		{
 			id_week_day: 6,
-			day_name: 'Sobota',
 			hour_from: null,
 			hour_to: null
 		},
 		{
 			id_week_day: 0,
-			day_name: 'Niedziela',
 			hour_from: null,
 			hour_to: null
 		}
@@ -109,6 +97,7 @@ export class CouponsComponent implements OnInit {
 			(params) => {
 				if (params.id) {
 					this.id_coupon_data_main = params.id;
+					this.getData(this.id_coupon_data_main);
 				}
 			}
 		);
@@ -259,5 +248,59 @@ export class CouponsComponent implements OnInit {
 		this.selectedDayId = i;
 		// this.selectedDay = true;
 		// this.selectedDayId = el > 0 ? el - 1 : el;
+	}
+
+	getData(id) {
+		this.connection.getDataByGet('/coupons/getDetails/' + id).subscribe((data: Coupon) => {
+			console.log(data);
+			// this.items = data;
+			// console.log(data);
+			this.coupon_data = {
+				amount: data.amount,
+				// available_hours: data.available_hours,
+				// coupon_id: data.coupon_id,
+				// delivery: data.delivery,
+				description: data.description,
+				// eat_in_local: data.eat_in_local,
+				// favourite_count: data.favourite_count,
+				// is_available: data.is_available,
+				// is_favouirite: data.is_favouirite,
+				name: data.name,
+				// pick_up_local: data.pick_up_local,
+				// tags: data.available_hours,
+			};
+			this.open_hours = data.available_hours;
+			// console.log(data);
+			// const main_tags = [];
+			// const newDataMainTags = Object.values(data.main_tags);
+			// console.log(newDataMainTags)
+			// for (let i = 0; i < newDataMainTags.length; i++) {
+			// 	main_tags.push(newDataMainTags[i].id);
+			// 	this.selectedMainTags = main_tags;
+			// 	// console.log(data.main_tags[i])
+			// }
+			// const secondary_tags = [];
+			// const newDataSecondaryTags = Object.values(data.secondary_tags);
+			// console.log(newDataSecondaryTags)
+			// for (let i = 0; i < newDataSecondaryTags.length; i++) {
+			// 	secondary_tags.push(newDataSecondaryTags[i].id);
+			// 	this.selectedSecondaryTags = secondary_tags;
+			// 	// console.log(data.main_tags[i])
+			// }
+			// // console.log(data.main_tags);
+			// // data.main_tags.filter( element => {
+			// // 	tags.push(element.id);
+			// // 	this.selectedMainTags = tags;
+			// // });
+			// // for (let i = 0; i < data.secondary_tags.length; i++) {
+			// // 	tags.push(data.secondary_tags[i].id);
+			// // 	this.selectedMainTags = tags;
+			// // }
+			// // data.main_tags.map( el => {
+			// // 	console.log(el.id)
+			// // })
+			// console.log(this.selectedMainTags);
+			// console.log([data.id_city_const_type].select(this.cities[data.id_city_const_type].value))
+		});
 	}
 }

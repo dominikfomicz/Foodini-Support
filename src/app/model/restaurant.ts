@@ -16,7 +16,7 @@ export interface Restaurant {
 	blik_payment: boolean;
 	delivery_range: number;
 	work_hours: [];
-	main_tags: Tags;
+	main_tags: Tags[];
 	secondary_tags: Tags[];
 }
 
