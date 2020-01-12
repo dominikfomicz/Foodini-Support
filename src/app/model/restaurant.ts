@@ -14,4 +14,14 @@ export interface Restaurant {
 	creditcards_payment: boolean;
 	contactless_payment: boolean;
 	blik_payment: boolean;
+	delivery_range: number;
+	work_hours: [];
+	main_tags: Tags;
+	secondary_tags: Tags[];
+}
+
+export interface Tags {
+	id: number;
+	is_main: boolean;
+	name: string;
 }

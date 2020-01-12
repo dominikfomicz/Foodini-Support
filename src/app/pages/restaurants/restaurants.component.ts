@@ -127,7 +127,7 @@ export class RestaurantsComponent implements OnInit {
 	tags = [];
 	selectedPersonId = '5a15b13c36e7a7f00cf0d7cb';
 
-	selectedMainTags;
+	selectedMainTags = [];
 	disabledMainTags = false;
 	selectedSecondaryTags;
 	disabledSecondaryTags = false;
@@ -165,6 +165,8 @@ export class RestaurantsComponent implements OnInit {
 	uploadedLogo;
 	uploadedBackground;
 	uploadedMenu;
+	dayName = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+
 	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
@@ -174,6 +176,7 @@ export class RestaurantsComponent implements OnInit {
 			(params) => {
 				if (params.id) {
 					this.id_local_data_main = params.id;
+					this.getData(this.id_local_data_main);
 				}
 			}
 		);
@@ -197,31 +200,62 @@ export class RestaurantsComponent implements OnInit {
 			console.log(data);
 		});
 	}
-	// getData(id) {
-	// 	this.connection.getDataByGet('/locals/getList/' + id).subscribe((data: Restaurant) => {
-	// 		// this.items = data;
-	// 		console.log(data);
-	// 		this.local_data = {
-	// 			name: data.name,
-	// 			address: data.address,
-	// 			id_city_const_type: data.id_city_const_type,
-	// 			phone_number: data.phone_number,
-	// 			description: data.description,
-	// 			other_info: data.other_info,
-	// 			facebook_url: data.facebook_url,
-	// 			instagram_url: data.instagram_url,
-	// 			delivery: data.delivery,
-	// 			eat_in_local: data.eat_in_local,
-	// 			pick_up_local: data.pick_up_local,
-	// 			cash_payment: data.cash_payment,
-	// 			creditcards_payment: data.creditcards_payment,
-	// 			contackless_payment: data.contackless_payment,
-	// 			blik_payment: data.blik_payment
-	// 		};
-	// 		console.log(this.cityName);
-	// 		// console.log([data.id_city_const_type].select(this.cities[data.id_city_const_type].value))
-	// 	});
-	// }
+	getData(id) {
+		this.connection.getDataByGet('/locals/getDetailsEdit/' + id).subscribe((data: Restaurant) => {
+			// this.items = data;
+			console.log(data.delivery_range);
+			this.local_data = {
+				name: data.name ,
+				address: data.address,
+				id_city_const_type: data.id_city_const_type ? data.id_city_const_type : 1,
+				phone_number: data.phone_number,
+				description: data.description,
+				other_info: data.other_info,
+				facebook_url: data.facebook_url,
+				instagram_url: data.instagram_url,
+				delivery: data.delivery,
+				eat_in_local: data.eat_in_local,
+				pick_up_local: data.pick_up_local,
+				cash_payment: data.cash_payment,
+				creditcards_payment: data.creditcards_payment,
+				contactless_payment: data.contactless_payment,
+				blik_payment: data.blik_payment,
+				delivery_range: data.delivery_range ? data.delivery_range : 0,
+			};
+			this.open_hours = data.work_hours;
+			console.log(data);
+			let main_tags = [];
+			let newDataMainTags = Object.values(data.main_tags);
+			console.log(newDataMainTags)
+			for (let i = 0; i < newDataMainTags.length; i++) {
+				main_tags.push(newDataMainTags[i].id);
+				this.selectedMainTags = main_tags;
+				// console.log(data.main_tags[i])
+			}
+			let secondary_tags = [];
+			let newDataSecondaryTags = Object.values(data.secondary_tags);
+			console.log(newDataSecondaryTags)
+			for (let i = 0; i < newDataSecondaryTags.length; i++) {
+				secondary_tags.push(newDataSecondaryTags[i].id);
+				this.selectedSecondaryTags = secondary_tags;
+				// console.log(data.main_tags[i])
+			}
+			// console.log(data.main_tags);
+			// data.main_tags.filter( element => {
+			// 	tags.push(element.id);
+			// 	this.selectedMainTags = tags;
+			// });
+			// for (let i = 0; i < data.secondary_tags.length; i++) {
+			// 	tags.push(data.secondary_tags[i].id);
+			// 	this.selectedMainTags = tags;
+			// }
+			// data.main_tags.map( el => {
+			// 	console.log(el.id)
+			// })
+			console.log(this.selectedMainTags);
+			// console.log([data.id_city_const_type].select(this.cities[data.id_city_const_type].value))
+		});
+	}
 	sendData() {
 		// console.log(this.filedata.name)
 		// console.log({
@@ -250,7 +284,7 @@ export class RestaurantsComponent implements OnInit {
 			this.myFormData.append('file_menu', this.menu, this.menu.name);
 		}
 
-		console.log(this.cityName.value)
+		// console.log(this.cityName.value)
 		this.connection.addLocal('locals/changeLocal', this.myFormData)
 						.subscribe(data => {
 							console.log(data);

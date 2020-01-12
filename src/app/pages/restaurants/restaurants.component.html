@@ -161,7 +161,8 @@
                 </mdb-card>
                 <ul class="nav grey day_tab lighten-4 py-4">
                     <li class="nav-item" *ngFor="let item of open_hours; let i = index"  [class.active]="i === selectedDayId">
-                        <div class="day ml-2 mr-2" (click)="selectDay(item.id_week_day, i)">{{item.day_name}}</div>
+                        <div class="day ml-2 mr-2" (click)="selectDay(item.id_week_day ? item.id_week_day : item.id_day, i)">{{dayName[i]}}</div>
+                        <!-- {{item | json}} -->
                     </li>
                 </ul>
                 <mdb-card>
