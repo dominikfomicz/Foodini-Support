@@ -145,10 +145,10 @@ export class ConnectionService {
 			confirmButtonText: 'Ok'
 		})
 		.then((result) => {
-			if (result.value) {
-				localStorage.clear();
-				this.router.navigateByUrl('login');
-			}
+			// if (result.value) {
+			// 	localStorage.clear();
+			// 	this.router.navigateByUrl('login');
+			// }
 		});
 
 	}

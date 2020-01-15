@@ -14,6 +14,7 @@ export class TagsComponent implements OnInit {
 	id_tag_data_main = -1;
 	categories;
 	selectedTagCategories;
+	loadingPage = true;
 	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.route.params.subscribe(
 			(params) => {
@@ -28,7 +29,8 @@ export class TagsComponent implements OnInit {
 		this.connection.selectItem('TagConstCategory').subscribe( data => {
 			this.categories = data;
 			console.log(data);
-		})
+			this.loadingPage = false;
+		});
 	}
 	sendData() {
 		// console.log(this.selectedTagCategories, {id_tag_data_main: this.id_tag_data_main, name: this.tagTitle,

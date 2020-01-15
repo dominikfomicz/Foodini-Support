@@ -1,7 +1,8 @@
+<!-- <app-loader *ngIf="loadingPage"></app-loader> -->
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <mdb-card>
+            <mdb-card *ngIf="!loadingPage">
                 <mdb-card-body>
                     <form class="text-center" style="color: #757575;" (submit)="sendData()">
                         <div class="row">
@@ -101,14 +102,14 @@
                             <input type="checkbox" class="form-check-input" id="delivery" name="delivery" [(ngModel)]="coupon_data.mature">
                             <label class="form-check-label" for="delivery">Dla dorosłych</label>
                         </div>
-                        <ul class="nav grey day_tab lighten-4 py-4">
+                        <ul class="nav grey day_tab lighten-4 py-4 mt-5">
                             <li class="nav-item" *ngFor="let item of open_hours; let i = index"  [class.active]="i === selectedDayId">
-                                <div class="day ml-2 mr-2" (click)="selectDay(item.id_week_day, i)">{{item.day_name}}</div>
+                                <div class="day ml-2 mr-2" (click)="selectDay(item.id_week_day, i)">{{dayName[i]}}</div>
                             </li>
                         </ul>
                         <div class="row">
-                            <div class="col-12 text-left">
-                                <p>Godziny otwarcia lokalu</p>
+                            <div class="col-12 text-left mt-2">
+                                <p>Godziny dostępności kuponu</p>
                             </div>
                         </div>
                         <div class="row">
@@ -125,6 +126,10 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- <div class="form-check text-left">
+                            <input type="checkbox" class="form-check-input" id="hourState" name="hourState" (click)="fillHour()">
+                            <label class="form-check-label" for="hourState">Codziennie tak samo</label>
+                        </div> -->
                         <!-- Sign in button -->
                         <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect
                         type="submit" [disabled]="logo ? false : true" [class.disabled]="logo ? false : true">Wyślij</button>

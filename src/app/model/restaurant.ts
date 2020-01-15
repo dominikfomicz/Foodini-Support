@@ -18,6 +18,8 @@ export interface Restaurant {
 	work_hours: [];
 	main_tags: Tags[];
 	secondary_tags: Tags[];
+	longitude: number;
+	latitude: number;
 }
 
 export interface Tags {

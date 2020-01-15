@@ -1,16 +1,15 @@
 export interface Coupon {
-	'coupon_id': number;
-	'description': string;
 	'amount': number;
-	'name': string;
-	'is_favouirite': boolean;
-	'is_available': boolean;
-	'delivery': boolean;
-	'eat_in_local': boolean;
-	'pick_up_local': boolean;
-	'favourite_count': number;
-	'tags': Tags[];
 	'available_hours': OpenHours[];
+	'delivery': boolean;
+	'description': string;
+	'eat_in_local': boolean;
+	'id_coupon_data_main': number;
+	'id_local_data_main': number;
+	'mature': boolean;
+	'name': string;
+	'pick_up_local': boolean;
+	'tags': Tags[];
 }
 
 export interface Tags {
@@ -20,7 +19,7 @@ export interface Tags {
 }
 
 export interface OpenHours {
-	'id_day': number;
+	'id_week_day': number;
 	'hour_from': string;
 	'hour_to': string;
 }

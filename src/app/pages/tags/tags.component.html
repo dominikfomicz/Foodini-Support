@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <mdb-card>
+            <mdb-card *ngIf="!loadingPage">
                 <mdb-card-body>
                     <form class="text-center" style="color: #757575;" (submit)="sendData()">
                         <!-- Name -->

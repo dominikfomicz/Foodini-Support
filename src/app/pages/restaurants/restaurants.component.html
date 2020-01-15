@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <form class="text-center" style="color: #757575;" (submit)="sendData()">
+            <form class="text-center" style="color: #757575;" (submit)="sendData()" *ngIf="!loadingPage">
                 <mdb-card>
                     <mdb-card-body>
 
@@ -49,6 +49,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="md-form">
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="fileMap"
+                                    aria-describedby="uploadMenu" [(ngModel)]="fileMap" name="fileMap" (change)="uploadFileMap($event)">
+                                    <label class="custom-file-label" for="fileMap">{{imgMap ? imgMap.name : 'Wyślij pina do mapy'}}</label>
+                                </div>
+                            </div>
+                        </div>
                         <!-- <div class="md-form">
                             <div class="file-field">
                                 <div class="btn btn-primary btn-sm float-left">
@@ -89,7 +98,14 @@
                             <input type="text" id="instagram_url" class="form-control" name="instagram_url" [(ngModel)]="local_data.instagram_url" mdbInput>
                             <label for="instagram_url">Adres instagram</label>
                         </div>
-
+                        <div class="md-form">
+                            <input type="text" id="longitude" class="form-control" name="longitude" [(ngModel)]="local_data.longitude" mdbInput>
+                            <label for="longitude">longitude</label>
+                        </div>
+                        <div class="md-form">
+                            <input type="text" id="latitude" class="form-control" name="latitude" [(ngModel)]="local_data.latitude" mdbInput>
+                            <label for="latitude">latitude</label>
+                        </div>
                         <div class="text-left">
                             <p>Forma dostawy:</p>
                             <div class="form-check">
@@ -161,7 +177,7 @@
                 </mdb-card>
                 <ul class="nav grey day_tab lighten-4 py-4">
                     <li class="nav-item" *ngFor="let item of open_hours; let i = index"  [class.active]="i === selectedDayId">
-                        <div class="day ml-2 mr-2" (click)="selectDay(item.id_week_day ? item.id_week_day : item.id_day, i)">{{dayName[i]}}</div>
+                        <div class="day ml-2 mr-2" (click)="selectDay(item.id_week_day, i)">{{dayName[i]}}</div>
                         <!-- {{item | json}} -->
                     </li>
                 </ul>

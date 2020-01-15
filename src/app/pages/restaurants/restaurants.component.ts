@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild, QueryList, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConnectionService } from 'src/app/core/services/connection.service';
 import { Restaurant } from '../../model/restaurant';
@@ -16,6 +16,7 @@ export class RestaurantsComponent implements OnInit {
 	logo: File;
 	background: File;
 	menu: File;
+	imgMap: File;
 	city: string;
 	restaurantName: string;
 	restaurantAddress: string;
@@ -153,7 +154,9 @@ export class RestaurantsComponent implements OnInit {
 		creditcards_payment: false,
 		contactless_payment: false,
 		blik_payment: false,
-		delivery_range: 0
+		delivery_range: 0,
+		latitude: 0,
+		longitude: 0
 	};
 
 	id_local_data_main = -1;
@@ -165,12 +168,14 @@ export class RestaurantsComponent implements OnInit {
 	uploadedLogo;
 	uploadedBackground;
 	uploadedMenu;
+	fileMap;
 	dayName = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+	loadingPage = true;
 
 	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
-			console.log(this.cities);
+			// console.log(this.cities);
 		});
 		this.route.params.subscribe(
 			(params) => {
@@ -197,7 +202,8 @@ export class RestaurantsComponent implements OnInit {
 				}
 			}
 			this.tagList = data;
-			console.log(data);
+			// console.log(data);
+			this.loadingPage = false;
 		});
 	}
 	getData(id) {
@@ -217,30 +223,43 @@ export class RestaurantsComponent implements OnInit {
 				eat_in_local: data.eat_in_local,
 				pick_up_local: data.pick_up_local,
 				cash_payment: data.cash_payment,
-				creditcards_payment: data.creditcards_payment,
-				contactless_payment: data.contactless_payment,
-				blik_payment: data.blik_payment,
-				delivery_range: data.delivery_range,
+				creditcards_payment: data.creditcards_payment ? data.creditcards_payment : false ,
+				contactless_payment: data.contactless_payment ? data.contactless_payment: false,
+				blik_payment: data.blik_payment ? data.blik_payment : false,
+				delivery_range: data.delivery_range ? data.delivery_range : 0,
+				latitude: data.latitude,
+				longitude: data.longitude,
 			};
-			this.open_hours = data.work_hours;
-			console.log(data);
+			if (data.work_hours.length > 0) {
+				this.open_hours = data.work_hours;
+			}
+			console.log('main_tags' + data.main_tags);
+			console.log('secondary_tags' + data.secondary_tags);
 			const main_tags = [];
 			const newDataMainTags = Object.values(data.main_tags);
-			console.log(newDataMainTags)
+			// // console.log(newDataMainTags)
 			for (let i = 0; i < newDataMainTags.length; i++) {
 				main_tags.push(newDataMainTags[i].id);
 				this.selectedMainTags = main_tags;
-				// console.log(data.main_tags[i])
+				// // // console.log(data.main_tags[i])
+				this.tags.push({
+					id: newDataMainTags[i].id,
+					priority_status: true
+				});
 			}
 			const secondary_tags = [];
 			const newDataSecondaryTags = Object.values(data.secondary_tags);
-			console.log(newDataSecondaryTags)
+			// // console.log(newDataSecondaryTags)
 			for (let i = 0; i < newDataSecondaryTags.length; i++) {
 				secondary_tags.push(newDataSecondaryTags[i].id);
 				this.selectedSecondaryTags = secondary_tags;
-				// console.log(data.main_tags[i])
+				this.tags.push({
+					id: newDataSecondaryTags[i].id,
+					priority_status: true
+				});
+				// // // console.log(data.main_tags[i])
 			}
-			// console.log(data.main_tags);
+			// // // console.log(data.main_tags);
 			// data.main_tags.filter( element => {
 			// 	tags.push(element.id);
 			// 	this.selectedMainTags = tags;
@@ -250,25 +269,21 @@ export class RestaurantsComponent implements OnInit {
 			// 	this.selectedMainTags = tags;
 			// }
 			// data.main_tags.map( el => {
-			// 	console.log(el.id)
+			// 	// console.log(el.id)
 			// })
-			console.log(this.selectedMainTags);
-			// console.log([data.id_city_const_type].select(this.cities[data.id_city_const_type].value))
+			// console.log(this.selectedMainTags);
+			// // console.log([data.id_city_const_type].select(this.cities[data.id_city_const_type].value))
 		});
 	}
 	sendData() {
-		// console.log(this.filedata.name)
-		// console.log({
+		// // console.log(this.filedata.name)
+		// // console.log({
 		// 	id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1', image: this.filedata
 		// });
-		// console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
+		// // console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
 		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours),
 		//  image: this.myFormData});
-		console.log(this.open_hours);
-		console.log(this.id_local_data_main);
-		console.log(this.local_data);
-		console.log(this.open_hours);
-		console.log(this.open_hours);
+		console.log(this.tags);
 		// this.local_data.id_city_const_type = this.cityName.value;
 		this.myFormData.append('id_local_data_main', this.id_local_data_main.toString());
 		this.myFormData.append('local_data', JSON.stringify(this.local_data));
@@ -284,84 +299,141 @@ export class RestaurantsComponent implements OnInit {
 			this.myFormData.append('file_menu', this.menu, this.menu.name);
 		}
 
-		// console.log(this.cityName.value)
+		if (this.imgMap) {
+			this.myFormData.append('file_map', this.imgMap, this.imgMap.name);
+		}
+
+		// // console.log(this.cityName.value)
 		this.connection.addLocal('locals/changeLocal', this.myFormData)
 						.subscribe(data => {
-							console.log(data);
+							// console.log(data);
 							this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
 		});
 
-		// console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
+		// // console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
 		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours),
 		//  image: this.filedata})
 		// this.connection.test({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
 		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours),
 		//  image: this.filedata}).subscribe(data => {
-		// 	console.log(data);
+		// 	// console.log(data);
 		// 	this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
 		// });
 	}
 	selectDay(el, i) {
-		console.log(i);
+		// console.log(i);
 		this.selectedDayId = i;
 		// this.selectedDay = true;
 		// this.selectedDayId = el > 0 ? el - 1 : el;
 	}
 	selectMainTags(value) {
-		console.log(value, value[value.length - 1]);
-		// console.log(this.selectedMainTags.length)
-		if (value[value.length - 1]) {
-			if ((this.selectedMainTags.length - 1) < 3) {
-				// console.log('dodalem')
-				this.tags.push({
-					id: value[value.length - 1].id,
-					priority_status: true
-				});
-				this.tagList = this.tagList.filter( tag => {
-					if (tag.id === value[value.length - 1].id) {
-						this.usedTags.push(value[value.length - 1]);
+		if ( value.length <= 3 && value.length > 0) {
+			this.tags.push({
+				id: value[value.length - 1].id,
+				priority_status: true
+			});
 
-						console.log(this.tags);
-					}
-					return tag.id !== value[value.length - 1].id;
+			this.tagList = this.tagList.filter( tag => {
 
-				});
-				// if (this.tags.length >= 3) {
-				// 	this.tagList.map(
-				// 		tag => {
-				// 			return tag.disabled = !tag.disabled;
-				// 		}
-				// 	)
-				// }
-			}
+				return tag.id !== value[value.length - 1].id;
+
+			});
 		}
 	}
 
 	selectSecondaryTags(value) {
+		// if (this.selectedSecondaryTags.length > 3) {
+			// console.log(this.selectedSecondaryTags);
+			// this.selectedSecondaryTags.filter(tag => {
+			// 	this.tags.push({
+			// 		id: tag,
+			// 		priority_status: false
+			// 	});
+			// });
+		// } else {
 
-		if (value[value.length - 1]) {
-			this.tagList = this.tagList.filter( tag => tag.id !== value[value.length - 1].id);
-			this.tags.push({
-				id: value[value.length - 1].id,
-				priority_status: false
-			});
-		}
+			if ( value[value.length - 1] ) {
+				this.tags.push({
+					id: value[value.length - 1].id,
+					priority_status: false
+				});
+
+				this.tagList = this.tagList.filter( tag => {
+
+					return tag.id !== value[value.length - 1].id;
+
+				});
+			}
+		// }
+		// console.log(this.selectedMainTags);
 	}
+	// selectMainTags(value) {
+	// 	// console.log(value, value[value.length - 1]);
+	// 	// // console.log(this.selectedMainTags.length)
+	// 	if (value[value.length - 1]) {
+	// 		if ((this.selectedMainTags.length - 1) < 3) {
+	// 			// // console.log('dodalem')
+	// 			this.tags.push({
+	// 				id: value[value.length - 1].id,
+	// 				priority_status: true
+	// 			});
+	// 			this.tagList = this.tagList.filter( tag => {
+	// 				if (tag.id === value[value.length - 1].id) {
+	// 					this.usedTags.push(value[value.length - 1]);
+
+	// 					// console.log(this.tags);
+	// 				}
+	// 				return tag.id !== value[value.length - 1].id;
+
+	// 			});
+	// 			// if (this.tags.length >= 3) {
+	// 			// 	this.tagList.map(
+	// 			// 		tag => {
+	// 			// 			return tag.disabled = !tag.disabled;
+	// 			// 		}
+	// 			// 	)
+	// 			// }
+	// 		}
+	// 	}
+	// }
+
+	// selectSecondaryTags(value) {
+
+	// 	if (value[value.length - 1]) {
+	// 		this.tagList = this.tagList.filter( tag => tag.id !== value[value.length - 1].id);
+	// 		this.tags.push({
+	// 			id: value[value.length - 1].id,
+	// 			priority_status: false
+	// 		});
+	// 	}
+	// }
 	remove(value) {
-		// console.log(value)
-		this.tagList.unshift(value.value);
+		// console.log(value);
+		this.tags = this.tags.filter(tag => {
+			// return tag.id !== value.value.
+			// console.log(tag);
+			if (tag.id !== value.value.id) {
+				return tag.id;
+			}
+			// return tag.id !== value.value.id;
+		});
+		// console.log(this.tags)
 	}
 
 	uploadLogo(e) {
 
 		this.logo = <File>e.target.files[0];
-		console.log(this.logo);
+		// console.log(this.logo);
 	}
 	uploadBackground(e) {
 		this.background = <File>e.target.files[0];
-		console.log(this.background);
+		// console.log(this.background);
 	}
 	uploadMenu(e) {
 		this.menu = <File>e.target.files[0];
+	}
+
+	uploadFileMap(e) {
+		this.imgMap = <File>e.target.files[0];
 	}
 }

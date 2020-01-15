@@ -3,6 +3,7 @@ import { Router, ActivatedRoute  } from '@angular/router';
 import { ConnectionService } from 'src/app/core/services/connection.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Coupon } from '../../model/coupons';
+import { Tags } from 'src/app/model/restaurant';
 
 @Component({
 	selector: 'app-coupons',
@@ -38,10 +39,13 @@ export class CouponsComponent implements OnInit {
 	staticEditCoupon: Coupon;
 
 	coupon_data = {
-		name: '',
-		description: '',
 		amount: 0,
-		// mature: false,
+		delivery: false,
+		description:  '',
+		eat_in_local:  false,
+		mature:  false,
+		name:  '',
+		pick_up_local:  false,
 	};
 
 	locals;
@@ -92,11 +96,16 @@ export class CouponsComponent implements OnInit {
 		}
 	];
 	selectedDayId = 0;
+	dayName = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+	couponTags;
+	loadingPage = true;
 	constructor(private router: Router, private route: ActivatedRoute,  public connection: ConnectionService, public alert: AlertService) {
+
 		this.route.params.subscribe(
 			(params) => {
 				if (params.id) {
 					this.id_coupon_data_main = params.id;
+					// this.selectedLocal = this
 					this.getData(this.id_coupon_data_main);
 				}
 			}
@@ -144,17 +153,41 @@ export class CouponsComponent implements OnInit {
 
 	ngOnInit() {
 		this.getlocals();
-		this.connection.getDataByGet('/tags/getList').subscribe(data => {
-			this.tagList = data;
-			console.log(data);
-		});
+
 	}
 	getlocals() {
 		this.connection.getDataByPost('tools/getList',
 						{app_list_string: 'LocalDataMain'})
-						.subscribe(data => {
-							this.locals = data;
-			console.log(data);
+						.subscribe(locals => {
+							this.locals = locals;
+							this.connection.getDataByGet('/tags/getList').subscribe((data: Tags) => {
+								this.tagList = data;
+								console.log(data);
+								console.log(this.tags);
+								const main_tags = [];
+								const secondary_tags = [];
+								for (let i = 0; i < this.couponTags.length; i++) {
+									if (this.couponTags[i].is_main) {
+										main_tags.push(this.couponTags[i].id);
+										this.selectedMainTags = main_tags;
+
+										console.log(this.tagList);
+										this.tags.push({
+											id: this.couponTags[i].id,
+											priority_status: this.couponTags[i].is_main
+										});
+									} else {
+										secondary_tags.push(this.couponTags[i].id);
+										this.selectedSecondaryTags = secondary_tags;
+										// // // console.log(data.main_tags[i])
+										this.tags.push({
+											id: this.couponTags[i].id,
+											priority_status: this.couponTags[i].is_main
+										});
+									}
+								}
+							});
+							this.loadingPage = false;
 		});
 	}
 	sendData() {
@@ -172,7 +205,7 @@ export class CouponsComponent implements OnInit {
 		// console.log(this.tags);
 		// console.log({id_coupon_data_main: this.id_coupon_data_main, id_local_data_main: this.selectedLocal,
 		// 	coupon_data: this.coupon_data, tags: this.tags});
-		console.log(this.open_hours);
+		console.log(this.tags);
 		this.myFormData.append('id_coupon_data_main', this.id_coupon_data_main);
 		this.myFormData.append('id_local_data_main', this.selectedLocal);
 		this.myFormData.append('coupon_data', JSON.stringify(this.coupon_data));
@@ -194,49 +227,117 @@ export class CouponsComponent implements OnInit {
 			console.log(o);
 		});
 	}
+	// selectMainTags(value) {
+	// 	// const tags = Object.values(this.selectedMainTags);
+	// 	// // console.log(value, value[value.length - 1]);
+	// 	// if (tags.length > 0 ) {
+	// 	// 	this.tags = tags;
+	// 	// }
+	// 	if (value[value.length - 1]) {
+	// 		if ((this.selectedMainTags.length - 1) < 3) {
+	// 			// console.log('dodalem')
+	// 			this.tags.push({
+	// 				id: value[value.length - 1].id,
+	// 				priority_status: true
+	// 			});
+	// 			this.tagList = this.tagList.filter( tag => {
+	// 				if (tag.id === value[value.length - 1].id) {
+	// 					this.usedTags.push(value[value.length - 1]);
+
+	// 					console.log(this.tags);
+	// 				}
+	// 				return tag.id !== value[value.length - 1].id;
+
+	// 			});
+	// 			// if (this.tags.length >= 3) {
+	// 			// 	this.tagList.map(
+	// 			// 		tag => {
+	// 			// 			return tag.disabled = !tag.disabled;
+	// 			// 		}
+	// 			// 	)
+	// 			// }
+	// 		} else {
+	// 			console.log(value);
+	// 			value.map( element => {
+	// 				console.log(element.id);
+	// 				this.tags.push({
+	// 					id: element.id,
+	// 					priority_status: true
+	// 				});
+	// 			});
+	// 		}
+	// 	}
+	// }
 	selectMainTags(value) {
-		// console.log(value, value[value.length - 1]);
-		console.log(this.selectedMainTags.length)
-		if (value[value.length - 1]) {
-			if ((this.selectedMainTags.length - 1) < 3) {
-				// console.log('dodalem')
-				this.tags.push({
-					id: value[value.length - 1].id,
-					priority_status: true
-				});
-				this.tagList = this.tagList.filter( tag => {
-					if (tag.id === value[value.length - 1].id) {
-						this.usedTags.push(value[value.length - 1]);
+		if ( value.length <= 3 && value.length > 0) {
+			this.tags.push({
+				id: value[value.length - 1].id,
+				priority_status: true
+			});
 
-						console.log(this.tags);
-					}
-					return tag.id !== value[value.length - 1].id
+			this.tagList = this.tagList.filter( tag => {
 
-				});
-				// if (this.tags.length >= 3) {
-				// 	this.tagList.map(
-				// 		tag => {
-				// 			return tag.disabled = !tag.disabled;
-				// 		}
-				// 	)
-				// }
-			}
+				return tag.id !== value[value.length - 1].id;
+
+			});
 		}
 	}
 
 	selectSecondaryTags(value) {
+		// if (this.selectedSecondaryTags.length > 3) {
+			// console.log(this.selectedSecondaryTags);
+			// this.selectedSecondaryTags.filter(tag => {
+			// 	this.tags.push({
+			// 		id: tag,
+			// 		priority_status: false
+			// 	});
+			// });
+		// } else {
+			if ( value[value.length - 1] ) {
+				this.tags.push({
+					id: value[value.length - 1].id,
+					priority_status: false
+				});
 
-		if (value[value.length - 1]) {
-			this.tagList = this.tagList.filter( tag => tag.id !== value[value.length - 1].id);
-			this.tags.push({
-				id: value[value.length - 1].id,
-				priority_status: false
-			});
-		}
+				this.tagList = this.tagList.filter( tag => {
+
+					return tag.id !== value[value.length - 1].id;
+
+				});
+			}
+
+		// }
+		// console.log(this.selectedMainTags);
 	}
+
+	// selectSecondaryTags(value) {
+	// 	// const tags = Object.values(this.selectedSecondaryTags);
+	// 	// console.log(tags);
+	// 	// if (tags.length > 0 ) {
+	// 	// 	tags.map( tag => {
+	// 	// 		console.log(tag);
+	// 	// 		// this.tags.push(tag.id);
+	// 	// 	});
+	// 	// }
+	// 	if (value[value.length - 1]) {
+	// 		this.tagList = this.tagList.filter( tag => tag.id !== value[value.length - 1].id);
+	// 		this.tags.push({
+	// 			id: value[value.length - 1].id,
+	// 			priority_status: false
+	// 		});
+	// 	}
+	// }
 	remove(value) {
-		// console.log(value)
-		this.tagList.unshift(value.value);
+		// console.log(value);
+		this.tags = this.tags.filter(tag => {
+			// return tag.id !== value.value.
+			// console.log(tag);
+			if (tag.id !== value.value.id) {
+				return tag.id;
+			}
+			// return tag.id !== value.value.id;
+		});
+		// console.log(this.tags)
 	}
 	uploadLogo(e) {
 
@@ -251,25 +352,36 @@ export class CouponsComponent implements OnInit {
 	}
 
 	getData(id) {
-		this.connection.getDataByGet('/coupons/getDetails/' + id).subscribe((data: Coupon) => {
+		this.connection.getDataByGet('/coupons/getDetailsEdit/' + id).subscribe((data: Coupon) => {
 			console.log(data);
 			// this.items = data;
 			// console.log(data);
 			this.coupon_data = {
 				amount: data.amount,
-				// available_hours: data.available_hours,
-				// coupon_id: data.coupon_id,
-				// delivery: data.delivery,
-				description: data.description,
-				// eat_in_local: data.eat_in_local,
-				// favourite_count: data.favourite_count,
-				// is_available: data.is_available,
-				// is_favouirite: data.is_favouirite,
-				name: data.name,
-				// pick_up_local: data.pick_up_local,
-				// tags: data.available_hours,
+				delivery: data.delivery,
+				description:  data.description,
+				eat_in_local:  data.eat_in_local,
+				mature:  data.mature,
+				name:  data.name,
+				pick_up_local:  data.pick_up_local,
 			};
+			// this.coupon_data.
+			this.selectedLocal = data.id_local_data_main;
 			this.open_hours = data.available_hours;
+
+			const newDataMainTags = Object.values(data.tags);
+			this.couponTags = newDataMainTags;
+
+			// // console.log(newDataMainTags)
+
+			// const secondary_tags = [];
+			// const newDataSecondaryTags = Object.values(data.secondary_tags);
+			// // // console.log(newDataSecondaryTags)
+			// for (let i = 0; i < newDataSecondaryTags.length; i++) {
+			// 	secondary_tags.push(newDataSecondaryTags[i].id);
+			// 	this.selectedSecondaryTags = secondary_tags;
+			// 	// // // console.log(data.main_tags[i])
+			// }
 			// console.log(data);
 			// const main_tags = [];
 			// const newDataMainTags = Object.values(data.main_tags);
@@ -303,4 +415,19 @@ export class CouponsComponent implements OnInit {
 			// console.log([data.id_city_const_type].select(this.cities[data.id_city_const_type].value))
 		});
 	}
+	// fillHour() {
+	// 	let staticHourFrom;
+	// 	let staticHourTo;
+	// 	this.open_hours.map((couponHour, index) => {
+	// 		if (couponHour.id_week_day === this.selectedDayId) {
+	// 			staticHourFrom = couponHour.hour_from;
+	// 			staticHourTo = couponHour.hour_to;
+	// 			couponHour.hour_from = staticHourFrom;
+	// 			couponHour.hour_to = staticHourTo;
+	// 			console.log(couponHour);
+	// 		}
+
+
+	// 	});
+	// }
 }

@@ -13,8 +13,7 @@ export class ListCouponsComponent implements OnInit {
 
   constructor(public alert: AlertService, public router: Router, public connection: ConnectionService) { }
 	ngOnInit() {
-
-			this.connection.getDataByGet('/coupons/getCouponsByCity/1').subscribe(data => {
+			this.connection.getDataByGet('/coupons/getSupportCouponsByCity/1').subscribe(data => {
 				this.items = data;
 				console.log(data);
 			});

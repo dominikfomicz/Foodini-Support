@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
+import { LocationStrategy } from '@angular/common';
 
 @Component({
 	selector: 'app-root',

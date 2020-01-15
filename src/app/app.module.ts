@@ -23,6 +23,7 @@ import { TagsComponent } from './pages/tags/tags.component';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ListTagsComponent } from './pages/list-tags/list-tags.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { ListTagsComponent } from './pages/list-tags/list-tags.component';
 		ListCouponsComponent,
 		TagsComponent,
 		ListTagsComponent,
+		LoaderComponent,
 	],
 	imports: [
 		BrowserModule,
