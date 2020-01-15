@@ -1,11 +1,10 @@
 
-
 stages:
   - build
 #  - deploy
 
  build:
-     stage: build
+    stage: build
     script:
      - npm install
      - npm run build-prod
