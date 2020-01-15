@@ -1,13 +1,14 @@
-
 stages:
   - build
-#  - deploy
 
- build:
-    stage: build
-    script:
-     - npm install
-     - npm run build-prod
+
+build:
+  stage: build
+  script:
+    - npm install
+    - npm run build-prod
+    # - ng build --prod
+
 
     
 #deploy:
