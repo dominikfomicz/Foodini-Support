@@ -255,7 +255,7 @@ export class RestaurantsComponent implements OnInit {
 				this.selectedSecondaryTags = secondary_tags;
 				this.tags.push({
 					id: newDataSecondaryTags[i].id,
-					priority_status: true
+					priority_status: false
 				});
 				// // // console.log(data.main_tags[i])
 			}
