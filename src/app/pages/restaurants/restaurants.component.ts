@@ -48,10 +48,9 @@ export class RestaurantsComponent implements OnInit {
 		value: 2, name: 'Makaron3', disabled: false
 	}];
 
-	open_hours = [
+	open_hours_template = [
 		{
 			id_week_day: 1,
-			day_name: 'Poniedziałek',
 			kitchen_hour_from: null,
 			kitchen_hour_to: null,
 			local_hour_from: null,
@@ -61,7 +60,6 @@ export class RestaurantsComponent implements OnInit {
 		},
 		{
 			id_week_day: 2,
-			day_name: 'Wtorek',
 			kitchen_hour_from: null,
 			kitchen_hour_to: null,
 			local_hour_from: null,
@@ -71,7 +69,6 @@ export class RestaurantsComponent implements OnInit {
 		},
 		{
 			id_week_day: 3,
-			day_name: 'Środa',
 			kitchen_hour_from: null,
 			kitchen_hour_to: null,
 			local_hour_from: null,
@@ -81,7 +78,6 @@ export class RestaurantsComponent implements OnInit {
 		},
 		{
 			id_week_day: 4,
-			day_name: 'Czwartek',
 			kitchen_hour_from: null,
 			kitchen_hour_to: null,
 			local_hour_from: null,
@@ -91,7 +87,6 @@ export class RestaurantsComponent implements OnInit {
 		},
 		{
 			id_week_day: 5,
-			day_name: 'Piątek',
 			kitchen_hour_from: null,
 			kitchen_hour_to: null,
 			local_hour_from: null,
@@ -101,7 +96,6 @@ export class RestaurantsComponent implements OnInit {
 		},
 		{
 			id_week_day: 6,
-			day_name: 'Sobota',
 			kitchen_hour_from: null,
 			kitchen_hour_to: null,
 			local_hour_from: null,
@@ -111,7 +105,6 @@ export class RestaurantsComponent implements OnInit {
 		},
 		{
 			id_week_day: 0,
-			day_name: 'Niedziela',
 			kitchen_hour_from: null,
 			kitchen_hour_to: null,
 			local_hour_from: null,
@@ -120,6 +113,7 @@ export class RestaurantsComponent implements OnInit {
 			delivery_hour_to: null,
 		}
 	];
+	open_hours = this.open_hours_template;
 	selectedDay = false;
 	selectedDayId = 0;
 	// delivery = false;
@@ -169,9 +163,24 @@ export class RestaurantsComponent implements OnInit {
 	uploadedBackground;
 	uploadedMenu;
 	fileMap;
-	dayName = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+	dayName = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'];
 	loadingPage = true;
+	myDisabledCondition: boolean;
+	config = {
+		displayKey: 'name',
+		search: true, // true/false for the search functionlity defaults to false,
+		height: '300px', // height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
+		placeholder: 'Select', // text to be displayed when no item is selected defaults to Select,
+		customComparator: ()=>{}, // a custom function using which user wants to sort the items. default is undefined and Array.sort() will be used in that case,
+		limitTo: 0, // a number thats limits the no of options displayed in the UI similar to angular's limitTo pipe
+		moreText: 'more', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
+		noResultsFound: 'No results found!', // text to be displayed when no items are found while searching
+		searchPlaceholder: 'Search', // label thats displayed in search input,
+		searchOnKey: 'name', // key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
+		clearOnSelection: true, // clears search criteria when an option is selected if set to true, default is false
+	};
 
+	arr = [];
 	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
@@ -188,6 +197,7 @@ export class RestaurantsComponent implements OnInit {
 	}
 
 	ngOnInit() {
+
 		this.connection.getDataByGet('/tags/getList').subscribe(data => {
 			// this.tagList = data.map(
 			// 	element => {
@@ -196,14 +206,15 @@ export class RestaurantsComponent implements OnInit {
 			// 	}
 			// );
 
-			for (const key in data) {
-				if (data.hasOwnProperty(key)) {
-					data[key].disabled = false;
-				}
-			}
+			// for (const key in data) {
+			// 	if (data.hasOwnProperty(key)) {
+			// 		data[key].disabled = false;
+			// 	}
+			// }
 			this.tagList = data;
 			// console.log(data);
 			this.loadingPage = false;
+			this.arr.push({id: 1, description: 'Adding new item'})
 		});
 	}
 	getData(id) {
@@ -231,15 +242,41 @@ export class RestaurantsComponent implements OnInit {
 				longitude: data.longitude,
 			};
 			if (data.work_hours.length > 0) {
-				this.open_hours = data.work_hours;
+				// this.open_hours = data.work_hours;
+				// const open_hours_template = this.open_hours_template.filter( (element, index) => {
+				// 	if( element.kitchen_hour_from || element.kitchen_hour_to || element.local_hour_from
+				// 		|| element.local_hour_to || element.delivery_hour_from || element.delivery_hour_to) {
+				// 		return element;
+				// 	}
+				// });
+				// const open_hours = this.data.work_hours.map( (hours, index) => {
+				// 	open_hours_template.map( hoursTemplate => {
+				// 		if (hours.id_week_day === hoursTemplate.id_week_day) {
+				// 			this.open_hours[index] = hoursTemplate;
+				// 		}
+				// 	});
+				// });
+				this.open_hours_template.map( (hoursTemplate, hoursTemplateIndex) => {
+					// console.log(hoursTemplateIndex);
+					data.work_hours.map( (hours, index) => {
+						// console.log(hours);
+						if (hours) {
+							if (hoursTemplate['id_week_day'] === hours['id_week_day']) {
+								console.log(this.open_hours_template[hoursTemplateIndex], hours);
+								this.open_hours_template[hoursTemplateIndex] = hours;
+							}
+						}
+					});
+				});
+				// console.log(this.open_hours_template);
 			}
 			console.log('main_tags' + data.main_tags);
 			console.log('secondary_tags' + data.secondary_tags);
 			const main_tags = [];
 			const newDataMainTags = Object.values(data.main_tags);
-			// // console.log(newDataMainTags)
+
 			for (let i = 0; i < newDataMainTags.length; i++) {
-				main_tags.push(newDataMainTags[i].id);
+				main_tags.push(newDataMainTags[i]);
 				this.selectedMainTags = main_tags;
 				// // // console.log(data.main_tags[i])
 				this.tags.push({
@@ -249,33 +286,41 @@ export class RestaurantsComponent implements OnInit {
 			}
 			const secondary_tags = [];
 			const newDataSecondaryTags = Object.values(data.secondary_tags);
-			// // console.log(newDataSecondaryTags)
+
 			for (let i = 0; i < newDataSecondaryTags.length; i++) {
-				secondary_tags.push(newDataSecondaryTags[i].id);
+				secondary_tags.push(newDataSecondaryTags[i]);
 				this.selectedSecondaryTags = secondary_tags;
 				this.tags.push({
 					id: newDataSecondaryTags[i].id,
 					priority_status: false
 				});
-				// // // console.log(data.main_tags[i])
 			}
-			// // // console.log(data.main_tags);
-			// data.main_tags.filter( element => {
-			// 	tags.push(element.id);
-			// 	this.selectedMainTags = tags;
-			// });
-			// for (let i = 0; i < data.secondary_tags.length; i++) {
-			// 	tags.push(data.secondary_tags[i].id);
-			// 	this.selectedMainTags = tags;
-			// }
-			// data.main_tags.map( el => {
-			// 	// console.log(el.id)
-			// })
-			// console.log(this.selectedMainTags);
-			// // console.log([data.id_city_const_type].select(this.cities[data.id_city_const_type].value))
 		});
 	}
+
+	click() {
+
+	}
+
 	sendData() {
+		if (this.open_hours.length > 0) {
+			const open_hours_template = this.open_hours_template.filter( (element, index) => {
+				if( element.kitchen_hour_from || element.kitchen_hour_to || element.local_hour_from
+					|| element.local_hour_to || element.delivery_hour_from || element.delivery_hour_to) {
+					return element;
+				}
+			});
+			const open_hours = this.open_hours.map( (hours, hoursIndex) => {
+				open_hours_template.map( hoursTemplate => {
+					if (hours.id_week_day === hoursTemplate.id_week_day) {
+						this.open_hours[hoursIndex] = hoursTemplate;
+					}
+				});
+			});
+		} else {
+			this.open_hours = this.open_hours_template;
+			// console.log(this.open_hours);
+		}
 		// // console.log(this.filedata.name)
 		// // console.log({
 		// 	id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1', image: this.filedata
@@ -320,37 +365,32 @@ export class RestaurantsComponent implements OnInit {
 		// 	this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
 		// });
 	}
-	selectDay(el, i) {
+	selectDay(i) {
 		// console.log(i);
 		this.selectedDayId = i;
 		// this.selectedDay = true;
 		// this.selectedDayId = el > 0 ? el - 1 : el;
 	}
+
 	selectMainTags(value) {
-		if ( value.length <= 3 && value.length > 0) {
+		console.log(value);
+		if ( value.value.length <= 3 && value.value.length > 0) {
 			this.tags.push({
-				id: value[value.length - 1].id,
+				id: value.value[value.value.length - 1].id,
 				priority_status: true
 			});
+			console.log(this.tags);
+			// this.tagList = this.tagList.filter( tag => {
 
-			this.tagList = this.tagList.filter( tag => {
+			// 	return tag.id !== value.value[value.value.length - 1].id;
 
-				return tag.id !== value[value.length - 1].id;
-
-			});
+			// });
+		} else {
+			// this.selectedMainTags.shift();
 		}
 	}
 
 	selectSecondaryTags(value) {
-		// if (this.selectedSecondaryTags.length > 3) {
-			// console.log(this.selectedSecondaryTags);
-			// this.selectedSecondaryTags.filter(tag => {
-			// 	this.tags.push({
-			// 		id: tag,
-			// 		priority_status: false
-			// 	});
-			// });
-		// } else {
 
 			if ( value[value.length - 1] ) {
 				this.tags.push({
@@ -364,51 +404,10 @@ export class RestaurantsComponent implements OnInit {
 
 				});
 			}
-		// }
-		// console.log(this.selectedMainTags);
 	}
-	// selectMainTags(value) {
-	// 	// console.log(value, value[value.length - 1]);
-	// 	// // console.log(this.selectedMainTags.length)
-	// 	if (value[value.length - 1]) {
-	// 		if ((this.selectedMainTags.length - 1) < 3) {
-	// 			// // console.log('dodalem')
-	// 			this.tags.push({
-	// 				id: value[value.length - 1].id,
-	// 				priority_status: true
-	// 			});
-	// 			this.tagList = this.tagList.filter( tag => {
-	// 				if (tag.id === value[value.length - 1].id) {
-	// 					this.usedTags.push(value[value.length - 1]);
 
-	// 					// console.log(this.tags);
-	// 				}
-	// 				return tag.id !== value[value.length - 1].id;
-
-	// 			});
-	// 			// if (this.tags.length >= 3) {
-	// 			// 	this.tagList.map(
-	// 			// 		tag => {
-	// 			// 			return tag.disabled = !tag.disabled;
-	// 			// 		}
-	// 			// 	)
-	// 			// }
-	// 		}
-	// 	}
-	// }
-
-	// selectSecondaryTags(value) {
-
-	// 	if (value[value.length - 1]) {
-	// 		this.tagList = this.tagList.filter( tag => tag.id !== value[value.length - 1].id);
-	// 		this.tags.push({
-	// 			id: value[value.length - 1].id,
-	// 			priority_status: false
-	// 		});
-	// 	}
-	// }
 	remove(value) {
-		// console.log(value);
+		console.log(value);
 		this.tags = this.tags.filter(tag => {
 			// return tag.id !== value.value.
 			// console.log(tag);

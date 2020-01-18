@@ -5,12 +5,14 @@ import { catchError, retry, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AlertService } from './alert.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class ConnectionService {
-
+	private tokenSource = new BehaviorSubject<boolean>(false);
+	token = this.tokenSource.asObservable();
 	mainUrl = 'http://repo.foodini.net.pl/';
 
 	httpOptions = {};
@@ -43,8 +45,9 @@ export class ConnectionService {
 				if (data && data['access_token']) {
 					console.log(data['access_token']);
 					this.setToken(data['access_token']);
+					this.tokenSource.next(true);
 				}
-				return this.router.navigateByUrl('add-restaurant');
+				return this.router.navigateByUrl('/add-restaurant');
 			},
 			response => {
 				console.log(response);

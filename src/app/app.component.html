@@ -1,5 +1,5 @@
 <!--Navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark primary-color mb-5">
+<nav class="navbar navbar-expand-lg mb-5">
 	<!-- Navbar brand -->
 	<a class="navbar-brand" href="#">Foodini</a>
 
@@ -12,25 +12,27 @@
 	<!-- Collapsible content -->
 	<div class="collapse navbar-collapse" id="basicExampleNav">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item"  routerLinkActive="active">
-				<a class="nav-link" [routerLink]="['/list-coupons']">Lista kuponów</a>
-			</li>
-			<li class="nav-item"  routerLinkActive="active">
-				<a class="nav-link" [routerLink]="['/list-restaurants']">Lista restauracji</a>
-			</li>
-			<li class="nav-item"  routerLinkActive="active">
-				<a class="nav-link" [routerLink]="['/list-tags']">Lista tagów</a>
-			</li>
-			<li class="nav-item"  routerLinkActive="active">
-				<a class="nav-link" [routerLink]="['/add-coupon']">Dodawanie kuponu</a>
-			</li>
-			<li class="nav-item" routerLinkActive="active">
-				<a class="nav-link" [routerLink]="['/add-restaurant']">Dodawanie restauracji</a>
-			</li>
-			<li class="nav-item" routerLinkActive="active">
-				<a class="nav-link" [routerLink]="['/add-tags']">Dodawanie tagów</a>
-			</li>
-			<li class="nav-item" routerLinkActive="active">
+			<div class="d-flex" *ngIf="token">
+				<li class="nav-item"  routerLinkActive="active">
+					<a class="nav-link" [routerLink]="['/list-coupons']">Lista kuponów</a>
+				</li>
+				<li class="nav-item"  routerLinkActive="active">
+					<a class="nav-link" [routerLink]="['/list-restaurants']">Lista restauracji</a>
+				</li>
+				<li class="nav-item"  routerLinkActive="active">
+					<a class="nav-link" [routerLink]="['/list-tags']">Lista tagów</a>
+				</li>
+				<li class="nav-item"  routerLinkActive="active">
+					<a class="nav-link" [routerLink]="['/add-coupon']">Dodawanie kuponu</a>
+				</li>
+				<li class="nav-item" routerLinkActive="active">
+					<a class="nav-link" [routerLink]="['/add-restaurant']">Dodawanie restauracji</a>
+				</li>
+				<li class="nav-item" routerLinkActive="active">
+					<a class="nav-link" [routerLink]="['/add-tags']">Dodawanie tagów</a>
+				</li>
+			</div>
+			<li class="nav-item" routerLinkActive="active" *ngIf="!token">
 				<a class="nav-link" [routerLink]="['/login']">Logowanie</a>
 			</li>
 		</ul>

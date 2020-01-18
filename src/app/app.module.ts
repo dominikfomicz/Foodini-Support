@@ -26,6 +26,9 @@ import { ListTagsComponent } from './pages/list-tags/list-tags.component';
 import { LoaderComponent } from './components/loader/loader.component';
 
 
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { SelectDropDownModule } from 'ngx-select-dropdown'
+
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -48,9 +51,10 @@ import { LoaderComponent } from './components/loader/loader.component';
 		ReactiveFormsModule,
 		AgGridModule.withComponents([
 		]),
-		NgSelectModule
+		NgSelectModule,
+		SelectDropDownModule
 	],
-	providers: [ConnectionService, AuthService, AuthGuard, AlertService],
+	providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}, ConnectionService, AuthService, AuthGuard, AlertService],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
