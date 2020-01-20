@@ -157,7 +157,7 @@
                                             {{tag.name}}
                                         </ng-option>
                                     </ng-select> -->
-                                    <ngx-select-dropdown  (change)="selectMainTags($event)" [multiple]="true" name="mainTags" [(ngModel)]="selectedMainTags"  [options]="tagList" [config]="config"></ngx-select-dropdown >
+                                    <ngx-select-dropdown (change)="selectMainTags($event)" [multiple]="true" name="mainTags" [(ngModel)]="selectedMainTags"  [options]="tagList" [config]="config"></ngx-select-dropdown >
                                     <!-- <label for="mainTags">Tagi główne (max 3)</label> -->
                                 </div>
                             </div>
@@ -170,7 +170,8 @@
                                     (remove)="remove($event)">
                                         <ng-option *ngFor="let tag of tagList" [value]="tag" >{{tag.name}}</ng-option>
                                     </ng-select> -->
-                                    <ngx-select-dropdown  (change)="selectSecondaryTags($event)" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags"  [options]="tagList" [config]="config"></ngx-select-dropdown >
+                                    <!-- <ngx-select-dropdown  (change)="selectSecondaryTags($event)" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags"  [options]="tagList" [config]="config2"></ngx-select-dropdown > -->
+                                    <ngx-select-dropdown (change)="selectSecondaryTags($event)" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags"  [options]="tagList" [config]="config2"></ngx-select-dropdown >
 
                                 </div>
                             </div>

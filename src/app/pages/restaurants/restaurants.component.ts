@@ -156,7 +156,7 @@ export class RestaurantsComponent implements OnInit {
 	id_local_data_main = -1;
 
 	tagList;
-
+	tagListBase;
 	usedTags = [];
 	myFormData = new FormData();
 	uploadedLogo;
@@ -170,17 +170,29 @@ export class RestaurantsComponent implements OnInit {
 		displayKey: 'name',
 		search: true, // true/false for the search functionlity defaults to false,
 		height: '300px', // height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
-		placeholder: 'Select', // text to be displayed when no item is selected defaults to Select,
+		placeholder: 'Wybierz tag główny', // text to be displayed when no item is selected defaults to Select,
 		customComparator: ()=>{}, // a custom function using which user wants to sort the items. default is undefined and Array.sort() will be used in that case,
 		limitTo: 0, // a number thats limits the no of options displayed in the UI similar to angular's limitTo pipe
-		moreText: 'more', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
-		noResultsFound: 'No results found!', // text to be displayed when no items are found while searching
-		searchPlaceholder: 'Search', // label thats displayed in search input,
+		moreText: 'więcej', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
+		noResultsFound: 'Nic nie znaleziono!', // text to be displayed when no items are found while searching
+		searchPlaceholder: 'Szukaj', // label thats displayed in search input,
+		searchOnKey: 'name', // key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
+		clearOnSelection: true, // clears search criteria when an option is selected if set to true, default is false
+	};
+	config2 = {
+		displayKey: 'name',
+		search: true, // true/false for the search functionlity defaults to false,
+		height: '300px', // height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
+		placeholder: 'Wybierz tag dodatkowy', // text to be displayed when no item is selected defaults to Select,
+		customComparator: ()=>{}, // a custom function using which user wants to sort the items. default is undefined and Array.sort() will be used in that case,
+		limitTo: 0, // a number thats limits the no of options displayed in the UI similar to angular's limitTo pipe
+		moreText: 'więcej', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
+		noResultsFound: 'Nic nie znaleziono!', // text to be displayed when no items are found while searching
+		searchPlaceholder: 'Szukaj', // label thats displayed in search input,
 		searchOnKey: 'name', // key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
 		clearOnSelection: true, // clears search criteria when an option is selected if set to true, default is false
 	};
 
-	arr = [];
 	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
@@ -190,7 +202,6 @@ export class RestaurantsComponent implements OnInit {
 			(params) => {
 				if (params.id) {
 					this.id_local_data_main = params.id;
-					this.getData(this.id_local_data_main);
 				}
 			}
 		);
@@ -212,9 +223,12 @@ export class RestaurantsComponent implements OnInit {
 			// 	}
 			// }
 			this.tagList = data;
-			// console.log(data);
+			this.tagListBase = this.tagList;
+
 			this.loadingPage = false;
-			this.arr.push({id: 1, description: 'Adding new item'})
+			if (this.id_local_data_main > 0) {
+				this.getData(this.id_local_data_main);
+			}
 		});
 	}
 	getData(id) {
@@ -278,10 +292,18 @@ export class RestaurantsComponent implements OnInit {
 			for (let i = 0; i < newDataMainTags.length; i++) {
 				main_tags.push(newDataMainTags[i]);
 				this.selectedMainTags = main_tags;
+				console.log( this.selectedMainTags.length);
 				// // // console.log(data.main_tags[i])
 				this.tags.push({
 					id: newDataMainTags[i].id,
 					priority_status: true
+				});
+				this.tagList = this.tagList.filter( tag => {
+					// if (tag.id === newDataMainTags[i].id) {
+					// 	this.usedTags.push(tag);
+					// }
+					return tag.id !== newDataMainTags[i].id;
+
 				});
 			}
 			const secondary_tags = [];
@@ -294,6 +316,14 @@ export class RestaurantsComponent implements OnInit {
 					id: newDataSecondaryTags[i].id,
 					priority_status: false
 				});
+				this.tagList = this.tagList.filter( tag => {
+					// if (tag.id === newDataSecondaryTags[i].id) {
+					// 	this.usedTags.push(tag);
+					// }
+					return tag.id !== newDataSecondaryTags[i].id;
+
+				});
+				// console.log(this.usedTags)
 			}
 		});
 	}
@@ -305,7 +335,7 @@ export class RestaurantsComponent implements OnInit {
 	sendData() {
 		if (this.open_hours.length > 0) {
 			const open_hours_template = this.open_hours_template.filter( (element, index) => {
-				if( element.kitchen_hour_from || element.kitchen_hour_to || element.local_hour_from
+				if ( element.kitchen_hour_from || element.kitchen_hour_to || element.local_hour_from
 					|| element.local_hour_to || element.delivery_hour_from || element.delivery_hour_to) {
 					return element;
 				}
@@ -354,69 +384,63 @@ export class RestaurantsComponent implements OnInit {
 							// console.log(data);
 							this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
 		});
-
-		// // console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
-		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours),
-		//  image: this.filedata})
-		// this.connection.test({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
-		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours),
-		//  image: this.filedata}).subscribe(data => {
-		// 	// console.log(data);
-		// 	this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
-		// });
 	}
 	selectDay(i) {
-		// console.log(i);
 		this.selectedDayId = i;
-		// this.selectedDay = true;
-		// this.selectedDayId = el > 0 ? el - 1 : el;
 	}
 
 	selectMainTags(value) {
-		console.log(value);
-		if ( value.value.length <= 3 && value.value.length > 0) {
-			this.tags.push({
-				id: value.value[value.value.length - 1].id,
-				priority_status: true
-			});
-			console.log(this.tags);
-			// this.tagList = this.tagList.filter( tag => {
+		if ( value.value ) {
+			if ( value.value.length <= 3) {
+				console.log('Dodaje');
+				this.tags = [];
+				value.value.map ( tag => {
+					this.tags.push({
+						id: tag.id,
+						priority_status: true
+					});
+				});
+				// console.log(value.value)
+				this.tagList.filter( tag => {
+					if (value.value[value.value.length - 1]) {
+						return tag.id !== value.value[value.value.length - 1].id;
+					}
 
-			// 	return tag.id !== value.value[value.value.length - 1].id;
-
-			// });
-		} else {
-			// this.selectedMainTags.shift();
+				});
+			} else {
+				this.tagList = [...this.tagList, value.value[0]];
+				value.value.shift();
+			}
 		}
+		console.log(this.tags);
 	}
 
 	selectSecondaryTags(value) {
-
-			if ( value[value.length - 1] ) {
-				this.tags.push({
-					id: value[value.length - 1].id,
-					priority_status: false
-				});
-
-				this.tagList = this.tagList.filter( tag => {
-
-					return tag.id !== value[value.length - 1].id;
-
-				});
+		console.log(value.value)
+			if (value.value) {
+				if ( value.value[value.value.length - 1] ) {
+					// this.tags.push({
+					// 	id: value.value[value.value.length - 1].id,
+					// 	priority_status: false
+					// });
+					// this.tagList = this.tagList.filter( tag => {
+					// 	return tag.id !== value.value[value.value.length - 1].id;
+					// });
+					console.log('Dodaje');
+					this.tags = [];
+					value.value.map ( tag => {
+						this.tags.push({
+							id: tag.id,
+							priority_status: false
+						});
+					});
+					// this.tagList.filter( tag => {
+					// 	if (value.value[value.value.length - 1]) {
+					// 		return tag.id !== value.value[value.value.length - 1].id;
+					// 	}
+					// });
+				}
 			}
-	}
-
-	remove(value) {
-		console.log(value);
-		this.tags = this.tags.filter(tag => {
-			// return tag.id !== value.value.
-			// console.log(tag);
-			if (tag.id !== value.value.id) {
-				return tag.id;
-			}
-			// return tag.id !== value.value.id;
-		});
-		// console.log(this.tags)
 	}
 
 	uploadLogo(e) {

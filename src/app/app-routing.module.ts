@@ -10,7 +10,7 @@ import { TagsComponent } from './pages/tags/tags.component';
 import { ListTagsComponent } from './pages/list-tags/list-tags.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent},
+  { path: '', component: LoginComponent},
   { path: 'list-restaurants', component: ListRestaurantsComponent, canActivate: [AuthGuard]},
   { path: 'list-coupons', component: ListCouponsComponent, canActivate: [AuthGuard]},
   { path: 'add-restaurant', component: RestaurantsComponent, canActivate: [AuthGuard]},

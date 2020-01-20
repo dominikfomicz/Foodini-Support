@@ -19,7 +19,9 @@ export class ListRestaurantsComponent implements OnInit {
 
 
 	ngOnInit() {
-		this.connection.getDataByGet('/locals/getList/1').subscribe(data => {
+
+		this.connection.getDataByPost('tools/getList',
+						{app_list_string: 'LocalDataMain'}).subscribe(data => {
 			this.items = data;
 			console.log(data);
 		});

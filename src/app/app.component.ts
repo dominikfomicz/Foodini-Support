@@ -1,6 +1,7 @@
 import { Component, OnInit, Injectable, HostListener } from '@angular/core';
 import { LocationStrategy } from '@angular/common';
 import { ConnectionService } from './core/services/connection.service';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
 	selector: 'app-root',
@@ -10,13 +11,13 @@ import { ConnectionService } from './core/services/connection.service';
 export class AppComponent implements OnInit {
 	token;
 
-	constructor (private connect: ConnectionService) {
+	constructor (private auth: AuthService) {
 	}
 
 	ngOnInit() {
-		this.connect.token.subscribe( (state: boolean) => {
+		this.auth.token.subscribe( (state: boolean) => {
 			this.token = state;
-		})
+		});
 		// this.token = this.connect.tokenStatusObservable ? this.connect.tokenStatusObservable : this.connect.getToken();
 	}
 	@HostListener('document:keydown', ['$event'])

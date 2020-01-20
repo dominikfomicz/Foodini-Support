@@ -11,8 +11,6 @@ import { BehaviorSubject } from 'rxjs';
 	providedIn: 'root'
 })
 export class ConnectionService {
-	private tokenSource = new BehaviorSubject<boolean>(false);
-	token = this.tokenSource.asObservable();
 	mainUrl = 'http://repo.foodini.net.pl/';
 
 	httpOptions = {};
@@ -40,18 +38,7 @@ export class ConnectionService {
 			.set('scope', '')
 			.set('grant_type', 'password');
 
-		return this.http.post('http://repo.foodini.net.pl/oauth/token', post_data, this.httpOptions).subscribe(
-			(data) => {
-				if (data && data['access_token']) {
-					console.log(data['access_token']);
-					this.setToken(data['access_token']);
-					this.tokenSource.next(true);
-				}
-				return this.router.navigateByUrl('/add-restaurant');
-			},
-			response => {
-				console.log(response);
-			});
+		return this.http.post('http://repo.foodini.net.pl/oauth/token', post_data, this.httpOptions);
 	}
 
 	getDataByPost(url: String, post_data: any) {
@@ -136,7 +123,7 @@ export class ConnectionService {
 			);
 	}
 
-	selectItem(app_list_string){
+	selectItem(app_list_string) {
 		return this.getDataByPost('tools/getList', {app_list_string: app_list_string});
 	}
 

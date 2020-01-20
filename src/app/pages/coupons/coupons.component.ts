@@ -99,6 +99,32 @@ export class CouponsComponent implements OnInit {
 	dayName = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
 	couponTags;
 	loadingPage = true;
+	config = {
+		displayKey: 'name',
+		search: true, // true/false for the search functionlity defaults to false,
+		height: '300px', // height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
+		placeholder: 'Wybierz tag główny', // text to be displayed when no item is selected defaults to Select,
+		customComparator: ()=>{}, // a custom function using which user wants to sort the items. default is undefined and Array.sort() will be used in that case,
+		limitTo: 0, // a number thats limits the no of options displayed in the UI similar to angular's limitTo pipe
+		moreText: 'więcej', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
+		noResultsFound: 'Nic nie znaleziono!', // text to be displayed when no items are found while searching
+		searchPlaceholder: 'Szukaj', // label thats displayed in search input,
+		searchOnKey: 'name', // key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
+		clearOnSelection: true, // clears search criteria when an option is selected if set to true, default is false
+	};
+	config2 = {
+		displayKey: 'name',
+		search: true, // true/false for the search functionlity defaults to false,
+		height: '300px', // height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
+		placeholder: 'Wybierz tag dodatkowy', // text to be displayed when no item is selected defaults to Select,
+		customComparator: ()=>{}, // a custom function using which user wants to sort the items. default is undefined and Array.sort() will be used in that case,
+		limitTo: 0, // a number thats limits the no of options displayed in the UI similar to angular's limitTo pipe
+		moreText: 'więcej', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
+		noResultsFound: 'Nic nie znaleziono!', // text to be displayed when no items are found while searching
+		searchPlaceholder: 'Szukaj', // label thats displayed in search input,
+		searchOnKey: 'name', // key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
+		clearOnSelection: true, // clears search criteria when an option is selected if set to true, default is false
+	};
 	constructor(private router: Router, private route: ActivatedRoute,  public connection: ConnectionService, public alert: AlertService) {
 
 		this.route.params.subscribe(
@@ -168,7 +194,7 @@ export class CouponsComponent implements OnInit {
 								const secondary_tags = [];
 								for (let i = 0; i < this.couponTags.length; i++) {
 									if (this.couponTags[i].is_main) {
-										main_tags.push(this.couponTags[i].id);
+										main_tags.push(this.couponTags[i]);
 										this.selectedMainTags = main_tags;
 
 										console.log(this.tagList);
@@ -176,13 +202,27 @@ export class CouponsComponent implements OnInit {
 											id: this.couponTags[i].id,
 											priority_status: this.couponTags[i].is_main
 										});
+										this.tagList = this.tagList.filter( tag => {
+											// if (tag.id === newDataMainTags[i].id) {
+											// 	this.usedTags.push(tag);
+											// }
+											return tag.id !== this.couponTags[i].id;
+
+										});
 									} else {
-										secondary_tags.push(this.couponTags[i].id);
+										secondary_tags.push(this.couponTags[i]);
 										this.selectedSecondaryTags = secondary_tags;
 										// // // console.log(data.main_tags[i])
 										this.tags.push({
 											id: this.couponTags[i].id,
 											priority_status: this.couponTags[i].is_main
+										});
+										this.tagList = this.tagList.filter( tag => {
+											// if (tag.id === newDataSecondaryTags[i].id) {
+											// 	this.usedTags.push(tag);
+											// }
+											return tag.id !== this.couponTags[i].id;
+
 										});
 									}
 								}
@@ -269,45 +309,92 @@ export class CouponsComponent implements OnInit {
 	// 	}
 	// }
 	selectMainTags(value) {
-		if ( value.length <= 3 && value.length > 0) {
-			this.tags.push({
-				id: value[value.length - 1].id,
-				priority_status: true
-			});
+		// if ( value.length <= 3 && value.length > 0) {
+		// 	this.tags.push({
+		// 		id: value[value.length - 1].id,
+		// 		priority_status: true
+		// 	});
 
-			this.tagList = this.tagList.filter( tag => {
+		// 	this.tagList = this.tagList.filter( tag => {
 
-				return tag.id !== value[value.length - 1].id;
+		// 		return tag.id !== value[value.length - 1].id;
 
-			});
+		// 	});
+		// }
+		if ( value.value ) {
+			if ( value.value.length <= 3) {
+				console.log('Dodaje');
+				this.tags = [];
+				value.value.map ( tag => {
+					this.tags.push({
+						id: tag.id,
+						priority_status: true
+					});
+				});
+				this.tagList.filter( tag => {
+					if (value.value[value.value.length - 1]) {
+						return tag.id !== value.value[value.value.length - 1].id;
+					}
+				});
+			} else {
+				this.tagList = [...this.tagList, value.value[0]];
+				value.value.shift();
+			}
 		}
+		console.log(this.tags);
 	}
 
 	selectSecondaryTags(value) {
-		// if (this.selectedSecondaryTags.length > 3) {
-			// console.log(this.selectedSecondaryTags);
-			// this.selectedSecondaryTags.filter(tag => {
-			// 	this.tags.push({
-			// 		id: tag,
-			// 		priority_status: false
-			// 	});
-			// });
-		// } else {
-			if ( value[value.length - 1] ) {
-				this.tags.push({
-					id: value[value.length - 1].id,
-					priority_status: false
-				});
+		// // if (this.selectedSecondaryTags.length > 3) {
+		// 	// console.log(this.selectedSecondaryTags);
+		// 	// this.selectedSecondaryTags.filter(tag => {
+		// 	// 	this.tags.push({
+		// 	// 		id: tag,
+		// 	// 		priority_status: false
+		// 	// 	});
+		// 	// });
+		// // } else {
+		// 	if ( value[value.length - 1] ) {
+		// 		this.tags.push({
+		// 			id: value[value.length - 1].id,
+		// 			priority_status: false
+		// 		});
 
-				this.tagList = this.tagList.filter( tag => {
+		// 		this.tagList = this.tagList.filter( tag => {
 
-					return tag.id !== value[value.length - 1].id;
+		// 			return tag.id !== value[value.length - 1].id;
 
-				});
+		// 		});
+		// 	}
+
+		// // }
+		// // console.log(this.selectedMainTags);
+		console.log(value.value)
+			if (value.value) {
+				if ( value.value[value.value.length - 1] ) {
+					// this.tags.push({
+					// 	id: value.value[value.value.length - 1].id,
+					// 	priority_status: false
+					// });
+					// this.tagList = this.tagList.filter( tag => {
+					// 	return tag.id !== value.value[value.value.length - 1].id;
+					// });
+					console.log('Dodaje');
+					this.tags = [];
+					value.value.map ( tag => {
+						this.tags.push({
+							id: tag.id,
+							priority_status: false
+						});
+					});
+					// this.tagList.filter( tag => {
+
+					// 	if (value.value[value.value.length - 1]) {
+					// 		return tag.id !== value.value[value.value.length - 1].id;
+					// 	}
+					// });
+				}
 			}
-
-		// }
-		// console.log(this.selectedMainTags);
 	}
 
 	// selectSecondaryTags(value) {

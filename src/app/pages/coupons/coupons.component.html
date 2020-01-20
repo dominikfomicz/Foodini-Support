@@ -69,28 +69,31 @@
                         <div class="row">
                             <div class="col">
                                 <div class="md-form">
-                                    <ng-select id="mainTags"
+                                    <!-- <ng-select id="mainTags"
                                     bindValue="id" [multiple]="true" name="mainTags" [selectableGroup]="true"
                                     placeholder="Tagi główne (max 3)"
                                     [closeOnSelect]="false" [(ngModel)]="selectedMainTags" (change)="selectMainTags($event)"
                                     (remove)="remove($event)">
                                         <ng-option *ngFor="let tag of tagList" [value]="tag">
-                                            <!-- <input id="item-{{tag.id}}" type="checkbox"/> -->
                                             {{tag.name}}
                                         </ng-option>
-                                    </ng-select>
+                                    </ng-select> -->
+                                    <ngx-select-dropdown (change)="selectMainTags($event)" [multiple]="true" name="mainTags" [(ngModel)]="selectedMainTags"  [options]="tagList" [config]="config"></ngx-select-dropdown >
+
                                     <!-- <label for="mainTags">Tagi główne (max 3)</label> -->
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="md-form">
-                                    <ng-select id="secondaryTags"
+                                    <!-- <ng-select id="secondaryTags"
                                     placeholder="Tagi dodatkowe" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags"
                                     bindValue="id" [multiple]="true" [selectableGroup]="true"
                                     [closeOnSelect]="false" (change)="selectSecondaryTags($event)"
                                     (remove)="remove($event)">
                                         <ng-option *ngFor="let tag of tagList" [value]="tag" >{{tag.name}}</ng-option>
-                                    </ng-select>
+                                    </ng-select> -->
+                                    <ngx-select-dropdown (change)="selectSecondaryTags($event)" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags"  [options]="tagList" [config]="config2"></ngx-select-dropdown >
+
                                 </div>
                             </div>
                         </div>
