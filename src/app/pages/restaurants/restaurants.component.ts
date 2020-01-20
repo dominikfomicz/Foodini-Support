@@ -28,25 +28,9 @@ export class RestaurantsComponent implements OnInit {
 	couponTitle: string;
 	couponText: string;
 	count: number;
-	mainTags = [{
-		value: 0, name: 'Pizza', disabled: false
-	}, {
-		value: 1, name: 'Pasta', disabled: false
-	}, {
-		value: 2, name: 'Parmesan', disabled: false
-	}, {
-		value: 2, name: 'Test2', disabled: false
-	}, {
-		value: 2, name: 'test3', disabled: false
-	}];
+	mainTags = [];
 
-	secondaryTags = [{
-		value: 0, name: 'Makaron', disabled: false
-	}, {
-		value: 1, name: 'Makaron2', disabled: false
-	}, {
-		value: 2, name: 'Makaron3', disabled: false
-	}];
+	secondaryTags = [];
 
 	open_hours_template = [
 		{
@@ -294,7 +278,7 @@ export class RestaurantsComponent implements OnInit {
 				this.selectedMainTags = main_tags;
 				console.log( this.selectedMainTags.length);
 				// // // console.log(data.main_tags[i])
-				this.tags.push({
+				this.mainTags.push({
 					id: newDataMainTags[i].id,
 					priority_status: true
 				});
@@ -312,7 +296,7 @@ export class RestaurantsComponent implements OnInit {
 			for (let i = 0; i < newDataSecondaryTags.length; i++) {
 				secondary_tags.push(newDataSecondaryTags[i]);
 				this.selectedSecondaryTags = secondary_tags;
-				this.tags.push({
+				this.secondaryTags.push({
 					id: newDataSecondaryTags[i].id,
 					priority_status: false
 				});
@@ -358,6 +342,7 @@ export class RestaurantsComponent implements OnInit {
 		// // console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
 		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours),
 		//  image: this.myFormData});
+		this.tags = [...this.mainTags, ...this.secondaryTags]
 		console.log(this.tags);
 		// this.local_data.id_city_const_type = this.cityName.value;
 		this.myFormData.append('id_local_data_main', this.id_local_data_main.toString());
@@ -393,9 +378,9 @@ export class RestaurantsComponent implements OnInit {
 		if ( value.value ) {
 			if ( value.value.length <= 3) {
 				console.log('Dodaje');
-				this.tags = [];
+				this.mainTags = [];
 				value.value.map ( tag => {
-					this.tags.push({
+					this.mainTags.push({
 						id: tag.id,
 						priority_status: true
 					});
@@ -412,13 +397,13 @@ export class RestaurantsComponent implements OnInit {
 				value.value.shift();
 			}
 		}
-		console.log(this.tags);
+		console.log(this.mainTags);
 	}
 
 	selectSecondaryTags(value) {
 		console.log(value.value)
 			if (value.value) {
-				if ( value.value[value.value.length - 1] ) {
+				// if ( value.value[value.value.length - 1] ) {
 					// this.tags.push({
 					// 	id: value.value[value.value.length - 1].id,
 					// 	priority_status: false
@@ -427,9 +412,9 @@ export class RestaurantsComponent implements OnInit {
 					// 	return tag.id !== value.value[value.value.length - 1].id;
 					// });
 					console.log('Dodaje');
-					this.tags = [];
+					this.secondaryTags = [];
 					value.value.map ( tag => {
-						this.tags.push({
+						this.secondaryTags.push({
 							id: tag.id,
 							priority_status: false
 						});
@@ -439,7 +424,7 @@ export class RestaurantsComponent implements OnInit {
 					// 		return tag.id !== value.value[value.value.length - 1].id;
 					// 	}
 					// });
-				}
+				// }
 			}
 	}
 

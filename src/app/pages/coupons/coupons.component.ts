@@ -15,20 +15,8 @@ export class CouponsComponent implements OnInit {
 	couponTitle: string;
 	couponText: string;
 	count: number;
-	mainTags = [{
-		value: 0, name: 'Pizza'
-	}, {
-		value: 1, name: 'Pasta'
-	}, {
-		value: 2, name: 'Parmesan'
-	}];
-	secondaryTags =  [{
-		value: 0, name: 'Napoje'
-	}, {
-		value: 1, name: 'Soki'
-	}, {
-		value: 2, name: 'Wigilie'
-	}];
+	mainTags = [];
+	secondaryTags =  [];
 
 	tags = [];
 	selectedMainTags;
@@ -198,7 +186,7 @@ export class CouponsComponent implements OnInit {
 										this.selectedMainTags = main_tags;
 
 										console.log(this.tagList);
-										this.tags.push({
+										this.mainTags.push({
 											id: this.couponTags[i].id,
 											priority_status: this.couponTags[i].is_main
 										});
@@ -213,7 +201,7 @@ export class CouponsComponent implements OnInit {
 										secondary_tags.push(this.couponTags[i]);
 										this.selectedSecondaryTags = secondary_tags;
 										// // // console.log(data.main_tags[i])
-										this.tags.push({
+										this.secondaryTags.push({
 											id: this.couponTags[i].id,
 											priority_status: this.couponTags[i].is_main
 										});
@@ -245,6 +233,7 @@ export class CouponsComponent implements OnInit {
 		// console.log(this.tags);
 		// console.log({id_coupon_data_main: this.id_coupon_data_main, id_local_data_main: this.selectedLocal,
 		// 	coupon_data: this.coupon_data, tags: this.tags});
+		this.tags = [...this.mainTags, ...this.secondaryTags]
 		console.log(this.tags);
 		this.myFormData.append('id_coupon_data_main', this.id_coupon_data_main);
 		this.myFormData.append('id_local_data_main', this.selectedLocal);
@@ -324,9 +313,9 @@ export class CouponsComponent implements OnInit {
 		if ( value.value ) {
 			if ( value.value.length <= 3) {
 				console.log('Dodaje');
-				this.tags = [];
+				this.mainTags = [];
 				value.value.map ( tag => {
-					this.tags.push({
+					this.mainTags.push({
 						id: tag.id,
 						priority_status: true
 					});
@@ -371,7 +360,7 @@ export class CouponsComponent implements OnInit {
 		// // console.log(this.selectedMainTags);
 		console.log(value.value)
 			if (value.value) {
-				if ( value.value[value.value.length - 1] ) {
+				// if ( value.value[value.value.length - 1] ) {
 					// this.tags.push({
 					// 	id: value.value[value.value.length - 1].id,
 					// 	priority_status: false
@@ -380,9 +369,9 @@ export class CouponsComponent implements OnInit {
 					// 	return tag.id !== value.value[value.value.length - 1].id;
 					// });
 					console.log('Dodaje');
-					this.tags = [];
+					this.secondaryTags = [];
 					value.value.map ( tag => {
-						this.tags.push({
+						this.secondaryTags.push({
 							id: tag.id,
 							priority_status: false
 						});
@@ -393,7 +382,7 @@ export class CouponsComponent implements OnInit {
 					// 		return tag.id !== value.value[value.value.length - 1].id;
 					// 	}
 					// });
-				}
+				// }
 			}
 	}
 
