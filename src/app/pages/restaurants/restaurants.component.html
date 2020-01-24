@@ -204,7 +204,7 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="openLocalTo" class="form-control" name="openLocalTo" [(ngModel)]="open_hours_template[selectedDayId].local_hour_to" [disabled]="!open_hours_template[selectedDayId].local_hour_from && (!local_data.pick_up_local || !local_data.eat_in_local)"  mdbInput>
+                                    <input type="time" id="openLocalTo" class="form-control" name="openLocalTo" [(ngModel)]="open_hours_template[selectedDayId].local_hour_to" [disabled]="!open_hours_template[selectedDayId].local_hour_from"  mdbInput>
                                     <label for="closeLocalHour">do:</label>
                                 </div>
                             </div>
@@ -224,7 +224,7 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="openKitchenTo" class="form-control" name="openKitchenTo" [(ngModel)]="open_hours_template[selectedDayId].kitchen_hour_to" [disabled]="!open_hours_template[selectedDayId].kitchen_hour_from && (!local_data.pick_up_local || !local_data.eat_in_local)"  mdbInput>
+                                    <input type="time" id="openKitchenTo" class="form-control" name="openKitchenTo" [(ngModel)]="open_hours_template[selectedDayId].kitchen_hour_to" [disabled]="!open_hours_template[selectedDayId].kitchen_hour_from"  mdbInput>
                                     <label for="closeKitchenHour">do:</label>
                                 </div>
                             </div>

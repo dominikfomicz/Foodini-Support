@@ -13,7 +13,7 @@ export class ListRestaurantsComponent implements OnInit {
 	subscription: Subscription;
 
 	public items: any = [];
-
+	showLogin = true;
 	constructor(public alert: AlertService, public router: Router, public connection: ConnectionService) { }
 
 
@@ -24,6 +24,7 @@ export class ListRestaurantsComponent implements OnInit {
 						{app_list_string: 'LocalDataMain'}).subscribe(data => {
 			this.items = data;
 			console.log(data);
+			this.showLogin = false;
 		});
 	}
 

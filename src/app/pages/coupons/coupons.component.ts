@@ -46,7 +46,7 @@ export class CouponsComponent implements OnInit {
 	uploadedLogo;
 	uploadedBackground;
 
-	open_hours = [
+	open_hours_template = [
 		{
 			id_week_day: 1,
 			hour_from: null,
@@ -83,8 +83,9 @@ export class CouponsComponent implements OnInit {
 			hour_to: null
 		}
 	];
+	open_hours = this.open_hours_template;
 	selectedDayId = 0;
-	dayName = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+	dayName = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'];
 	couponTags;
 	loadingPage = true;
 	config = {
@@ -219,6 +220,23 @@ export class CouponsComponent implements OnInit {
 		});
 	}
 	sendData() {
+		if (this.open_hours.length > 0) {
+			const open_hours_template = this.open_hours_template.filter( (element, index) => {
+				if ( element.hour_from || element.hour_to) {
+					return element;
+				}
+			});
+			const open_hours = this.open_hours.map( (hours, hoursIndex) => {
+				open_hours_template.map( hoursTemplate => {
+					if (hours.id_week_day === hoursTemplate.id_week_day) {
+						this.open_hours[hoursIndex] = hoursTemplate;
+					}
+				});
+			});
+		} else {
+			this.open_hours = this.open_hours_template;
+			// console.log(this.open_hours);
+		}
 		// const coupon = {
 		// 	title: this.couponTitle,
 		// 	description: this.couponText,
@@ -243,7 +261,7 @@ export class CouponsComponent implements OnInit {
 			this.myFormData.append('file_logo', this.logo, this.logo.name);
 		}
 		this.myFormData.append('open_hours', JSON.stringify(this.open_hours));
-
+		console.log(this.open_hours);
 
 		this.connection.addLocal('/coupons/changeCoupon', this.myFormData)
 						.subscribe(data => {
@@ -420,7 +438,7 @@ export class CouponsComponent implements OnInit {
 		this.logo = <File>e.target.files[0];
 		console.log(this.logo);
 	}
-	selectDay(el, i) {
+	selectDay(i) {
 		console.log(i);
 		this.selectedDayId = i;
 		// this.selectedDay = true;
@@ -443,7 +461,36 @@ export class CouponsComponent implements OnInit {
 			};
 			// this.coupon_data.
 			this.selectedLocal = data.id_local_data_main;
-			this.open_hours = data.available_hours;
+			// this.open_hours = data.available_hours;
+			if (data.available_hours.length > 0) {
+				// this.open_hours = data.work_hours;
+				// const open_hours_template = this.open_hours_template.filter( (element, index) => {
+				// 	if( element.kitchen_hour_from || element.kitchen_hour_to || element.local_hour_from
+				// 		|| element.local_hour_to || element.delivery_hour_from || element.delivery_hour_to) {
+				// 		return element;
+				// 	}
+				// });
+				// const open_hours = this.data.work_hours.map( (hours, index) => {
+				// 	open_hours_template.map( hoursTemplate => {
+				// 		if (hours.id_week_day === hoursTemplate.id_week_day) {
+				// 			this.open_hours[index] = hoursTemplate;
+				// 		}
+				// 	});
+				// });
+				this.open_hours_template.map( (hoursTemplate, hoursTemplateIndex) => {
+					// console.log(hoursTemplateIndex);
+					data.available_hours.map( (hours, index) => {
+						// console.log(hours);
+						if (hours) {
+							if (hoursTemplate['id_week_day'] === hours['id_week_day']) {
+								console.log(this.open_hours_template[hoursTemplateIndex], hours);
+								this.open_hours_template[hoursTemplateIndex] = hours;
+							}
+						}
+					});
+				});
+				// console.log(this.open_hours_template);
+			}
 
 			const newDataMainTags = Object.values(data.tags);
 			this.couponTags = newDataMainTags;

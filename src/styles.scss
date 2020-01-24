@@ -47,3 +47,8 @@ nav {
         }
     }
 }
+mdb-card {
+    &.card {
+        box-shadow: none !important;
+    }
+}
