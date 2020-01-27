@@ -105,6 +105,21 @@
                             <input type="checkbox" class="form-check-input" id="delivery" name="delivery" [(ngModel)]="coupon_data.mature">
                             <label class="form-check-label" for="delivery">Dla dorosłych</label>
                         </div>
+                        <div class="text-left mt-5">
+                            <p>Forma dostawy:</p>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="delivery" name="delivery" [(ngModel)]="coupon_data.delivery">
+                                <label class="form-check-label" for="delivery">Dowóz</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="eat_in_local" name="eat_in_local" [(ngModel)]="coupon_data.eat_in_local">
+                                <label class="form-check-label" for="eat_in_local">Na miejscu</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="pick_up_local" name="pick_up_local" [(ngModel)]="coupon_data.pick_up_local">
+                                <label class="form-check-label" for="pick_up_local">Odbiór osobisty</label>
+                            </div>
+                        </div>
                         <!-- <ul class="nav grey day_tab lighten-4 py-4 mt-5">
                             <li class="nav-item" *ngFor="let item of open_hours; let i = index"  [class.active]="i === selectedDayId">
                                 <div class="day ml-2 mr-2" (click)="selectDay(item.id_week_day, i)">{{dayName[i]}}</div>

@@ -177,6 +177,8 @@ export class RestaurantsComponent implements OnInit {
 		clearOnSelection: true, // clears search criteria when an option is selected if set to true, default is false
 	};
 
+	images = [];
+	selectedFiles = [];
 	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
@@ -356,7 +358,12 @@ export class RestaurantsComponent implements OnInit {
 			this.myFormData.append('file_background', this.background, this.background.name);
 		}
 		if (this.menu) {
-			this.myFormData.append('file_menu', this.menu, this.menu.name);
+			// this.myFormData.append('files_menu', JSON.stringify(this.selectedFiles));
+			// for (let i = 0; i < this.selectedFiles.length; i++) {
+				this.myFormData.append('files_menu', JSON.stringify(this.menu));
+			// }
+			// console.log(this.menu)
+			// this.myFormData.append('files_menu', this.menu);
 		}
 
 		if (this.imgMap) {
@@ -435,10 +442,22 @@ export class RestaurantsComponent implements OnInit {
 	}
 	uploadBackground(e) {
 		this.background = <File>e.target.files[0];
-		// console.log(this.background);
+		// this.images.push(this.background);
+		// console.log(e.target);
+		// console.log(this.images);
 	}
 	uploadMenu(e) {
 		this.menu = <File>e.target.files[0];
+		// this.images.push(this.menu);
+		// console.log(this.menu = e.target.files);
+		// console.log(this.images);
+		// console.log(this.menu);
+		if (e.target.files.length) {
+			for (let i = 0 ; i < e.target.files.length; i++) {
+			  this.selectedFiles.push(<File>e.target.files[i]);
+			}
+		}
+		console.log(this.selectedFiles);
 	}
 
 	uploadFileMap(e) {
