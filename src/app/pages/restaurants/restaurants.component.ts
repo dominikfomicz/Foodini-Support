@@ -4,6 +4,7 @@ import { ConnectionService } from 'src/app/core/services/connection.service';
 import { Restaurant } from '../../model/restaurant';
 import { AlertService } from 'src/app/core/services/alert.service';
 import {NgForm} from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-restaurants',
@@ -152,33 +153,34 @@ export class RestaurantsComponent implements OnInit {
 	myDisabledCondition: boolean;
 	config = {
 		displayKey: 'name',
-		search: true, // true/false for the search functionlity defaults to false,
-		height: '300px', // height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
-		placeholder: 'Wybierz tag główny', // text to be displayed when no item is selected defaults to Select,
-		customComparator: ()=>{}, // a custom function using which user wants to sort the items. default is undefined and Array.sort() will be used in that case,
-		limitTo: 0, // a number thats limits the no of options displayed in the UI similar to angular's limitTo pipe
-		moreText: 'więcej', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
-		noResultsFound: 'Nic nie znaleziono!', // text to be displayed when no items are found while searching
-		searchPlaceholder: 'Szukaj', // label thats displayed in search input,
-		searchOnKey: 'name', // key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
-		clearOnSelection: true, // clears search criteria when an option is selected if set to true, default is false
+		search: true,
+		height: '300px',
+		placeholder: 'Wybierz tag główny',
+		customComparator: () => {},
+		limitTo: 0,
+		moreText: 'więcej',
+		noResultsFound: 'Nic nie znaleziono!',
+		searchPlaceholder: 'Szukaj',
+		searchOnKey: 'name',
+		clearOnSelection: true,
 	};
 	config2 = {
 		displayKey: 'name',
-		search: true, // true/false for the search functionlity defaults to false,
-		height: '300px', // height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
-		placeholder: 'Wybierz tag dodatkowy', // text to be displayed when no item is selected defaults to Select,
-		customComparator: ()=>{}, // a custom function using which user wants to sort the items. default is undefined and Array.sort() will be used in that case,
-		limitTo: 0, // a number thats limits the no of options displayed in the UI similar to angular's limitTo pipe
-		moreText: 'więcej', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
-		noResultsFound: 'Nic nie znaleziono!', // text to be displayed when no items are found while searching
-		searchPlaceholder: 'Szukaj', // label thats displayed in search input,
-		searchOnKey: 'name', // key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
-		clearOnSelection: true, // clears search criteria when an option is selected if set to true, default is false
+		search: true,
+		height: '300px',
+		placeholder: 'Wybierz tag dodatkowy',
+		customComparator: () => {},
+		limitTo: 0,
+		moreText: 'więcej',
+		noResultsFound: 'Nic nie znaleziono!',
+		searchPlaceholder: 'Szukaj',
+		searchOnKey: 'name',
+		clearOnSelection: true,
 	};
 
 	images = [];
 	selectedFiles = [];
+	myFiles = [];
 	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
@@ -235,7 +237,7 @@ export class RestaurantsComponent implements OnInit {
 				pick_up_local: data.pick_up_local,
 				cash_payment: data.cash_payment,
 				creditcards_payment: data.creditcards_payment ? data.creditcards_payment : false ,
-				contactless_payment: data.contactless_payment ? data.contactless_payment: false,
+				contactless_payment: data.contactless_payment ? data.contactless_payment : false,
 				blik_payment: data.blik_payment ? data.blik_payment : false,
 				delivery_range: data.delivery_range ? data.delivery_range : 0,
 				latitude: data.latitude,
@@ -319,6 +321,7 @@ export class RestaurantsComponent implements OnInit {
 	}
 
 	sendData() {
+		console.log('wqysylam')
 		if (this.open_hours.length > 0) {
 			const open_hours_template = this.open_hours_template.filter( (element, index) => {
 				if ( element.kitchen_hour_from || element.kitchen_hour_to || element.local_hour_from
@@ -344,7 +347,7 @@ export class RestaurantsComponent implements OnInit {
 		// // console.log({id_local_data_main: this.id_local_data_main ? this.id_local_data_main : '-1',
 		// local_data: JSON.stringify(this.local_data), tags: JSON.stringify(this.tags), open_hours: JSON.stringify(this.open_hours),
 		//  image: this.myFormData});
-		this.tags = [...this.mainTags, ...this.secondaryTags]
+		this.tags = [...this.mainTags, ...this.secondaryTags];
 		console.log(this.tags);
 		// this.local_data.id_city_const_type = this.cityName.value;
 		this.myFormData.append('id_local_data_main', this.id_local_data_main.toString());
@@ -357,13 +360,10 @@ export class RestaurantsComponent implements OnInit {
 		if (this.background) {
 			this.myFormData.append('file_background', this.background, this.background.name);
 		}
-		if (this.menu) {
-			// this.myFormData.append('files_menu', JSON.stringify(this.selectedFiles));
-			// for (let i = 0; i < this.selectedFiles.length; i++) {
-				this.myFormData.append('files_menu', this.menu);
-			// }
-			// console.log(this.menu)
-			// this.myFormData.append('files_menu', this.menu);
+		if (this.myFiles) {
+			for ( let i = 0; i < this.myFiles.length; i++) {
+				this.myFormData.append('file_menu[]', this.myFiles[i], this.myFiles[i].name);
+			}
 		}
 
 		if (this.imgMap) {
@@ -372,6 +372,7 @@ export class RestaurantsComponent implements OnInit {
 
 		// // console.log(this.cityName.value)
 		this.connection.addLocal('locals/changeLocal', this.myFormData)
+
 						.subscribe(data => {
 							// console.log(data);
 							this.alert.alertSuccess('Lokal został dodany').then(() => this.router.navigateByUrl('/list-restaurants'));
@@ -408,7 +409,7 @@ export class RestaurantsComponent implements OnInit {
 	}
 
 	selectSecondaryTags(value) {
-		console.log(value.value)
+		console.log(value.value);
 			if (value.value) {
 				// if ( value.value[value.value.length - 1] ) {
 					// this.tags.push({
@@ -447,20 +448,30 @@ export class RestaurantsComponent implements OnInit {
 		// console.log(this.images);
 	}
 	uploadMenu(e) {
-		this.menu = <File>e.target.files[0];
-		// this.images.push(this.menu);
-		// console.log(this.menu = e.target.files);
-		// console.log(this.images);
-		// console.log(this.menu);
-		if (e.target.files.length) {
-			for (let i = 0 ; i < e.target.files.length; i++) {
-			  this.selectedFiles.push(<File>e.target.files[i]);
+		if (e.target.files.length < 20) {
+			for (let i = 0; i < e.target.files.length; i++) {
+				this.myFiles.push(e.target.files[i]);
 			}
+		} else {
+			this.alert.alertError('Za dużo zdjęć')
 		}
-		console.log(this.selectedFiles);
+		console.log(this.myFiles)
 	}
 
 	uploadFileMap(e) {
 		this.imgMap = <File>e.target.files[0];
+	}
+	deleteMenuImage(file) {
+		// console.log(file);
+		this.myFiles = this.myFiles.filter(
+			el => {
+				if (el.name !== file.name) {
+					return el;
+					alert('istnieje')
+				}
+				console.log(el.name, '/', file.name);
+			}
+		);
+		console.log(this.myFiles)
 	}
 }

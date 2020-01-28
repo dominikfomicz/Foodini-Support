@@ -39,3 +39,16 @@ input {
     display: none;
   }
 
+.uploaded-files {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e3e3e3;
+    background-color: #f1f1f1;
+    p {
+        margin: 0 1rem 0 0;
+    }
+    a {
+        color: red;
+    }
+}

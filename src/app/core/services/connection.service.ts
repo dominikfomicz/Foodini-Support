@@ -73,7 +73,8 @@ export class ConnectionService {
 		this.httpOptions = {
 			headers: new HttpHeaders({
 				'Authorization': 'Bearer ' + this.getToken()
-			})
+			}
+			)
 		};
 
 		return this.http.post(this.mainUrl + url, post_data, this.httpOptions)
@@ -135,10 +136,10 @@ export class ConnectionService {
 			confirmButtonText: 'Ok'
 		})
 		.then((result) => {
-			// if (result.value) {
-			// 	localStorage.clear();
-			// 	this.router.navigateByUrl('login');
-			// }
+			if (result.value) {
+				localStorage.clear();
+				this.router.navigateByUrl('login');
+			}
 		});
 
 	}
