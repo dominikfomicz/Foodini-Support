@@ -360,7 +360,7 @@ export class RestaurantsComponent implements OnInit {
 		if (this.menu) {
 			// this.myFormData.append('files_menu', JSON.stringify(this.selectedFiles));
 			// for (let i = 0; i < this.selectedFiles.length; i++) {
-				this.myFormData.append('files_menu', JSON.stringify(this.menu));
+				this.myFormData.append('files_menu', this.menu);
 			// }
 			// console.log(this.menu)
 			// this.myFormData.append('files_menu', this.menu);

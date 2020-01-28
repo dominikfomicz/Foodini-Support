@@ -44,7 +44,7 @@
                             <div class="input-group">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" id="uploadMenu"
-                                    aria-describedby="uploadMenu" [(ngModel)]="uploadedMenu" name="uploadedMenu[]" (change)="uploadMenu($event)" multiple="">
+                                    aria-describedby="uploadMenu" [(ngModel)]="uploadedMenu" name="uploadedMenu" (change)="uploadMenu($event)">
                                     <label class="custom-file-label" for="uploadMenu">{{menu ? menu.name : 'Wyślij menu'}}</label>
                                 </div>
                             </div>
