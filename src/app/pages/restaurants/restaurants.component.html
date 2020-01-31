@@ -39,8 +39,11 @@
                             <div class="md-form">
                                 <div class="input-group">
                                     <div class="custom-file">
+                                        <!-- <input type="file" class="custom-file-input" id="uploadMenu"
+                                        aria-describedby="uploadMenu" [(ngModel)]="uploadedMenu" name="uploadedMenu" (change)="uploadMenu($event)"> -->
                                         <input type="file" class="custom-file-input" id="uploadMenu"
                                         aria-describedby="uploadMenu" [(ngModel)]="uploadedMenu" name="uploadedMenu[]" (change)="uploadMenu($event)" multiple="">
+                                        <!-- <label class="custom-file-label" for="uploadMenu">Wyślij menu</label> -->
                                         <label class="custom-file-label" for="uploadMenu">Wyślij menu (20 max)</label>
                                     </div>
                                 </div>

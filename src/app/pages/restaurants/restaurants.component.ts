@@ -5,6 +5,7 @@ import { Restaurant } from '../../model/restaurant';
 import { AlertService } from 'src/app/core/services/alert.service';
 import {NgForm} from '@angular/forms';
 import { map } from 'rxjs/operators';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
 	selector: 'app-restaurants',
@@ -144,6 +145,7 @@ export class RestaurantsComponent implements OnInit {
 	tagListBase;
 	usedTags = [];
 	myFormData = new FormData();
+	headers = new HttpHeaders();
 	uploadedLogo;
 	uploadedBackground;
 	uploadedMenu;
@@ -270,6 +272,7 @@ export class RestaurantsComponent implements OnInit {
 						}
 					});
 				});
+				console.log(this.local_data);
 				// console.log(this.open_hours_template);
 			}
 			console.log('main_tags' + data.main_tags);
@@ -321,6 +324,8 @@ export class RestaurantsComponent implements OnInit {
 	}
 
 	sendData() {
+		// this.headers.append('Content-Type', 'multipart/form-data');
+		// this.headers.append('Accept', 'application/json');
 		console.log('wqysylam')
 		if (this.open_hours.length > 0) {
 			const open_hours_template = this.open_hours_template.filter( (element, index) => {
@@ -371,7 +376,7 @@ export class RestaurantsComponent implements OnInit {
 		}
 
 		// // console.log(this.cityName.value)
-		this.connection.addLocal('locals/changeLocal', this.myFormData)
+		this.connection.addLocal('locals/changeLocal', this.myFormData, this.headers)
 
 						.subscribe(data => {
 							// console.log(data);
@@ -448,7 +453,7 @@ export class RestaurantsComponent implements OnInit {
 		// console.log(this.images);
 	}
 	uploadMenu(e) {
-		if (e.target.files.length < 20) {
+		if (e.target.files.length <= 20) {
 			for (let i = 0; i < e.target.files.length; i++) {
 				this.myFiles.push(e.target.files[i]);
 			}
