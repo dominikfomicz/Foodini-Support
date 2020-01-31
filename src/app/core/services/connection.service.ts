@@ -69,7 +69,7 @@ export class ConnectionService {
 			);
 	}
 
-	addLocal(url: String, post_data: any, headers) {
+	addLocal(url: String, post_data: any) {
 		this.httpOptions = {
 			headers: new HttpHeaders({
 				'Authorization': 'Bearer ' + this.getToken(),

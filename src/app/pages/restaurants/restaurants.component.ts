@@ -183,6 +183,7 @@ export class RestaurantsComponent implements OnInit {
 	images = [];
 	selectedFiles = [];
 	myFiles = [];
+	menuImageState: boolean;
 	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
@@ -324,6 +325,7 @@ export class RestaurantsComponent implements OnInit {
 	}
 
 	sendData() {
+		this.myFormData = new FormData();
 		// this.headers.append('Content-Type', 'multipart/form-data');
 		// this.headers.append('Accept', 'application/json');
 		console.log('wqysylam')
@@ -365,18 +367,18 @@ export class RestaurantsComponent implements OnInit {
 		if (this.background) {
 			this.myFormData.append('file_background', this.background, this.background.name);
 		}
-		if (this.myFiles) {
-			for ( let i = 0; i < this.myFiles.length; i++) {
-				this.myFormData.append('file_menu[]', this.myFiles[i], this.myFiles[i].name);
-			}
-		}
+		// if (this.myFiles) {
+		// 	for ( let i = 0; i < this.myFiles.length; i++) {
+		// 		this.myFormData.append('file_menu[]', this.myFiles[i], this.myFiles[i].name);
+		// 	}
+		// }
 
 		if (this.imgMap) {
 			this.myFormData.append('file_map', this.imgMap, this.imgMap.name);
 		}
 
 		// // console.log(this.cityName.value)
-		this.connection.addLocal('locals/changeLocal', this.myFormData, this.headers)
+		this.connection.addLocal('locals/changeLocal', this.myFormData)
 
 						.subscribe(data => {
 							// console.log(data);
@@ -453,14 +455,27 @@ export class RestaurantsComponent implements OnInit {
 		// console.log(this.images);
 	}
 	uploadMenu(e) {
-		if (e.target.files.length <= 20) {
+		this.myFormData = new FormData();
+		if (e.target.files.length <= 40) {
 			for (let i = 0; i < e.target.files.length; i++) {
 				this.myFiles.push(e.target.files[i]);
 			}
 		} else {
-			this.alert.alertError('Za dużo zdjęć')
+			this.alert.alertError('Za dużo zdjęć');
 		}
-		console.log(this.myFiles)
+		this.myFormData.append('id_local_data_main', this.id_local_data_main.toString());
+		if (this.myFiles) {
+			for ( let i = 0; i < this.myFiles.length; i++) {
+				this.myFormData.append('image[]', this.myFiles[i], this.myFiles[i].name);
+			}
+		}
+		console.log(this.myFiles);
+		this.connection.addLocal('locals/files/addMenuPhotos', this.myFormData)
+
+						.subscribe(data => {
+							// console.log(data);
+							this.alert.alertSuccess('Zdjęcia zostały dodane').then(() => this.menuImageState = true);
+		});
 	}
 
 	uploadFileMap(e) {
