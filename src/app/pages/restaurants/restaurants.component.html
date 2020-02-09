@@ -1,273 +1,279 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <form class="text-center" style="color: #757575;" (submit)="sendData()" *ngIf="!loadingPage">
-                <mdb-card>
-                    <mdb-card-body>
+            <form [formGroup]="myForm" class="text-center" style="color: #757575;" (ngSubmit)="onSubmit(myForm)" *ngIf="!loadingPage"> <!-- (submit)="sendData()" -->
+                <div class="row">
+                    <div class="col-12 col-md-7">
+                        <mdb-card>
+                            <mdb-card-body>
+                                <div class="pt-2 pb-2">
+                                    <div class="md-form mt-3">
+                                        <!-- <input type="text" id="city" class="form-control" name="city" [(ngModel)]="local_data.city" mdbInput>
+                                        <label for="city">Miasto</label> -->
+                                        <ng-select id="city" name="city" placeholder="Miasto" [selectableGroup]="true" formControlName="id_city_const_type">
+                                            <ng-option *ngFor="let item of cities" [value]="item.item_id" #cityName>{{item.item_name}}</ng-option>
+                                        </ng-select>
+                                    </div>
 
-                        <div class="pt-2 pb-2">
-                            <div class="md-form mt-3">
-                                <!-- <input type="text" id="city" class="form-control" name="city" [(ngModel)]="local_data.city" mdbInput>
-                                <label for="city">Miasto</label> -->
-                                <ng-select id="city" name="city" placeholder="Miasto" [selectableGroup]="true" [(ngModel)]="local_data.id_city_const_type">
-                                    <ng-option *ngFor="let item of cities" [value]="item.item_id" #cityName>{{item.item_name}}</ng-option>
-                                </ng-select>
-                            </div>
+                                    <div class="md-form">
+                                        <input type="text" id="restaurantName" class="form-control" name="restaurantName" formControlName="name"  mdbInput>
+                                        <label for="restaurantName">Nazwa lokalu</label>
+                                    </div>
 
-                            <div class="md-form">
-                                <input type="text" id="restaurantName" class="form-control" name="restaurantName" [(ngModel)]="local_data.name"  mdbInput>
-                                <label for="restaurantName">Nazwa lokalu</label>
-                            </div>
-                            <div class="md-form">
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="uploadLogo"
-                                        aria-describedby="uploadLogo" [(ngModel)]="uploadedLogo" name="uploadedLogo" (change)="uploadLogo($event)">
-                                        <label class="custom-file-label" for="uploadLogo">{{logo ? logo.name : 'Wyślij logo'}}</label>
+                                </div>
+                                <div class="pt-2 pb-2">
+                                    <div class="md-form">
+                                        <input type="text" id="restaurantAddress" class="form-control" name="restaurantAddress" formControlName="address" mdbInput>
+                                        <label for="restaurantAddress">Adres</label>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="md-form">
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="uploadBackground"
-                                        aria-describedby="uploadBackground" [(ngModel)]="uploadedBackground" name="uploadedBackground" (change)="uploadBackground($event)">
-                                        <label class="custom-file-label" for="uploadBackground">{{background ? background.name : 'Wyślij tło'}}</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="md-form">
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <!-- <input type="file" class="custom-file-input" id="uploadMenu"
-                                        aria-describedby="uploadMenu" [(ngModel)]="uploadedMenu" name="uploadedMenu" (change)="uploadMenu($event)"> -->
-                                        <input type="file" class="custom-file-input" id="uploadMenu"
-                                        aria-describedby="uploadMenu" [(ngModel)]="uploadedMenu" name="uploadedMenu[]" (change)="uploadMenu($event)" multiple="">
-                                        <!-- <label class="custom-file-label" for="uploadMenu">Wyślij menu</label> -->
-                                        <label class="custom-file-label" for="uploadMenu">Wyślij menu (20 max)</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text-left" *ngIf="myFiles">
-                                <div class="uploaded-files" *ngFor="let file of myFiles">
-                                    <p>{{file.name}}</p>
-                                    <a href="javascript:void(0)" (click)="deleteMenuImage(file)">x</a>
-                                </div>
-                            </div>
-                            <div class="md-form">
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="fileMap"
-                                        aria-describedby="uploadMenu" [(ngModel)]="fileMap" name="fileMap" (change)="uploadFileMap($event)">
-                                        <label class="custom-file-label" for="fileMap">{{imgMap ? imgMap.name : 'Wyślij pina do mapy'}}</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pt-2 pb-2">
-                            <div class="md-form">
-                                <input type="text" id="restaurantAddress" class="form-control" name="restaurantAddress" [(ngModel)]="local_data.address" mdbInput>
-                                <label for="restaurantAddress">Adres</label>
-                            </div>
 
-                            <div class="md-form">
-                                <input type="number" id="contact" class="form-control" name="contact" [(ngModel)]="local_data.phone_number" mdbInput>
-                                <label for="contact">Telefon</label>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                        <div class="md-form">
-                                            <input type="number" id="deliveryRange" class="form-control" name="deliveryRange" [(ngModel)]="local_data.delivery_range"  mdbInput>
-                                            <label for="deliveryRange">Zasięg dostawy</label>
+                                    <div class="md-form">
+                                        <input type="number" id="contact" class="form-control" name="contact" formControlName="phone_number" mdbInput>
+                                        <label for="contact">Telefon</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                                <div class="md-form">
+                                                    <input type="number" id="deliveryRange" class="form-control" name="deliveryRange" formControlName="delivery_range"  mdbInput>
+                                                    <label for="deliveryRange">Zasięg dostawy</label>
+                                                </div>
                                         </div>
-                                </div>
-                                <div class="col">
-                                    <div class="md-form">
-                                        <input type="text" id="longitude" class="form-control" name="longitude" [(ngModel)]="local_data.longitude" mdbInput>
-                                        <label for="longitude">longitude</label>
+                                        <div class="col">
+                                            <div class="md-form">
+                                                <input type="text" id="longitude" class="form-control" name="longitude" formControlName="longitude" mdbInput>
+                                                <label for="longitude">longitude</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="md-form">
+                                                <input type="text" id="latitude" class="form-control" name="latitude" formControlName="latitude" mdbInput>
+                                                <label for="latitude">latitude</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="md-form">
-                                        <input type="text" id="latitude" class="form-control" name="latitude" [(ngModel)]="local_data.latitude" mdbInput>
-                                        <label for="latitude">latitude</label>
+
+                                <div class="row ">
+                                    <div class="col-lg-6 text-left">
+                                        <p>Forma dostawy:</p>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="delivery" name="delivery" formControlName="delivery">
+                                            <label class="form-check-label" for="delivery">Dowóz</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="eat_in_local" name="eat_in_local" formControlName="eat_in_local">
+                                            <label class="form-check-label" for="eat_in_local">Na miejscu</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="pick_up_local" name="pick_up_local" formControlName="pick_up_local">
+                                            <label class="form-check-label" for="pick_up_local">Odbiór osobisty</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p>Forma płatności:</p>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="cash_payment" name="cash_payment" formControlName="cash_payment">
+                                            <label class="form-check-label" for="cash_payment">Platnosc gotowka</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="creditcards_payment" name="creditcards_payment" formControlName="creditcards_payment">
+                                            <label class="form-check-label" for="creditcards_payment">Platnosc karta</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="contactless_payment" name="contactless_payment" formControlName="contactless_payment">
+                                            <label class="form-check-label" for="contactless_payment">Platnosc zblizeniowa</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="blik_payment" name="blik_payment" formControlName="blik_payment">
+                                            <label class="form-check-label" for="blik_payment">Platnosc blikiem</label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="row ">
-                            <div class="col-lg-6 text-left">
-                                <p>Forma dostawy:</p>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="delivery" name="delivery" [(ngModel)]="local_data.delivery">
-                                    <label class="form-check-label" for="delivery">Dowóz</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="eat_in_local" name="eat_in_local" [(ngModel)]="local_data.eat_in_local">
-                                    <label class="form-check-label" for="eat_in_local">Na miejscu</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="pick_up_local" name="pick_up_local" [(ngModel)]="local_data.pick_up_local">
-                                    <label class="form-check-label" for="pick_up_local">Odbiór osobisty</label>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 text-left">
-                                <p>Forma płatności:</p>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="cash_payment" name="cash_payment" [(ngModel)]="local_data.cash_payment">
-                                    <label class="form-check-label" for="cash_payment">Platnosc gotowka</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="creditcards_payment" name="creditcards_payment" [(ngModel)]="local_data.creditcards_payment">
-                                    <label class="form-check-label" for="creditcards_payment">Platnosc karta</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="contactless_payment" name="contactless_payment" [(ngModel)]="local_data.contactless_payment">
-                                    <label class="form-check-label" for="contactless_payment">Platnosc zblizeniowa</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="blik_payment" name="blik_payment" [(ngModel)]="local_data.blik_payment">
-                                    <label class="form-check-label" for="blik_payment">Platnosc blikiem</label>
-                                </div>
-                            </div>
-                        </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="md-form">
+                                            <!-- <ng-select id="mainTags"
+                                            placeholder="Tagi główne (max 3)" [multiple]="true" name="mainTags" [(ngModel)]="selectedMainTags"
+                                            bindValue="id" [selectableGroup]="true"
+                                            [closeOnSelect]="false" (change)="selectMainTags($event)"
+                                            (remove)="remove($event)" >
+                                                <ng-option *ngFor="let tag of tagList" [value]="tag">
+                                                    {{tag.name}}
+                                                </ng-option>
+                                            </ng-select> -->
+                                            <!-- <ngx-select-dropdown (change)="selectMainTags($event)" [multiple]="true" name="mainTags" formControlName="selectedMainTags"  [options]="tagList" [config]="config"></ngx-select-dropdown > -->
+                                            <!-- <label for="mainTags">Tagi główne (max 3)</label> -->
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="md-form">
+                                            <!-- <ng-select id="secondaryTags"
+                                            placeholder="Tagi dodatkowe" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags"
+                                            bindValue="id" [selectableGroup]="true"
+                                            [closeOnSelect]="false" (change)="selectSecondaryTags($event)"
+                                            (remove)="remove($event)">
+                                                <ng-option *ngFor="let tag of tagList" [value]="tag" >{{tag.name}}</ng-option>
+                                            </ng-select> -->
+                                            <!-- <ngx-select-dropdown  (change)="selectSecondaryTags($event)" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags"  [options]="tagList" [config]="config2"></ngx-select-dropdown > -->
+                                            <!-- <ngx-select-dropdown (change)="selectSecondaryTags($event)" [multiple]="true" name="secondaryTags" formControlName="selectedSecondaryTags"  [options]="tagList" [config]="config2"></ngx-select-dropdown > -->
 
-                        <div class="row">
-                            <div class="col">
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="md-form">
-                                    <!-- <ng-select id="mainTags"
-                                    placeholder="Tagi główne (max 3)" [multiple]="true" name="mainTags" [(ngModel)]="selectedMainTags"
-                                    bindValue="id" [selectableGroup]="true"
-                                    [closeOnSelect]="false" (change)="selectMainTags($event)"
-                                    (remove)="remove($event)" >
-                                        <ng-option *ngFor="let tag of tagList" [value]="tag">
-                                            {{tag.name}}
-                                        </ng-option>
-                                    </ng-select> -->
-                                    <ngx-select-dropdown (change)="selectMainTags($event)" [multiple]="true" name="mainTags" [(ngModel)]="selectedMainTags"  [options]="tagList" [config]="config"></ngx-select-dropdown >
-                                    <!-- <label for="mainTags">Tagi główne (max 3)</label> -->
+                                    <textarea id="description" class="md-textarea form-control" name="description" formControlName="description" rows="3"></textarea>
+                                    <label for="description">Opis</label>
                                 </div>
-                            </div>
-                            <div class="col">
+                                <!-- <div class="md-form">
+                                    <textarea id="other_info" class="md-textarea form-control" name="other_info" [(ngModel)]="local_data.other_info" rows="3"></textarea>
+                                    <label for="other_info">Informacje o lokalu</label>
+                                </div> -->
+
                                 <div class="md-form">
-                                    <!-- <ng-select id="secondaryTags"
-                                    placeholder="Tagi dodatkowe" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags"
-                                    bindValue="id" [selectableGroup]="true"
-                                    [closeOnSelect]="false" (change)="selectSecondaryTags($event)"
-                                    (remove)="remove($event)">
-                                        <ng-option *ngFor="let tag of tagList" [value]="tag" >{{tag.name}}</ng-option>
-                                    </ng-select> -->
-                                    <!-- <ngx-select-dropdown  (change)="selectSecondaryTags($event)" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags"  [options]="tagList" [config]="config2"></ngx-select-dropdown > -->
-                                    <ngx-select-dropdown (change)="selectSecondaryTags($event)" [multiple]="true" name="secondaryTags" [(ngModel)]="selectedSecondaryTags"  [options]="tagList" [config]="config2"></ngx-select-dropdown >
-
+                                    <input type="text" id="facebook_url" class="form-control" name="facebook_url" formControlName="facebook_url" mdbInput>
+                                    <label for="facebook_url">Adres facebook</label>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="md-form">
-                            <textarea id="description" class="md-textarea form-control" name="description" [(ngModel)]="local_data.description" rows="3"></textarea>
-                            <label for="description">Opis</label>
-                        </div>
-
-                        <!-- <div class="md-form">
-                            <textarea id="other_info" class="md-textarea form-control" name="other_info" [(ngModel)]="local_data.other_info" rows="3"></textarea>
-                            <label for="other_info">Informacje o lokalu</label>
-                        </div> -->
-
-                        <div class="md-form">
-                            <input type="text" id="facebook_url" class="form-control" name="facebook_url" [(ngModel)]="local_data.facebook_url" mdbInput>
-                            <label for="facebook_url">Adres facebook</label>
-                        </div>
-
-                        <div class="md-form">
-                            <input type="text" id="instagram_url" class="form-control" name="instagram_url" [(ngModel)]="local_data.instagram_url" mdbInput>
-                            <label for="instagram_url">Adres instagram</label>
-                        </div>
-                        <!-- <div class="md-form">
-                            <input type="text" id="type" class="form-control" name="type" [(ngModel)]="local_data.type" mdbInput>
-                            <label for="type">Rodzaj kuchni</label>
-                        </div> -->
-
-                    </mdb-card-body>
-                </mdb-card>
-                <!-- <ul class="nav grey day_tab lighten-4 py-4">
-                    <li class="nav-item" *ngFor="let item of open_hours; let i = index"  [class.active]="i === selectedDayId">
-                        <div class="day ml-2 mr-2" (click)="selectDay(item.id_week_day, i)">{{dayName[i]}} {{i}}</div>
-                    </li>
-                </ul> -->
-                <ul class="nav grey day_tab lighten-4 py-4">
-                    <li class="nav-item" *ngFor="let item of dayName; let i = index"  [class.active]="i === selectedDayId">
-                        <div class="day ml-2 mr-2" (click)="selectDay(i)">{{item}}</div>
-                    </li>
-                </ul>
-                <mdb-card>
-                    <mdb-card-body>
-                        <div class="row">
-                            <div class="col-12 text-left">
-                                <p>Godziny otwarcia lokalu</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
                                 <div class="md-form">
-                                    <input type="time" id="openLocalFrom" class="form-control" name="openLocalFrom" [(ngModel)]="open_hours_template[selectedDayId].local_hour_from" [disabled]="!local_data.pick_up_local && !local_data.eat_in_local"  mdbInput>
-                                    <label for="openLocalHour">od:</label>
+                                    <input type="text" id="instagram_url" class="form-control" name="instagram_url" formControlName="instagram_url" mdbInput>
+                                    <label for="instagram_url">Adres instagram</label>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="md-form">
-                                    <input type="time" id="openLocalTo" class="form-control" name="openLocalTo" [(ngModel)]="open_hours_template[selectedDayId].local_hour_to" [disabled]="!open_hours_template[selectedDayId].local_hour_from"  mdbInput>
-                                    <label for="closeLocalHour">do:</label>
+                                <ul class="nav grey day_tab lighten-4 py-4">
+                                    <li class="nav-item" *ngFor="let item of dayName; let i = index"  [class.active]="i === selectedDayId">
+                                        <div class="day ml-2 mr-2" (click)="selectDay(i)">{{item}}</div>
+                                    </li>
+                                </ul>
+                                <!-- <div class="md-form">
+                                    <input type="text" id="type" class="form-control" name="type" [(ngModel)]="local_data.type" mdbInput>
+                                    <label for="type">Rodzaj kuchni</label>
+                                </div> -->
+                                <div class="row">
+                                    <div class="col-12 text-left">
+                                        <p>Godziny otwarcia lokalu</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                                <!-- <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="md-form">
+                                            <input type="time" id="openLocalFrom" class="form-control" name="openLocalFrom" [(ngModel)]="open_hours_template[selectedDayId].local_hour_from" [disabled]="!local_data.pick_up_local && !local_data.eat_in_local"  mdbInput>
+                                            <label for="openLocalHour">od:</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="md-form">
+                                            <input type="time" id="openLocalTo" class="form-control" name="openLocalTo" [(ngModel)]="open_hours_template[selectedDayId].local_hour_to" [disabled]="!open_hours_template[selectedDayId].local_hour_from"  mdbInput>
+                                            <label for="closeLocalHour">do:</label>
+                                        </div>
+                                    </div>
+                                </div> -->
 
-                        <div class="row">
-                            <div class="col-12 text-left">
-                                <p>GOdziny otwarcia kuchni</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <div class="md-form">
-                                    <input type="time" id="openKitchenFrom" class="form-control" name="openKitchenFrom" [(ngModel)]="open_hours_template[selectedDayId].kitchen_hour_from" [disabled]="!local_data.pick_up_local && !local_data.eat_in_local"  mdbInput>
-                                    <label for="openKitchenHour">od:</label>
+                                <div class="row">
+                                    <div class="col-12 text-left">
+                                        <p>GOdziny otwarcia kuchni</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="md-form">
-                                    <input type="time" id="openKitchenTo" class="form-control" name="openKitchenTo" [(ngModel)]="open_hours_template[selectedDayId].kitchen_hour_to" [disabled]="!open_hours_template[selectedDayId].kitchen_hour_from"  mdbInput>
-                                    <label for="closeKitchenHour">do:</label>
-                                </div>
-                            </div>
-                        </div>
+                                <!-- <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="md-form">
+                                            <input type="time" id="openKitchenFrom" class="form-control" name="openKitchenFrom" [(ngModel)]="open_hours_template[selectedDayId].kitchen_hour_from" [disabled]="!local_data.pick_up_local && !local_data.eat_in_local"  mdbInput>
+                                            <label for="openKitchenHour">od:</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="md-form">
+                                            <input type="time" id="openKitchenTo" class="form-control" name="openKitchenTo" [(ngModel)]="open_hours_template[selectedDayId].kitchen_hour_to" [disabled]="!open_hours_template[selectedDayId].kitchen_hour_from"  mdbInput>
+                                            <label for="closeKitchenHour">do:</label>
+                                        </div>
+                                    </div>
+                                </div> -->
 
-                        <div class="row">
-                            <div class="col-12 text-left">
-                                <p>Godziny dowozu</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <div class="md-form">
-                                    <input type="time" id="OpenDeliveryFrom" class="form-control" name="OpenDeliveryFrom" [(ngModel)]="open_hours_template[selectedDayId].delivery_hour_from" [disabled]="!local_data.delivery"  mdbInput>
-                                    <label for="openDeliveryHour">od:</label>
+                                <div class="row">
+                                    <div class="col-12 text-left">
+                                        <p>Godziny dowozu</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="md-form">
-                                    <input type="time" id="OpenDeliveryTo" class="form-control" name="OpenDeliveryTo" [(ngModel)]="open_hours_template[selectedDayId].delivery_hour_to" [disabled]="!open_hours_template[selectedDayId].delivery_hour_from || !local_data.delivery"  mdbInput>
-                                    <label for="closeDeliveryHour">do:</label>
-                                </div>
-                            </div>
-                        </div>
+                                <!-- <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="md-form">
+                                            <input type="time" id="OpenDeliveryFrom" class="form-control" name="OpenDeliveryFrom" [(ngModel)]="open_hours_template[selectedDayId].delivery_hour_from" [disabled]="!local_data.delivery"  mdbInput>
+                                            <label for="openDeliveryHour">od:</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="md-form">
+                                            <input type="time" id="OpenDeliveryTo" class="form-control" name="OpenDeliveryTo" [(ngModel)]="open_hours_template[selectedDayId].delivery_hour_to" [disabled]="!open_hours_template[selectedDayId].delivery_hour_from || !local_data.delivery"  mdbInput>
+                                            <label for="closeDeliveryHour">do:</label>
+                                        </div>
+                                    </div>
+                                </div> -->
 
-                        <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect
-                        type="submit" [disabled]="logo && background && menuImageState ? false : true" [class.disabled]="logo && background && myFiles ? false : true">Wyślij</button>
-                    </mdb-card-body>
-                </mdb-card>
+                                <button mdbBtn color="info" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect" mdbWavesEffect
+                                type="submit" [disabled]="logo && background && menuImageState ? false : true" [class.disabled]="logo && background && myFiles ? false : true">Wyślij</button>
+
+                            </mdb-card-body>
+                        </mdb-card>
+                    </div>
+                    <!-- <div class="col-12 col-md-5">
+                        <mdb-card>
+                            <mdb-card-body>
+                                <div class="md-form">
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="uploadLogo"
+                                            aria-describedby="uploadLogo" [(ngModel)]="uploadedLogo" name="uploadedLogo" (change)="uploadLogo($event)">
+                                            <label class="custom-file-label" for="uploadLogo">{{logo ? logo.name : 'Wyślij logo'}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md-form">
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="uploadBackground"
+                                            aria-describedby="uploadBackground" [(ngModel)]="uploadedBackground" name="uploadedBackground" (change)="uploadBackground($event)">
+                                            <label class="custom-file-label" for="uploadBackground">{{background ? background.name : 'Wyślij tło'}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md-form">
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="uploadMenu"
+                                            aria-describedby="uploadMenu" [(ngModel)]="uploadedMenu" name="uploadedMenu[]" (change)="uploadMenu($event)" multiple="">
+                                            <label class="custom-file-label" for="uploadMenu">Wyślij menu (20 max)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-left" *ngIf="myFiles">
+                                    <div class="uploaded-files" *ngFor="let file of myFiles">
+                                        <p>{{file.name}}</p>
+                                        <a href="javascript:void(0)" (click)="deleteMenuImage(file)">x</a>
+                                    </div>
+                                </div>
+                                <div class="md-form">
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="fileMap"
+                                            aria-describedby="uploadMenu" [(ngModel)]="fileMap" name="fileMap" (change)="uploadFileMap($event)">
+                                            <label class="custom-file-label" for="fileMap">{{imgMap ? imgMap.name : 'Wyślij pina do mapy'}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mdb-card-body>
+                        </mdb-card>
+                    </div> -->
+                </div>
             </form>
         </div>
+        <!-- <div class="col-12">
+            <mdb-card>
+                <mdb-card-body>
+                    <form class="text-center" style="color: #757575;" (submit)="sendData()" *ngIf="!loadingPage">
+                    </form>
+                </mdb-card-body>
+            </mdb-card>
+        </div> -->
     </div>
 </div>
+

@@ -6,6 +6,11 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import {NgForm} from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
+import {
+	HttpEvent,
+	HttpEventType
+  } from '@angular/common/http';
+  import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 
 @Component({
 	selector: 'app-restaurants',
@@ -13,6 +18,7 @@ import { HttpHeaders } from '@angular/common/http';
 	styleUrls: ['./restaurants.component.scss']
 })
 export class RestaurantsComponent implements OnInit {
+	myForm: FormGroup;
 	@ViewChild('cityName', {static: false}) cityName: any;
 	@ViewChild('checkbox', {static: false}) checkbox: any;
 	logo: File;
@@ -150,7 +156,7 @@ export class RestaurantsComponent implements OnInit {
 	uploadedBackground;
 	uploadedMenu;
 	fileMap;
-	dayName = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'];
+	dayName = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sb', 'Niedź'];
 	loadingPage = true;
 	myDisabledCondition: boolean;
 	config = {
@@ -184,7 +190,9 @@ export class RestaurantsComponent implements OnInit {
 	selectedFiles = [];
 	myFiles = [];
 	menuImageState: boolean;
-	constructor(private router: Router, private route: ActivatedRoute, public connection: ConnectionService, public alert: AlertService) {
+
+	constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,
+					public connection: ConnectionService, public alert: AlertService) {
 		this.connection.selectItem('CityConstType').subscribe(data => {
 			this.cities = data;
 			// console.log(this.cities);
@@ -201,6 +209,26 @@ export class RestaurantsComponent implements OnInit {
 	ngOnInit() {
 
 		this.connection.getDataByGet('/tags/getList').subscribe(data => {
+			this.myForm = this.fb.group({
+				name: new FormControl(''),
+				address: new FormControl(''),
+				id_city_const_type: new FormControl(''),
+				phone_number: new FormControl(''),
+				description: new FormControl(''),
+				other_info: new FormControl(''),
+				facebook_url: new FormControl(''),
+				instagram_url: new FormControl(''),
+				delivery: new FormControl(''),
+				eat_in_local: new FormControl(''),
+				pick_up_local: new FormControl(''),
+				cash_payment: new FormControl(''),
+				creditcards_payment: new FormControl(''),
+				contactless_payment:  new FormControl(''),
+				blik_payment: new FormControl(''),
+				delivery_range: new FormControl(''),
+				latitude: new FormControl(''),
+				longitude: new FormControl(''),
+			  });
 			// this.tagList = data.map(
 			// 	element => {
 			// 		element.disabled = false;
@@ -226,6 +254,26 @@ export class RestaurantsComponent implements OnInit {
 		this.connection.getDataByGet('/locals/getDetailsEdit/' + id).subscribe((data: Restaurant) => {
 			// this.items = data;
 			console.log(data);
+			this.myForm = this.fb.group({
+				name: new FormControl(data.name),
+				address: new FormControl(data.address),
+				id_city_const_type: new FormControl(data.id_city_const_type),
+				phone_number: new FormControl(data.phone_number),
+				description: new FormControl(data.description),
+				other_info: new FormControl(data.other_info),
+				facebook_url: new FormControl(data.facebook_url),
+				instagram_url: new FormControl(data.instagram_url),
+				delivery: new FormControl(data.delivery),
+				eat_in_local: new FormControl(data.eat_in_local),
+				pick_up_local: new FormControl(data.pick_up_local),
+				cash_payment: new FormControl(data.cash_payment),
+				creditcards_payment: data.creditcards_payment ? new FormControl(data.creditcards_payment) : new FormControl(false) ,
+				contactless_payment: data.contactless_payment ? new FormControl(data.contactless_payment) : new FormControl(false),
+				blik_payment: data.blik_payment ? new FormControl(data.blik_payment) : new FormControl(false),
+				delivery_range: data.delivery_range ? new FormControl(data.delivery_range) : new FormControl(0),
+				latitude: new FormControl(data.latitude),
+				longitude: new FormControl(data.name),
+			  });
 			this.local_data = {
 				name: data.name ,
 				address: data.address,
@@ -472,10 +520,9 @@ export class RestaurantsComponent implements OnInit {
 		console.log(this.myFiles);
 		this.connection.addLocal('locals/files/addMenuPhotos', this.myFormData)
 
-						.subscribe(data => {
-							// console.log(data);
-							this.alert.alertSuccess('Zdjęcia zostały dodane').then(() => this.menuImageState = true);
-		});
+		.subscribe((event: HttpEvent<any>) => {
+			console.log(event)
+		  });
 	}
 
 	uploadFileMap(e) {

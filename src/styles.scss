@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@ng-select/ng-select/themes/material.theme.css";
-
+.card {
+    border: 0 !important;
+    .card-body {
+        padding: 0;
+    }
+}
 ng-select {
     padding-bottom: 0 !important;
     .ng-value-container {

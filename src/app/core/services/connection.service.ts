@@ -5,7 +5,6 @@ import { catchError, retry, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AlertService } from './alert.service';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
@@ -74,11 +73,20 @@ export class ConnectionService {
 			headers: new HttpHeaders({
 				'Authorization': 'Bearer ' + this.getToken(),
 				'Accept': 'application/json'
+
 			}
 			)
 		};
 
-		return this.http.post(this.mainUrl + url, post_data, this.httpOptions)
+		return this.http.post(this.mainUrl + url, post_data, {
+			headers: new HttpHeaders({
+					'Authorization': 'Bearer ' + this.getToken(),
+					'Accept': 'application/json'
+					}
+				),
+				reportProgress: true
+			}
+		)
 			.pipe(
 				(data => {
 					return data;

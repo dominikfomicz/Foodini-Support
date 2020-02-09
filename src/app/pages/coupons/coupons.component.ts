@@ -181,38 +181,40 @@ export class CouponsComponent implements OnInit {
 								console.log(this.tags);
 								const main_tags = [];
 								const secondary_tags = [];
-								for (let i = 0; i < this.couponTags.length; i++) {
-									if (this.couponTags[i].is_main) {
-										main_tags.push(this.couponTags[i]);
-										this.selectedMainTags = main_tags;
+								if (this.couponTags) {
+									for (let i = 0; i < this.couponTags.length; i++) {
+										if (this.couponTags[i].is_main) {
+											main_tags.push(this.couponTags[i]);
+											this.selectedMainTags = main_tags;
 
-										console.log(this.tagList);
-										this.mainTags.push({
-											id: this.couponTags[i].id,
-											priority_status: this.couponTags[i].is_main
-										});
-										this.tagList = this.tagList.filter( tag => {
-											// if (tag.id === newDataMainTags[i].id) {
-											// 	this.usedTags.push(tag);
-											// }
-											return tag.id !== this.couponTags[i].id;
+											console.log(this.tagList);
+											this.mainTags.push({
+												id: this.couponTags[i].id,
+												priority_status: this.couponTags[i].is_main
+											});
+											this.tagList = this.tagList.filter( tag => {
+												// if (tag.id === newDataMainTags[i].id) {
+												// 	this.usedTags.push(tag);
+												// }
+												return tag.id !== this.couponTags[i].id;
 
-										});
-									} else {
-										secondary_tags.push(this.couponTags[i]);
-										this.selectedSecondaryTags = secondary_tags;
-										// // // console.log(data.main_tags[i])
-										this.secondaryTags.push({
-											id: this.couponTags[i].id,
-											priority_status: this.couponTags[i].is_main
-										});
-										this.tagList = this.tagList.filter( tag => {
-											// if (tag.id === newDataSecondaryTags[i].id) {
-											// 	this.usedTags.push(tag);
-											// }
-											return tag.id !== this.couponTags[i].id;
+											});
+										} else {
+											secondary_tags.push(this.couponTags[i]);
+											this.selectedSecondaryTags = secondary_tags;
+											// // // console.log(data.main_tags[i])
+											this.secondaryTags.push({
+												id: this.couponTags[i].id,
+												priority_status: this.couponTags[i].is_main
+											});
+											this.tagList = this.tagList.filter( tag => {
+												// if (tag.id === newDataSecondaryTags[i].id) {
+												// 	this.usedTags.push(tag);
+												// }
+												return tag.id !== this.couponTags[i].id;
 
-										});
+											});
+										}
 									}
 								}
 							});

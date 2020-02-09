@@ -27,7 +27,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { SelectDropDownModule } from 'ngx-select-dropdown'
+import { SelectDropDownModule } from 'ngx-select-dropdown';
 
 @NgModule({
 	declarations: [
