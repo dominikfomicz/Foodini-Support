@@ -14,14 +14,10 @@ export class ListRestaurantsComponent implements OnInit {
 
 	public items: any = [];
 	showLogin = true;
-	constructor(public alert: AlertService, public router: Router, public connection: ConnectionService) { }
-
-
+	constructor(public alert: AlertService, public router: Router, public connection: ConnectionService) {}
 
 	ngOnInit() {
-
-		this.connection.getDataByPost('tools/getList',
-						{app_list_string: 'LocalDataMain'}).subscribe(data => {
+		this.connection.getDataByPost('tools/getList', { app_list_string: 'LocalDataMain' }).subscribe(data => {
 			this.items = data;
 			console.log(data);
 			this.showLogin = false;
@@ -29,15 +25,14 @@ export class ListRestaurantsComponent implements OnInit {
 	}
 
 	onDeleteClick(id) {
-		this.alert.alertQuestion('Czy napewno chcesz usunąć lokal?').then(
-			callback => {
-				if (callback === true) {
-				// 	this.connection.getDataByPost('',).subscribe(data => {
-				// 		console.log(data);
-				// })
-				}
+		this.alert.alertQuestion('Czy napewno chcesz usunąć lokal?').then(callback => {
+			if (callback === true) {
+				this.connection.getDataByPost('/locals/removeLocal', { id_local_data_main: id }).subscribe(data => {
+					console.log(data);
+					this.router.navigateByUrl('list-restaurants');
+				});
 			}
-		);
+		});
 	}
 
 	onEditClick(id) {

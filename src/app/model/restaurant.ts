@@ -7,6 +7,7 @@ export interface Restaurant {
 	other_info: string;
 	facebook_url: string;
 	instagram_url: string;
+	order_url: string;
 	delivery: boolean;
 	eat_in_local: boolean;
 	pick_up_local: boolean;
